@@ -1,0 +1,5 @@
+rootProject.name = 'CustomWebService'
+include 'dao'
+include 'service'
+include 'web'
+
