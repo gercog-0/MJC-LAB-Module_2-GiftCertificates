@@ -10,7 +10,7 @@ public interface BaseDao<T> {
 
     T add(T t);
 
-    T update(T t);
+    boolean update(T t);
 
-    void remove(long id);
+    boolean remove(long id);
 }

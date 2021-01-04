@@ -22,7 +22,9 @@ import static com.epam.esm.dao.SqlQuery.GIFT_CERTIFICATE_UPDATE;
 
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
+
     private final JdbcTemplate jdbcTemplate;
+    private final GiftCertificateMapper giftCertificateMapper = new GiftCertificateMapper();
 
     @Autowired
     public GiftCertificateDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -31,12 +33,12 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     public List<GiftCertificate> findAll() {
-        return jdbcTemplate.query(GIFT_CERTIFICATE_FIND_ALL, new GiftCertificateMapper());
+        return jdbcTemplate.query(GIFT_CERTIFICATE_FIND_ALL, giftCertificateMapper);
     }
 
     @Override
     public Optional<GiftCertificate> findById(int id) {
-        return jdbcTemplate.query(GIFT_CERTIFICATE_FIND_BY_ID, new Object[]{id}, new GiftCertificateMapper())
+        return jdbcTemplate.query(GIFT_CERTIFICATE_FIND_BY_ID, new Object[]{id}, giftCertificateMapper)
                 .stream().findAny();
     }
 
@@ -55,21 +57,22 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
             return preparedStatement;
         }, keyHolder);
         Number key = keyHolder.getKey();
-        giftCertificate.setId((Long) key);
+        if (key != null) {
+            giftCertificate.setId(key.longValue());
+        }
         return giftCertificate;
     }
 
     @Override
-    public GiftCertificate update(GiftCertificate giftCertificate) {
-        jdbcTemplate.update(GIFT_CERTIFICATE_UPDATE,
+    public boolean update(GiftCertificate giftCertificate) {
+        return jdbcTemplate.update(GIFT_CERTIFICATE_UPDATE,
                 giftCertificate.getName(), giftCertificate.getDescription(),
                 giftCertificate.getPrice(), giftCertificate.getDuration(),
-                giftCertificate.getCreateDate(), giftCertificate.getLastUpdateDate());
-        return giftCertificate;
+                giftCertificate.getCreateDate(), giftCertificate.getLastUpdateDate()) > 0;
     }
 
     @Override
-    public void remove(long id) {
-        jdbcTemplate.update(GIFT_CERTIFICATE_REMOVE, id);
+    public boolean remove(long id) {
+        return jdbcTemplate.update(GIFT_CERTIFICATE_REMOVE, id) > 0;
     }
 }

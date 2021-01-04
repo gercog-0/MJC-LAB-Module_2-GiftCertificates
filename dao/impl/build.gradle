@@ -18,7 +18,7 @@ dependencies {
     implementation group: 'org.springframework', name: 'spring-context', version: springVersion
     implementation group: 'org.springframework', name: 'spring-webmvc', version: springVersion
     implementation group: 'org.springframework', name: 'spring-jdbc', version: springVersion
-    implementation 'org.projectlombok:lombok:1.18.16'
+    implementation 'mysql:mysql-connector-java:8.0.20'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
     testImplementation group: 'org.springframework', name: 'spring-test', version: springVersion
