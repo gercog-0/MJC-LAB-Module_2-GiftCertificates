@@ -14,7 +14,11 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.dao.SqlQuery.*;
+import static com.epam.esm.dao.SqlQuery.GIFT_CERTIFICATE_ADD;
+import static com.epam.esm.dao.SqlQuery.GIFT_CERTIFICATE_FIND_ALL;
+import static com.epam.esm.dao.SqlQuery.GIFT_CERTIFICATE_FIND_BY_ID;
+import static com.epam.esm.dao.SqlQuery.GIFT_CERTIFICATE_REMOVE;
+import static com.epam.esm.dao.SqlQuery.GIFT_CERTIFICATE_UPDATE;
 
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
@@ -39,7 +43,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     @Override
     public GiftCertificate add(GiftCertificate giftCertificate) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        boolean isAdded = jdbcTemplate.update(connection -> {
+        jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(GIFT_CERTIFICATE_ADD,
                     Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, giftCertificate.getName());
@@ -49,11 +53,9 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
             preparedStatement.setObject(5, giftCertificate.getCreateDate());
             preparedStatement.setObject(6, giftCertificate.getLastUpdateDate());
             return preparedStatement;
-        }, keyHolder) > 0;
+        }, keyHolder);
         Number key = keyHolder.getKey();
-        if (key != null) {
-            giftCertificate.setId(key.longValue());
-        }
+        giftCertificate.setId((Long) key);
         return giftCertificate;
     }
 

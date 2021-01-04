@@ -14,7 +14,10 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.dao.SqlQuery.*;
+import static com.epam.esm.dao.SqlQuery.TAG_ADD;
+import static com.epam.esm.dao.SqlQuery.TAG_FIND_ALL;
+import static com.epam.esm.dao.SqlQuery.TAG_FIND_BY_ID;
+import static com.epam.esm.dao.SqlQuery.TAG_REMOVE;
 
 @Repository
 public class TagDaoImpl implements TagDao {
@@ -39,16 +42,14 @@ public class TagDaoImpl implements TagDao {
     @Override
     public Tag add(Tag tag) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        boolean isAdded = jdbcTemplate.update(connection -> {
+        jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(TAG_ADD,
                     Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, tag.getName());
             return preparedStatement;
-        }, keyHolder) > 0;
+        }, keyHolder);
         Number key = keyHolder.getKey();
-        if (key != null) {
-            tag.setId(key.longValue());
-        }
+        tag.setId((Long) key);
         return tag;
     }
 
