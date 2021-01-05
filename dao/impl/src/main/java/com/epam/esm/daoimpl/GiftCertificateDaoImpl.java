@@ -1,6 +1,7 @@
-package com.epam.esm.dao;
+package com.epam.esm.daoimpl;
 
-import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.daoapi.GiftCertificateDao;
+import com.epam.esm.daoapi.entity.GiftCertificate;
 
 import com.epam.esm.mapper.GiftCertificateMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,11 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.dao.SqlQuery.GIFT_CERTIFICATE_ADD;
-import static com.epam.esm.dao.SqlQuery.GIFT_CERTIFICATE_FIND_ALL;
-import static com.epam.esm.dao.SqlQuery.GIFT_CERTIFICATE_FIND_BY_ID;
-import static com.epam.esm.dao.SqlQuery.GIFT_CERTIFICATE_REMOVE;
-import static com.epam.esm.dao.SqlQuery.GIFT_CERTIFICATE_UPDATE;
+import static com.epam.esm.daoimpl.SqlQuery.GIFT_CERTIFICATE_ADD;
+import static com.epam.esm.daoimpl.SqlQuery.GIFT_CERTIFICATE_FIND_ALL;
+import static com.epam.esm.daoimpl.SqlQuery.GIFT_CERTIFICATE_FIND_BY_ID;
+import static com.epam.esm.daoimpl.SqlQuery.GIFT_CERTIFICATE_REMOVE;
+import static com.epam.esm.daoimpl.SqlQuery.GIFT_CERTIFICATE_UPDATE;
 
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
@@ -37,7 +38,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public Optional<GiftCertificate> findById(int id) {
+    public Optional<GiftCertificate> findById(long id) {
         return jdbcTemplate.query(GIFT_CERTIFICATE_FIND_BY_ID, new Object[]{id}, giftCertificateMapper)
                 .stream().findAny();
     }

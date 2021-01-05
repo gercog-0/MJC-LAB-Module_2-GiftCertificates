@@ -2,9 +2,6 @@ plugins {
     id 'java'
 }
 
-group 'com.epam.esm'
-version '1.0'
-
 ext {
     springVersion = '5.2.12.RELEASE'
 }
@@ -20,7 +17,6 @@ dependencies {
     implementation group: 'org.springframework', name: 'spring-jdbc', version: springVersion
     implementation 'mysql:mysql-connector-java:8.0.20'
 
-    annotationProcessor 'org.projectlombok:lombok:1.18.16'
     testImplementation group: 'org.springframework', name: 'spring-test', version: springVersion
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }

@@ -1,7 +1,8 @@
-package com.epam.esm.dao;
+package com.epam.esm.daoimpl;
 
 
-import com.epam.esm.entity.Tag;
+import com.epam.esm.daoapi.TagDao;
+import com.epam.esm.daoapi.entity.Tag;
 import com.epam.esm.mapper.TagMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,10 +15,10 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.dao.SqlQuery.TAG_ADD;
-import static com.epam.esm.dao.SqlQuery.TAG_FIND_ALL;
-import static com.epam.esm.dao.SqlQuery.TAG_FIND_BY_ID;
-import static com.epam.esm.dao.SqlQuery.TAG_REMOVE;
+import static com.epam.esm.daoimpl.SqlQuery.TAG_ADD;
+import static com.epam.esm.daoimpl.SqlQuery.TAG_FIND_ALL;
+import static com.epam.esm.daoimpl.SqlQuery.TAG_FIND_BY_ID;
+import static com.epam.esm.daoimpl.SqlQuery.TAG_REMOVE;
 
 @Repository
 public class TagDaoImpl implements TagDao {
@@ -36,7 +37,7 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public Optional<Tag> findById(int id) {
+    public Optional<Tag> findById(long id) {
         return jdbcTemplate.query(TAG_FIND_BY_ID, new Object[]{id}, tagMapper)
                 .stream().findAny();
     }

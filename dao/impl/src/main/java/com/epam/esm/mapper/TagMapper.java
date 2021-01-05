@@ -1,14 +1,14 @@
 package com.epam.esm.mapper;
 
 
-import com.epam.esm.entity.Tag;
+import com.epam.esm.daoapi.entity.Tag;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.epam.esm.dao.SqlColumnName.TAG_ID;
-import static com.epam.esm.dao.SqlColumnName.TAG_NAME;
+import static com.epam.esm.daoimpl.SqlColumnName.TAG_ID;
+import static com.epam.esm.daoimpl.SqlColumnName.TAG_NAME;
 
 public class TagMapper implements RowMapper<Tag> {
     @Override
