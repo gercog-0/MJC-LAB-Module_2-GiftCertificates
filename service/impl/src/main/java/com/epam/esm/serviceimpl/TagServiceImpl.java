@@ -2,6 +2,7 @@ package com.epam.esm.serviceimpl;
 
 import com.epam.esm.daoapi.TagDao;
 import com.epam.esm.daoapi.entity.Tag;
+import com.epam.esm.exception.ServiceErrorInformation;
 import com.epam.esm.exception.ServiceException;
 import com.epam.esm.serviceapi.TagService;
 import com.epam.esm.serviceapi.dto.TagDto;
@@ -37,19 +38,19 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto findById(String id) {
         if (!TagValidator.isIdCorrect(id)) {
-            throw new ServiceException();
+            throw new ServiceException(ServiceErrorInformation.TAG_ID_INCORRECT);
         }
         long longId = Long.parseLong(id);
         Optional<Tag> foundTag = tagDao.findById(longId);
         return foundTag.map(tag -> modelMapper.map(tag, TagDto.class))
-                .orElseThrow(() -> new ServiceException());
+                .orElseThrow(() -> new ServiceException(ServiceErrorInformation.TAG_WITH_SUCH_ID_NOT_EXIST));
     }
 
     @Override
     public TagDto add(TagDto tagDto) {
         Tag tag = modelMapper.map(tagDto, Tag.class);
         if (!TagValidator.isNameCorrect(tag.getName())) {
-            throw new ServiceException();
+            throw new ServiceException(ServiceErrorInformation.TAG_NAME_INCORRECT);
         }
         Tag addedTag = tagDao.add(tag);
         return modelMapper.map(addedTag, TagDto.class);
@@ -59,12 +60,12 @@ public class TagServiceImpl implements TagService {
     @Override
     public void remove(String id) {
         if (!TagValidator.isIdCorrect(id)) {
-            throw new ServiceException();
+            throw new ServiceException(ServiceErrorInformation.TAG_ID_INCORRECT);
         }
         long longId = Long.parseLong(id);
         boolean isRemoved = tagDao.remove(longId);
         if (!isRemoved) {
-            throw new ServiceException(); // not found
+            throw new ServiceException(ServiceErrorInformation.TAG_WITH_SUCH_ID_NOT_EXIST);
         }
     }
 }

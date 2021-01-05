@@ -24,11 +24,12 @@ import static com.epam.esm.daoimpl.SqlQuery.TAG_REMOVE;
 public class TagDaoImpl implements TagDao {
 
     private final JdbcTemplate jdbcTemplate;
-    private final TagMapper tagMapper = new TagMapper();
+    private final TagMapper tagMapper;
 
     @Autowired
-    public TagDaoImpl(JdbcTemplate jdbcTemplate) {
+    public TagDaoImpl(JdbcTemplate jdbcTemplate, TagMapper tagMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.tagMapper = tagMapper;
     }
 
     @Override

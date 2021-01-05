@@ -3,6 +3,7 @@ package com.epam.esm.mapper;
 
 import com.epam.esm.daoapi.entity.Tag;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import static com.epam.esm.daoimpl.SqlColumnName.TAG_ID;
 import static com.epam.esm.daoimpl.SqlColumnName.TAG_NAME;
 
+@Component
 public class TagMapper implements RowMapper<Tag> {
     @Override
     public Tag mapRow(ResultSet resultSet, int rowNum) throws SQLException {

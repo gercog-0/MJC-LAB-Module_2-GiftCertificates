@@ -2,6 +2,7 @@ package com.epam.esm.mapper;
 
 import com.epam.esm.daoapi.entity.GiftCertificate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +16,7 @@ import static com.epam.esm.daoimpl.SqlColumnName.GIFT_CERTIFICATE_DURATION;
 import static com.epam.esm.daoimpl.SqlColumnName.GIFT_CERTIFICATE_CREATE_DATE;
 import static com.epam.esm.daoimpl.SqlColumnName.GIFT_CERTIFICATE_LAST_UPDATE_DATE;
 
+@Component
 public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
     @Override
     public GiftCertificate mapRow(ResultSet resultSet, int rowNum) throws SQLException {

@@ -25,11 +25,12 @@ import static com.epam.esm.daoimpl.SqlQuery.GIFT_CERTIFICATE_UPDATE;
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     private final JdbcTemplate jdbcTemplate;
-    private final GiftCertificateMapper giftCertificateMapper = new GiftCertificateMapper();
+    private final GiftCertificateMapper giftCertificateMapper;
 
     @Autowired
-    public GiftCertificateDaoImpl(JdbcTemplate jdbcTemplate) {
+    public GiftCertificateDaoImpl(JdbcTemplate jdbcTemplate, GiftCertificateMapper giftCertificateMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.giftCertificateMapper = giftCertificateMapper;
     }
 
     @Override
