@@ -3,7 +3,7 @@ package com.epam.esm.service.impl;
 import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.dao.api.entity.Tag;
 import com.epam.esm.service.impl.exception.ServiceException;
-import com.epam.esm.service.impl.validator.TagValidator;
+import com.epam.esm.service.impl.validator.impl.TagValidatorImpl;
 import com.epam.esm.service.api.TagService;
 import com.epam.esm.service.api.dto.TagDto;
 import org.modelmapper.ModelMapper;
@@ -19,13 +19,13 @@ import static com.epam.esm.service.impl.exception.ErrorCode.TAG_WITH_SUCH_ID_NOT
 public class TagServiceImpl implements TagService {
 
     private final TagDao tagDao;
-    private final TagValidator tagValidator;
+    private final TagValidatorImpl tagValidatorImpl;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public TagServiceImpl(TagDao tagDao, TagValidator tagValidator, ModelMapper modelMapper) {
+    public TagServiceImpl(TagDao tagDao, TagValidatorImpl tagValidatorImpl, ModelMapper modelMapper) {
         this.tagDao = tagDao;
-        this.tagValidator = tagValidator;
+        this.tagValidatorImpl = tagValidatorImpl;
         this.modelMapper = modelMapper;
     }
 
@@ -38,7 +38,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDto findById(Long id) {
-        tagValidator.validateId(id);
+        tagValidatorImpl.validateId(id);
         return tagDao.findById(id).
                 map(tag -> modelMapper.map(tag, TagDto.class))
                 .orElseThrow(() -> new ServiceException(TAG_WITH_SUCH_ID_NOT_EXIST_ERROR));
@@ -47,7 +47,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto add(TagDto tagDto) {
         Tag tag = modelMapper.map(tagDto, Tag.class);
-        tagValidator.validateName(tag.getName());
+        tagValidatorImpl.validateName(tag.getName());
         Tag addedTag = tagDao.add(tag);
         return modelMapper.map(addedTag, TagDto.class);
     }

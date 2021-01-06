@@ -24,6 +24,8 @@ import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_UPDATE;
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
+    private static final int ZERO = 0;
+
     private final JdbcTemplate jdbcTemplate;
     private final GiftCertificateMapper giftCertificateMapper;
 
@@ -70,11 +72,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         return jdbcTemplate.update(GIFT_CERTIFICATE_UPDATE,
                 giftCertificate.getName(), giftCertificate.getDescription(),
                 giftCertificate.getPrice(), giftCertificate.getDuration(),
-                giftCertificate.getCreateDate(), giftCertificate.getLastUpdateDate()) > 0;
+                giftCertificate.getCreateDate(), giftCertificate.getLastUpdateDate()) > ZERO;
     }
 
     @Override
     public boolean remove(Long id) {
-        return jdbcTemplate.update(GIFT_CERTIFICATE_REMOVE, id) > 0;
+        return jdbcTemplate.update(GIFT_CERTIFICATE_REMOVE, id) > ZERO;
     }
 }

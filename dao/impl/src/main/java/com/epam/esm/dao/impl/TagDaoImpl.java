@@ -23,6 +23,8 @@ import static com.epam.esm.dao.impl.util.SqlQuery.TAG_REMOVE;
 @Repository
 public class TagDaoImpl implements TagDao {
 
+    private static final int ZERO = 0;
+
     private final JdbcTemplate jdbcTemplate;
     private final TagMapper tagMapper;
 
@@ -66,6 +68,6 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public boolean remove(Long id) {
-        return jdbcTemplate.update(TAG_REMOVE, id) > 0;
+        return jdbcTemplate.update(TAG_REMOVE, id) > ZERO;
     }
 }

@@ -5,7 +5,7 @@ import com.epam.esm.dao.api.entity.GiftCertificate;
 import com.epam.esm.service.impl.exception.ServiceException;
 import com.epam.esm.service.api.GiftCertificateService;
 import com.epam.esm.service.api.dto.GiftCertificateDto;
-import com.epam.esm.service.impl.validator.GiftCertificateValidator;
+import com.epam.esm.service.impl.validator.impl.GiftCertificateValidatorImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,14 +19,14 @@ import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_WIT
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private final GiftCertificateDao giftCertificateDao;
-    private final GiftCertificateValidator giftCertificateValidator;
+    private final GiftCertificateValidatorImpl giftCertificateValidatorImpl;
     private final ModelMapper modelMapper;
 
     @Autowired
     public GiftCertificateServiceImpl(GiftCertificateDao giftCertificateDao,
-                                      GiftCertificateValidator giftCertificateValidator, ModelMapper modelMapper) {
+                                      GiftCertificateValidatorImpl giftCertificateValidatorImpl, ModelMapper modelMapper) {
         this.giftCertificateDao = giftCertificateDao;
-        this.giftCertificateValidator = giftCertificateValidator;
+        this.giftCertificateValidatorImpl = giftCertificateValidatorImpl;
         this.modelMapper = modelMapper;
     }
 
@@ -39,7 +39,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public GiftCertificateDto findById(Long id) {
-        giftCertificateValidator.validateId(id);
+        giftCertificateValidatorImpl.validateId(id);
         return giftCertificateDao.findById(id)
                 .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
                 .orElseThrow(() -> new ServiceException(GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST_ERROR));
@@ -48,7 +48,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificateDto add(GiftCertificateDto giftCertificateDto) {
         GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
-        giftCertificateValidator.isCorrect(giftCertificate);
+        giftCertificateValidatorImpl.isCorrect(giftCertificate);
         GiftCertificate addedGiftCertificate = giftCertificateDao.add(giftCertificate);
         return modelMapper.map(addedGiftCertificate, GiftCertificateDto.class);
     }
@@ -62,7 +62,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
         GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
-        giftCertificateValidator.isCorrect(giftCertificate);
+        giftCertificateValidatorImpl.isCorrect(giftCertificate);
         findById(giftCertificate.getId());
         giftCertificateDao.update(giftCertificate);
         return giftCertificateDto; // TODO: 06.01.2021
