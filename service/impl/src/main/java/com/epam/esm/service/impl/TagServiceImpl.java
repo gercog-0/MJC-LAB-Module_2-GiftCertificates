@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.service.impl.exception.ErrorCode.TAG_WITH_SUCH_ID_NOT_EXIST_ERROR;
+import static com.epam.esm.service.impl.exception.ErrorCode.TAG_WITH_SUCH_ID_NOT_EXIST;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -41,7 +41,7 @@ public class TagServiceImpl implements TagService {
         tagValidatorImpl.validateId(id);
         return tagDao.findById(id).
                 map(tag -> modelMapper.map(tag, TagDto.class))
-                .orElseThrow(() -> new ServiceException(TAG_WITH_SUCH_ID_NOT_EXIST_ERROR));
+                .orElseThrow(() -> new ServiceException(TAG_WITH_SUCH_ID_NOT_EXIST));
     }
 
     @Override

@@ -4,8 +4,10 @@ import com.epam.esm.dao.api.entity.GiftCertificate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalDateTime;
 
 import static com.epam.esm.dao.impl.util.SqlColumnName.GIFT_CERTIFICATE_ID;
@@ -27,10 +29,15 @@ public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
                 resultSet.getString(GIFT_CERTIFICATE_DESCRIPTION),
                 resultSet.getBigDecimal(GIFT_CERTIFICATE_PRICE),
                 resultSet.getInt(GIFT_CERTIFICATE_DURATION),
-                LocalDateTime.of(resultSet.getDate(GIFT_CERTIFICATE_CREATE_DATE).toLocalDate(),
-                        resultSet.getTime(GIFT_CERTIFICATE_CREATE_DATE).toLocalTime()),
-                LocalDateTime.of(resultSet.getDate(GIFT_CERTIFICATE_LAST_UPDATE_DATE).toLocalDate(),
-                        resultSet.getTime(GIFT_CERTIFICATE_LAST_UPDATE_DATE).toLocalTime())
+                convertSqlDateToLocalDateTime(resultSet.getDate(GIFT_CERTIFICATE_CREATE_DATE),
+                        resultSet.getTime(GIFT_CERTIFICATE_CREATE_DATE)),
+                convertSqlDateToLocalDateTime(resultSet.getDate(GIFT_CERTIFICATE_LAST_UPDATE_DATE),
+                        resultSet.getTime(GIFT_CERTIFICATE_LAST_UPDATE_DATE))
         );
+    }
+
+    private LocalDateTime convertSqlDateToLocalDateTime(Date sqlDate, Time sqlTime) {
+        return LocalDateTime.of(sqlDate.toLocalDate(), sqlTime.toLocalTime());
+
     }
 }

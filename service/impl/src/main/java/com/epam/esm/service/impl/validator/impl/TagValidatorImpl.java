@@ -4,8 +4,8 @@ import com.epam.esm.service.impl.exception.ServiceException;
 import com.epam.esm.service.impl.validator.TagValidator;
 import org.springframework.stereotype.Component;
 
-import static com.epam.esm.service.impl.exception.ErrorCode.TAG_ID_INCORRECT_ERROR;
-import static com.epam.esm.service.impl.exception.ErrorCode.TAG_NAME_INCORRECT_ERROR;
+import static com.epam.esm.service.impl.exception.ErrorCode.TAG_ID_INCORRECT;
+import static com.epam.esm.service.impl.exception.ErrorCode.TAG_NAME_INCORRECT;
 
 @Component
 public final class TagValidatorImpl implements TagValidator {
@@ -14,13 +14,13 @@ public final class TagValidatorImpl implements TagValidator {
 
     public void validateName(String name) {
         if (name == null || !name.matches(NAME_REGEX)) {
-            throw new ServiceException(TAG_NAME_INCORRECT_ERROR);
+            throw new ServiceException(TAG_NAME_INCORRECT);
         }
     }
 
     public void validateId(Long id) {
         if (id == null) {
-            throw new ServiceException(TAG_ID_INCORRECT_ERROR);
+            throw new ServiceException(TAG_ID_INCORRECT);
         }
     }
 

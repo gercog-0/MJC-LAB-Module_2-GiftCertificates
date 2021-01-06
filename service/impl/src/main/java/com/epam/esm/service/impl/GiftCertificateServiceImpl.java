@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST_ERROR;
+import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
@@ -42,7 +42,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         giftCertificateValidatorImpl.validateId(id);
         return giftCertificateDao.findById(id)
                 .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
-                .orElseThrow(() -> new ServiceException(GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST_ERROR));
+                .orElseThrow(() -> new ServiceException(GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST));
     }
 
     @Override

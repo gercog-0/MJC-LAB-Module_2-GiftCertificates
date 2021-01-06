@@ -8,6 +8,7 @@ public class ServiceException extends RuntimeException {
     public ServiceException(Throwable exp) {
         super(exp);
     }
+
     public ServiceException(String errorCode) {
         super(errorCode);
 
