@@ -1,4 +1,4 @@
-package com.epam.esm.impl.mapper;
+package com.epam.esm.dao.impl.mapper;
 
 import com.epam.esm.dao.api.entity.GiftCertificate;
 import org.springframework.jdbc.core.RowMapper;
@@ -8,13 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import static com.epam.esm.impl.dao.SqlColumnName.GIFT_CERTIFICATE_ID;
-import static com.epam.esm.impl.dao.SqlColumnName.GIFT_CERTIFICATE_NAME;
-import static com.epam.esm.impl.dao.SqlColumnName.GIFT_CERTIFICATE_DESCRIPTION;
-import static com.epam.esm.impl.dao.SqlColumnName.GIFT_CERTIFICATE_PRICE;
-import static com.epam.esm.impl.dao.SqlColumnName.GIFT_CERTIFICATE_DURATION;
-import static com.epam.esm.impl.dao.SqlColumnName.GIFT_CERTIFICATE_CREATE_DATE;
-import static com.epam.esm.impl.dao.SqlColumnName.GIFT_CERTIFICATE_LAST_UPDATE_DATE;
+import static com.epam.esm.dao.impl.util.SqlColumnName.GIFT_CERTIFICATE_ID;
+import static com.epam.esm.dao.impl.util.SqlColumnName.GIFT_CERTIFICATE_NAME;
+import static com.epam.esm.dao.impl.util.SqlColumnName.GIFT_CERTIFICATE_DESCRIPTION;
+import static com.epam.esm.dao.impl.util.SqlColumnName.GIFT_CERTIFICATE_PRICE;
+import static com.epam.esm.dao.impl.util.SqlColumnName.GIFT_CERTIFICATE_DURATION;
+import static com.epam.esm.dao.impl.util.SqlColumnName.GIFT_CERTIFICATE_CREATE_DATE;
+import static com.epam.esm.dao.impl.util.SqlColumnName.GIFT_CERTIFICATE_LAST_UPDATE_DATE;
 
 @Component
 public class GiftCertificateMapper implements RowMapper<GiftCertificate> {

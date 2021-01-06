@@ -5,6 +5,14 @@ public class Tag {
     private Long id;
     private String name;
 
+    public Tag() {
+    }
+
+    public Tag(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
@@ -18,14 +26,6 @@ public class Tag {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public Tag() {
-    }
-
-    public Tag(Long id, String name) {
-        this.id = id;
         this.name = name;
     }
 }

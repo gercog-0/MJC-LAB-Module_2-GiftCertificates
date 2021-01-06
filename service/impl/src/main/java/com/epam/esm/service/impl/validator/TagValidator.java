@@ -11,13 +11,13 @@ public final class TagValidator {
 
     private static final String NAME_REGEX = "^[a-zA-Z0-9]{5,45}$";
 
-    public void isNameCorrect(String name) {
+    public void validateName(String name) {
         if (name == null || !name.matches(NAME_REGEX)) {
             throw new ServiceException(TAG_NAME_INCORRECT_ERROR);
         }
     }
 
-    public void isIdCorrect(Long id) {
+    public void validateId(Long id) {
         if (id == null || id < 0) {
             throw new ServiceException(TAG_ID_INCORRECT_ERROR);
         }

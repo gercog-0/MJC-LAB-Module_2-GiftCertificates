@@ -1,9 +1,9 @@
-package com.epam.esm.impl.dao;
+package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.api.entity.GiftCertificate;
 
-import com.epam.esm.impl.mapper.GiftCertificateMapper;
+import com.epam.esm.dao.impl.mapper.GiftCertificateMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,11 +15,11 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.impl.dao.SqlQuery.GIFT_CERTIFICATE_ADD;
-import static com.epam.esm.impl.dao.SqlQuery.GIFT_CERTIFICATE_FIND_ALL;
-import static com.epam.esm.impl.dao.SqlQuery.GIFT_CERTIFICATE_FIND_BY_ID;
-import static com.epam.esm.impl.dao.SqlQuery.GIFT_CERTIFICATE_REMOVE;
-import static com.epam.esm.impl.dao.SqlQuery.GIFT_CERTIFICATE_UPDATE;
+import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_ADD;
+import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_FIND_ALL;
+import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_FIND_BY_ID;
+import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_REMOVE;
+import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_UPDATE;
 
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {

@@ -1,4 +1,4 @@
-package com.epam.esm.impl.configuration;
+package com.epam.esm.dao.impl.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

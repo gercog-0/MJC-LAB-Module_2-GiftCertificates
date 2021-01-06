@@ -1,9 +1,9 @@
-package com.epam.esm.impl.dao;
+package com.epam.esm.dao.impl;
 
 
 import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.dao.api.entity.Tag;
-import com.epam.esm.impl.mapper.TagMapper;
+import com.epam.esm.dao.impl.mapper.TagMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,10 +15,10 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.impl.dao.SqlQuery.TAG_ADD;
-import static com.epam.esm.impl.dao.SqlQuery.TAG_FIND_ALL;
-import static com.epam.esm.impl.dao.SqlQuery.TAG_FIND_BY_ID;
-import static com.epam.esm.impl.dao.SqlQuery.TAG_REMOVE;
+import static com.epam.esm.dao.impl.util.SqlQuery.TAG_ADD;
+import static com.epam.esm.dao.impl.util.SqlQuery.TAG_FIND_ALL;
+import static com.epam.esm.dao.impl.util.SqlQuery.TAG_FIND_BY_ID;
+import static com.epam.esm.dao.impl.util.SqlQuery.TAG_REMOVE;
 
 @Repository
 public class TagDaoImpl implements TagDao {

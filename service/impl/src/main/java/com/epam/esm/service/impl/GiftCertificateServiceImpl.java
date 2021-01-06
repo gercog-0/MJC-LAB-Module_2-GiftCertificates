@@ -39,15 +39,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public GiftCertificateDto findById(Long id) {
-        giftCertificateValidator.isIdCorrect(id);
-        return giftCertificateDao.findById(id).map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
+        giftCertificateValidator.validateId(id);
+        return giftCertificateDao.findById(id)
+                .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
                 .orElseThrow(() -> new ServiceException(GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST_ERROR));
     }
 
     @Override
     public GiftCertificateDto add(GiftCertificateDto giftCertificateDto) {
         GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
-        giftCertificateValidator.isGiftCertificateCorrect(giftCertificate);
+        giftCertificateValidator.isCorrect(giftCertificate);
         GiftCertificate addedGiftCertificate = giftCertificateDao.add(giftCertificate);
         return modelMapper.map(addedGiftCertificate, GiftCertificateDto.class);
     }
@@ -61,7 +62,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
         GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
-        giftCertificateValidator.isGiftCertificateCorrect(giftCertificate);
+        giftCertificateValidator.isCorrect(giftCertificate);
         findById(giftCertificate.getId());
         giftCertificateDao.update(giftCertificate);
         return giftCertificateDto; // TODO: 06.01.2021

@@ -1,4 +1,4 @@
-package com.epam.esm.impl.mapper;
+package com.epam.esm.dao.impl.mapper;
 
 
 import com.epam.esm.dao.api.entity.Tag;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.epam.esm.impl.dao.SqlColumnName.TAG_ID;
-import static com.epam.esm.impl.dao.SqlColumnName.TAG_NAME;
+import static com.epam.esm.dao.impl.util.SqlColumnName.TAG_ID;
+import static com.epam.esm.dao.impl.util.SqlColumnName.TAG_NAME;
 
 @Component
 public class TagMapper implements RowMapper<Tag> {

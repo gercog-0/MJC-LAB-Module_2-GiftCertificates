@@ -1,4 +1,4 @@
-package com.epam.esm.impl.dao;
+package com.epam.esm.dao.impl.util;
 
 public final class SqlColumnName {
     /*
