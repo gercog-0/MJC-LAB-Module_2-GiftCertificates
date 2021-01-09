@@ -1,8 +1,6 @@
 package com.epam.esm.service.impl.validator;
 
-public interface BaseValidator {
+public interface BaseValidator<T> {
 
-    void validateId(Long id);
-
-    void validateName(String name);
+     void validate(T type);
 }

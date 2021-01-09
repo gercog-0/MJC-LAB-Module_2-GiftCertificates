@@ -13,6 +13,7 @@ repositories {
 dependencies {
     implementation project(":service:api")
     implementation project(":dao:api")
+    implementation project(":dao:impl")
     implementation group: 'org.springframework', name: 'spring-context', version: springVersion
     implementation group: 'org.springframework', name: 'spring-webmvc', version: springVersion
     implementation group: 'org.springframework', name: 'spring-jdbc', version: springVersion

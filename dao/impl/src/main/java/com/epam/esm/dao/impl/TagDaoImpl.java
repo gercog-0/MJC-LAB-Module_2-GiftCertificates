@@ -9,16 +9,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.dao.impl.util.SqlQuery.TAG_ADD;
-import static com.epam.esm.dao.impl.util.SqlQuery.TAG_FIND_ALL;
-import static com.epam.esm.dao.impl.util.SqlQuery.TAG_FIND_BY_ID;
-import static com.epam.esm.dao.impl.util.SqlQuery.TAG_REMOVE;
+import static com.epam.esm.dao.impl.util.SqlQuery.*;
 
 @Repository
 public class TagDaoImpl implements TagDao {
@@ -66,8 +64,26 @@ public class TagDaoImpl implements TagDao {
         throw new UnsupportedOperationException("Method update for Tag is unsupported.");
     }
 
+    @Transactional
     @Override
     public boolean remove(Long id) {
+        removeTagHasGiftCertificate(id);
         return jdbcTemplate.update(TAG_REMOVE, id) > ZERO;
+    }
+
+    @Override
+    public void removeTagHasGiftCertificate(Long id) {
+        jdbcTemplate.update(REMOVE_TAG_HAS_GIFT_CERTIFICATE_BY_TAG, id);
+    }
+
+    @Override
+    public List<Tag> findTagsByGiftCertificateId(Long giftCertificateId) {
+        return jdbcTemplate.query(FIND_TAGS_BY_GIFT_CERTIFICATE_ID, new Object[]{giftCertificateId}, tagMapper);
+    }
+
+    @Override
+    public Optional<Tag> findByName(String name) {
+        return jdbcTemplate.query(TAG_FIND_BY_NAME, new Object[]{name}, tagMapper)
+                .stream().findAny();
     }
 }

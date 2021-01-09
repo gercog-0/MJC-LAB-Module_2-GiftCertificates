@@ -9,17 +9,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_ADD;
-import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_FIND_ALL;
-import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_FIND_BY_ID;
-import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_REMOVE;
-import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_UPDATE;
+import static com.epam.esm.dao.impl.util.SqlQuery.*;
 
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
@@ -46,9 +44,12 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
                 .stream().findAny();
     }
 
+    @Transactional
     @Override
     public GiftCertificate add(GiftCertificate giftCertificate) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
+        giftCertificate.setCreateDate(LocalDateTime.now());
+        giftCertificate.setLastUpdateDate(LocalDateTime.now());
         jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(GIFT_CERTIFICATE_ADD,
                     Statement.RETURN_GENERATED_KEYS);
@@ -64,19 +65,37 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         if (key != null) {
             giftCertificate.setId(key.longValue());
         }
+        addTagHasGiftCertificate(giftCertificate);
         return giftCertificate;
     }
 
+    @Transactional
     @Override
     public boolean update(GiftCertificate giftCertificate) {
+        removeTagHasGiftCertificate(giftCertificate.getId());
+        addTagHasGiftCertificate(giftCertificate);
         return jdbcTemplate.update(GIFT_CERTIFICATE_UPDATE,
                 giftCertificate.getName(), giftCertificate.getDescription(),
                 giftCertificate.getPrice(), giftCertificate.getDuration(),
-                giftCertificate.getCreateDate(), giftCertificate.getLastUpdateDate()) > ZERO;
+                giftCertificate.getCreateDate(), giftCertificate.getLastUpdateDate(),
+                giftCertificate.getId()) > ZERO;
+    }
+
+    @Transactional
+    @Override
+    public boolean remove(Long id) {
+        removeTagHasGiftCertificate(id);
+        return jdbcTemplate.update(GIFT_CERTIFICATE_REMOVE, id) > ZERO;
     }
 
     @Override
-    public boolean remove(Long id) {
-        return jdbcTemplate.update(GIFT_CERTIFICATE_REMOVE, id) > ZERO;
+    public void removeTagHasGiftCertificate(Long id) {
+        jdbcTemplate.update(REMOVE_TAG_HAS_GIFT_CERTIFICATE, id);
+    }
+
+
+    private void addTagHasGiftCertificate(GiftCertificate giftCertificate) {
+        giftCertificate.getTags()
+                .forEach(tag -> jdbcTemplate.update(ADD_TAG_HAS_GIFT_CERTIFICATE, tag.getId(), giftCertificate.getId()));
     }
 }

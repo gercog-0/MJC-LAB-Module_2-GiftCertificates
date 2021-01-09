@@ -23,17 +23,18 @@ public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
 
     @Override
     public GiftCertificate mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-        return new GiftCertificate(
-                resultSet.getLong(GIFT_CERTIFICATE_ID),
-                resultSet.getString(GIFT_CERTIFICATE_NAME),
-                resultSet.getString(GIFT_CERTIFICATE_DESCRIPTION),
-                resultSet.getBigDecimal(GIFT_CERTIFICATE_PRICE),
-                resultSet.getInt(GIFT_CERTIFICATE_DURATION),
-                convertSqlDateToLocalDateTime(resultSet.getDate(GIFT_CERTIFICATE_CREATE_DATE),
-                        resultSet.getTime(GIFT_CERTIFICATE_CREATE_DATE)),
-                convertSqlDateToLocalDateTime(resultSet.getDate(GIFT_CERTIFICATE_LAST_UPDATE_DATE),
-                        resultSet.getTime(GIFT_CERTIFICATE_LAST_UPDATE_DATE))
-        );
+        GiftCertificate giftCertificate = new GiftCertificate();
+        giftCertificate.setId(resultSet.getLong(GIFT_CERTIFICATE_ID));
+        giftCertificate.setName(resultSet.getString(GIFT_CERTIFICATE_NAME));
+        giftCertificate.setDescription(resultSet.getString(GIFT_CERTIFICATE_DESCRIPTION));
+        giftCertificate.setPrice(resultSet.getBigDecimal(GIFT_CERTIFICATE_PRICE));
+        giftCertificate.setDuration(resultSet.getInt(GIFT_CERTIFICATE_DURATION));
+        giftCertificate.setCreateDate(convertSqlDateToLocalDateTime(resultSet.getDate(GIFT_CERTIFICATE_CREATE_DATE),
+                resultSet.getTime(GIFT_CERTIFICATE_CREATE_DATE)));
+        giftCertificate.setLastUpdateDate(convertSqlDateToLocalDateTime(resultSet.getDate(GIFT_CERTIFICATE_LAST_UPDATE_DATE),
+                resultSet.getTime(GIFT_CERTIFICATE_LAST_UPDATE_DATE)));
+
+        return giftCertificate;
     }
 
     private LocalDateTime convertSqlDateToLocalDateTime(Date sqlDate, Time sqlTime) {

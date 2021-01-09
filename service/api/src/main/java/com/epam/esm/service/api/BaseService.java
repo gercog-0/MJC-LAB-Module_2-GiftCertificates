@@ -1,15 +1,14 @@
 package com.epam.esm.service.api;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BaseService<T> {
 
     List<T> findAll();
 
-    T findById(Long id);
+    T findById(long id);
 
-    T add(T t);
+    T add(T type);
 
-    void remove(Long id);
+    void remove(long id);
 }

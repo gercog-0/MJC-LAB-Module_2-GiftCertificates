@@ -9,9 +9,11 @@ public interface BaseDao<T> {
 
     Optional<T> findById(Long id);
 
-    T add(T t);
+    T add(T type);
 
-    boolean update(T t);
+    boolean update(T type);
 
     boolean remove(Long id);
+
+    void removeTagHasGiftCertificate(Long id);
 }

@@ -2,30 +2,34 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.dao.api.entity.Tag;
-import com.epam.esm.service.impl.exception.ServiceException;
-import com.epam.esm.service.impl.validator.impl.TagValidatorImpl;
 import com.epam.esm.service.api.TagService;
 import com.epam.esm.service.api.dto.TagDto;
+import com.epam.esm.service.impl.exception.ServiceException;
+import com.epam.esm.service.impl.validator.BaseValidator;
+import com.epam.esm.service.impl.validator.impl.TagValidatorImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.epam.esm.service.impl.exception.ErrorCode.TAG_WITH_SUCH_ID_NOT_EXIST;
+import static com.epam.esm.service.impl.exception.ErrorCode.TAG_WITH_SUCH_NAME_ALREADY_EXIST;
+import static com.epam.esm.service.impl.exception.ErrorCode.TAG_WITH_SUCH_NAME_NOT_EXIST;
 
 @Service
 public class TagServiceImpl implements TagService {
 
     private final TagDao tagDao;
-    private final TagValidatorImpl tagValidatorImpl;
+    private final BaseValidator<TagDto> tagValidator;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public TagServiceImpl(TagDao tagDao, TagValidatorImpl tagValidatorImpl, ModelMapper modelMapper) {
+    public TagServiceImpl(TagDao tagDao, TagValidatorImpl tagValidator, ModelMapper modelMapper) {
         this.tagDao = tagDao;
-        this.tagValidatorImpl = tagValidatorImpl;
+        this.tagValidator = tagValidator;
         this.modelMapper = modelMapper;
     }
 
@@ -37,24 +41,46 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDto findById(Long id) {
-        tagValidatorImpl.validateId(id);
+    public TagDto findById(long id) {
         return tagDao.findById(id).
                 map(tag -> modelMapper.map(tag, TagDto.class))
-                .orElseThrow(() -> new ServiceException(TAG_WITH_SUCH_ID_NOT_EXIST));
+                .orElseThrow(() -> new ServiceException(TAG_WITH_SUCH_ID_NOT_EXIST, String.valueOf(id)));
     }
 
     @Override
     public TagDto add(TagDto tagDto) {
+        tagValidator.validate(tagDto);
+        String nameTagToSearch = tagDto.getName();
+        if (isTagExist(nameTagToSearch)) {
+            throw new ServiceException(TAG_WITH_SUCH_NAME_ALREADY_EXIST, nameTagToSearch);
+        }
         Tag tag = modelMapper.map(tagDto, Tag.class);
-        tagValidatorImpl.validateName(tag.getName());
         Tag addedTag = tagDao.add(tag);
         return modelMapper.map(addedTag, TagDto.class);
     }
 
     @Override
-    public void remove(Long id) {
+    public void remove(long id) {
         findById(id);
         tagDao.remove(id);
+    }
+
+    @Override
+    public List<TagDto> findTagsByGiftCertificateId(long giftCertificateId) {
+        return tagDao.findTagsByGiftCertificateId(giftCertificateId).stream()
+                .map(tag -> modelMapper.map(tag, TagDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public TagDto findByName(String name) {
+        return tagDao.findByName(name).
+                map(tag -> modelMapper.map(tag, TagDto.class))
+                .orElseThrow(() -> new ServiceException(TAG_WITH_SUCH_NAME_NOT_EXIST, name));
+    }
+
+    @Override
+    public boolean isTagExist(String name) {
+        return tagDao.findByName(name).isPresent();
     }
 }
