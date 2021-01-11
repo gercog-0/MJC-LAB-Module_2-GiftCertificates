@@ -2,10 +2,6 @@ plugins {
     id 'java'
 }
 
-ext {
-    springVersion = '5.2.12.RELEASE'
-}
-
 repositories {
     mavenCentral()
 }

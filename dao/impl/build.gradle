@@ -12,11 +12,13 @@ repositories {
 
 dependencies {
     implementation project(":dao:api")
-    implementation group: 'org.springframework', name: 'spring-context', version: springVersion
-    implementation group: 'org.springframework', name: 'spring-webmvc', version: springVersion
-    implementation group: 'org.springframework', name: 'spring-jdbc', version: springVersion
+    implementation "org.springframework:spring-context:$springVersion"
+    implementation "org.springframework:spring-webmvc:$springVersion"
+    implementation "org.springframework:spring-jdbc:$springVersion"
     implementation 'mysql:mysql-connector-java:8.0.20'
+    implementation 'com.zaxxer:HikariCP:2.3.2'
 
-    testImplementation group: 'org.springframework', name: 'spring-test', version: springVersion
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'com.h2database:h2:1.4.197'
+    testImplementation "org.springframework:spring-test:$springVersion"
+    testImplementation "junit:junit:4.12"
 }

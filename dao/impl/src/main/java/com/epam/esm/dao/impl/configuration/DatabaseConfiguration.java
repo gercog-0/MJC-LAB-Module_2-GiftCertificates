@@ -1,5 +1,6 @@
 package com.epam.esm.dao.impl.configuration;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,22 +30,22 @@ public class DatabaseConfiguration {
     private String password;
 
     @Bean
-    public DataSource createDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(driver);
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-        return dataSource;
+    public HikariDataSource hikariDataSource() {
+        HikariDataSource hikariDataSource = new HikariDataSource();
+        hikariDataSource.setDriverClassName(driver);
+        hikariDataSource.setJdbcUrl(url);
+        hikariDataSource.setUsername(username);
+        hikariDataSource.setPassword(password);
+        return hikariDataSource;
     }
 
     @Bean
-    public TransactionManager transactionManager(DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
+    public TransactionManager transactionManager(HikariDataSource hikariDataSource) {
+        return new DataSourceTransactionManager(hikariDataSource);
     }
 
     @Bean
-    public JdbcTemplate createJdbcTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
+    public JdbcTemplate createJdbcTemplate(HikariDataSource hikariDataSource) {
+        return new JdbcTemplate(hikariDataSource);
     }
 }
