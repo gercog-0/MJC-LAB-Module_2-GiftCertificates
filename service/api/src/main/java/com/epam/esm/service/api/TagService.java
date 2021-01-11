@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface TagService extends BaseService<TagDto> {
 
+    List<TagDto> findAll();
+
     List<TagDto> findTagsByGiftCertificateId(long giftCertificateId);
 
     TagDto findByName(String name);

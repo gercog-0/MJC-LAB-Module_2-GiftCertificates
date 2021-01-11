@@ -1,26 +1,23 @@
 package com.epam.esm.service.impl.validator.impl;
 
-import com.epam.esm.dao.api.entity.GiftCertificate;
 import com.epam.esm.service.api.dto.GiftCertificateDto;
 import com.epam.esm.service.impl.exception.ServiceException;
 import com.epam.esm.service.impl.validator.BaseValidator;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_NAME_INCORRECT;
 import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_DURATION_INCORRECT;
 import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_DESCRIPTION_INCORRECT;
-import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_DATES_INCORRECT;
 import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_PRICE_INCORRECT;
 
 
 @Component
 public final class GiftCertificateValidatorImpl implements BaseValidator<GiftCertificateDto> {
 
-    private static final String NAME_REGEX = "^[a-zA-Z0-9]{5,45}$";
-    private static final String REGEX_DESCRIPTION = "^[a-zA-Z0-9\\s]{5,200}$";
+    private static final String NAME_REGEX = "^[a-zA-Z ]{5,45}$";
+    private static final String REGEX_DESCRIPTION = "^[a-zA-Z0-9 ]{5,200}$";
     private static final BigDecimal MIN_PRICE = new BigDecimal(1);
     private static final BigDecimal MAX_PRICE = new BigDecimal(999999);
     private static final int MIN_DURATION = 1;

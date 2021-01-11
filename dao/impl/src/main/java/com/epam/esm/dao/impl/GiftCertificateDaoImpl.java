@@ -3,7 +3,9 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.api.entity.GiftCertificate;
 
+import com.epam.esm.dao.api.entity.GiftCertificateQueryParameters;
 import com.epam.esm.dao.impl.mapper.GiftCertificateMapper;
+import com.epam.esm.dao.impl.util.GiftCertificateSqlQueryCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -34,8 +36,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public List<GiftCertificate> findAll() {
-        return jdbcTemplate.query(GIFT_CERTIFICATE_FIND_ALL, giftCertificateMapper);
+    public List<GiftCertificate> findAll(GiftCertificateQueryParameters giftCertificateQueryParameters) {
+        String partOfQueryByParameters = GiftCertificateSqlQueryCreator
+                .createByParameters(giftCertificateQueryParameters);
+        return jdbcTemplate.query(GIFT_CERTIFICATE_FIND_ALL_BY_PARAMETERS
+                + partOfQueryByParameters, giftCertificateMapper);
     }
 
     @Override

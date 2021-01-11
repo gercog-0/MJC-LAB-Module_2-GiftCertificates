@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface TagDao extends BaseDao<Tag> {
 
+    List<Tag> findAll();
+
     List<Tag> findTagsByGiftCertificateId(Long giftCertificateId);
 
     Optional<Tag> findByName(String name);

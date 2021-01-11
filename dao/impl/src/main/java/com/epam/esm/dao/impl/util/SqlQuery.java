@@ -6,6 +6,11 @@ public final class SqlQuery {
     */
     public static final String GIFT_CERTIFICATE_FIND_ALL = "SELECT id, name, description, price, duration, " +
             "create_date, last_update_date FROM gift_certificate";
+    public static final String GIFT_CERTIFICATE_FIND_ALL_BY_PARAMETERS = "SELECT gift_certificate.id, " +
+            "gift_certificate.name, gift_certificate.description, gift_certificate.price, gift_certificate.duration, " +
+            "gift_certificate.create_date, gift_certificate.last_update_date FROM gift_certificate LEFT JOIN " +
+            "tag_has_gift_certificate ON gift_certificate.id = tag_has_gift_certificate.gift_certificate_id LEFT JOIN " +
+            "tag ON tag_has_gift_certificate.tag_id = tag.id";
     public static final String GIFT_CERTIFICATE_FIND_BY_ID = "SELECT id, name, description, price, duration, " +
             "create_date, last_update_date FROM gift_certificate WHERE id = ?";
     public static final String GIFT_CERTIFICATE_ADD = "INSERT INTO gift_certificate (name, description, price, " +

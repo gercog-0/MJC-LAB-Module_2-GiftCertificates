@@ -2,6 +2,7 @@ package com.epam.esm.controller;
 
 import com.epam.esm.service.api.GiftCertificateService;
 import com.epam.esm.service.api.dto.GiftCertificateDto;
+import com.epam.esm.service.api.dto.GiftCertificateQueryParametersDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/gift-certificates")
+@RequestMapping(value = "api/v1/gift-certificates")
 public class GiftCertificateController {
 
     private final GiftCertificateService giftCertificateService;
@@ -20,8 +21,20 @@ public class GiftCertificateController {
     }
 
     @GetMapping
-    public List<GiftCertificateDto> findAllTags() {
-        return giftCertificateService.findAll();
+    public List<GiftCertificateDto> findAllGiftCertificates(@RequestParam(required = false) String tagName,
+                                                            @RequestParam(required = false) String name,
+                                                            @RequestParam(required = false) String description,
+                                                            @RequestParam(required = false)
+                                                                    GiftCertificateQueryParametersDto.TypeSort typeSort,
+                                                            @RequestParam(required = false)
+                                                                    GiftCertificateQueryParametersDto.OrderSort orderSort) {
+        GiftCertificateQueryParametersDto giftCertificateQueryParametersDto = new GiftCertificateQueryParametersDto();
+        giftCertificateQueryParametersDto.setTagName(tagName);
+        giftCertificateQueryParametersDto.setName(name);
+        giftCertificateQueryParametersDto.setDescription(description);
+        giftCertificateQueryParametersDto.setTypeSort(typeSort);
+        giftCertificateQueryParametersDto.setOrderSort(orderSort);
+        return giftCertificateService.findAll(giftCertificateQueryParametersDto);
     }
 
     @GetMapping("/{id}")

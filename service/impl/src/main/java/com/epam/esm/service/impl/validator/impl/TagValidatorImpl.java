@@ -10,7 +10,7 @@ import static com.epam.esm.service.impl.exception.ErrorCode.TAG_NAME_INCORRECT;
 @Component
 public final class TagValidatorImpl implements BaseValidator<TagDto> {
 
-    private static final String NAME_REGEX = "^[a-zA-Z0-9]{5,45}$";
+    private static final String NAME_REGEX = "^[a-zA-Z]{5,45}$";
 
     @Override
     public void validate(TagDto tagDto) {

@@ -12,7 +12,6 @@ public final class ErrorCode {
     public static final String GIFT_CERTIFICATE_DESCRIPTION_INCORRECT = "00007";
     public static final String GIFT_CERTIFICATE_PRICE_INCORRECT = "00008";
     public static final String GIFT_CERTIFICATE_DURATION_INCORRECT = "00009";
-    public static final String GIFT_CERTIFICATE_DATES_INCORRECT = "00010";
 
     private ErrorCode() {
     }

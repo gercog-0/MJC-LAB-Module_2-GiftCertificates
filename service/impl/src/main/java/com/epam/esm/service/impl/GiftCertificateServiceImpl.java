@@ -2,8 +2,10 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.api.entity.GiftCertificate;
+import com.epam.esm.dao.api.entity.GiftCertificateQueryParameters;
 import com.epam.esm.dao.api.entity.Tag;
 import com.epam.esm.service.api.TagService;
+import com.epam.esm.service.api.dto.GiftCertificateQueryParametersDto;
 import com.epam.esm.service.api.dto.TagDto;
 import com.epam.esm.service.impl.exception.ServiceException;
 import com.epam.esm.service.api.GiftCertificateService;
@@ -42,8 +44,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificateDto> findAll() {
-        return giftCertificateDao.findAll().stream()
+    public List<GiftCertificateDto> findAll(GiftCertificateQueryParametersDto giftCertificateQueryParametersDto) {
+        GiftCertificateQueryParameters giftCertificateQueryParameters =
+                modelMapper.map(giftCertificateQueryParametersDto, GiftCertificateQueryParameters.class);
+        return giftCertificateDao.findAll(giftCertificateQueryParameters).stream()
                 .map(this::mapAndSetTags)
                 .collect(Collectors.toList());
     }
