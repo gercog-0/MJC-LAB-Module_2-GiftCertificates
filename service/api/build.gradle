@@ -1,3 +1,6 @@
+plugins {
+    id 'java'
+}
 dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.3.3'
 }

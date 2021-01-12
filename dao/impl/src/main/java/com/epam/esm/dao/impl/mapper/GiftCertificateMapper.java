@@ -29,16 +29,8 @@ public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
         giftCertificate.setDescription(resultSet.getString(GIFT_CERTIFICATE_DESCRIPTION));
         giftCertificate.setPrice(resultSet.getBigDecimal(GIFT_CERTIFICATE_PRICE));
         giftCertificate.setDuration(resultSet.getInt(GIFT_CERTIFICATE_DURATION));
-        giftCertificate.setCreateDate(convertSqlDateToLocalDateTime(resultSet.getDate(GIFT_CERTIFICATE_CREATE_DATE),
-                resultSet.getTime(GIFT_CERTIFICATE_CREATE_DATE)));
-        giftCertificate.setLastUpdateDate(convertSqlDateToLocalDateTime(resultSet.getDate(GIFT_CERTIFICATE_LAST_UPDATE_DATE),
-                resultSet.getTime(GIFT_CERTIFICATE_LAST_UPDATE_DATE)));
-
+        giftCertificate.setCreateDate(resultSet.getObject(GIFT_CERTIFICATE_CREATE_DATE, LocalDateTime.class));
+        giftCertificate.setLastUpdateDate(resultSet.getObject(GIFT_CERTIFICATE_LAST_UPDATE_DATE, LocalDateTime.class));
         return giftCertificate;
-    }
-
-    private LocalDateTime convertSqlDateToLocalDateTime(Date sqlDate, Time sqlTime) {
-        return LocalDateTime.of(sqlDate.toLocalDate(), sqlTime.toLocalTime());
-
     }
 }

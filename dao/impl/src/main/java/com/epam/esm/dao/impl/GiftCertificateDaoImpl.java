@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,20 +23,23 @@ import static com.epam.esm.dao.impl.util.SqlQuery.*;
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
-    private static final int ZERO = 0;
+    private static final int LOWER_BOUND_ZERO = 0;
 
     private final JdbcTemplate jdbcTemplate;
     private final GiftCertificateMapper giftCertificateMapper;
+    private final GiftCertificateSqlQueryCreator giftCertificateSqlQueryCreator;
 
     @Autowired
-    public GiftCertificateDaoImpl(JdbcTemplate jdbcTemplate, GiftCertificateMapper giftCertificateMapper) {
+    public GiftCertificateDaoImpl(JdbcTemplate jdbcTemplate, GiftCertificateMapper giftCertificateMapper,
+                                  GiftCertificateSqlQueryCreator giftCertificateSqlQueryCreator) {
         this.jdbcTemplate = jdbcTemplate;
         this.giftCertificateMapper = giftCertificateMapper;
+        this.giftCertificateSqlQueryCreator = giftCertificateSqlQueryCreator;
     }
 
     @Override
     public List<GiftCertificate> findAll(GiftCertificateQueryParameters giftCertificateQueryParameters) {
-        String partOfQueryByParameters = GiftCertificateSqlQueryCreator
+        String partOfQueryByParameters = giftCertificateSqlQueryCreator
                 .createByParameters(giftCertificateQueryParameters);
         return jdbcTemplate.query(GIFT_CERTIFICATE_FIND_ALL_BY_PARAMETERS
                 + partOfQueryByParameters, giftCertificateMapper);
@@ -53,8 +55,6 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     @Override
     public GiftCertificate add(GiftCertificate giftCertificate) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        giftCertificate.setCreateDate(LocalDateTime.now());
-        giftCertificate.setLastUpdateDate(LocalDateTime.now());
         jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(GIFT_CERTIFICATE_ADD,
                     Statement.RETURN_GENERATED_KEYS);
@@ -83,14 +83,14 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
                 giftCertificate.getName(), giftCertificate.getDescription(),
                 giftCertificate.getPrice(), giftCertificate.getDuration(),
                 giftCertificate.getCreateDate(), giftCertificate.getLastUpdateDate(),
-                giftCertificate.getId()) > ZERO;
+                giftCertificate.getId()) > LOWER_BOUND_ZERO;
     }
 
     @Transactional
     @Override
     public boolean remove(Long id) {
         removeTagHasGiftCertificate(id);
-        return jdbcTemplate.update(GIFT_CERTIFICATE_REMOVE, id) > ZERO;
+        return jdbcTemplate.update(GIFT_CERTIFICATE_REMOVE, id) > LOWER_BOUND_ZERO;
     }
 
     @Override

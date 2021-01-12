@@ -3,7 +3,6 @@ package com.epam.esm.service.impl;
 import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.api.entity.GiftCertificate;
 import com.epam.esm.dao.api.entity.GiftCertificateQueryParameters;
-import com.epam.esm.dao.api.entity.Tag;
 import com.epam.esm.service.api.TagService;
 import com.epam.esm.service.api.dto.GiftCertificateQueryParametersDto;
 import com.epam.esm.service.api.dto.TagDto;
@@ -18,16 +17,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST;
+import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_ID_SPECIFIED_WHILE_CREATING;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
-
-    private final static int CHECK_NUMBER_TO_UPDATE = 0;
 
     private final GiftCertificateDao giftCertificateDao;
     private final TagService tagService;
@@ -48,20 +46,26 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         GiftCertificateQueryParameters giftCertificateQueryParameters =
                 modelMapper.map(giftCertificateQueryParametersDto, GiftCertificateQueryParameters.class);
         return giftCertificateDao.findAll(giftCertificateQueryParameters).stream()
-                .map(this::mapAndSetTags)
+                .map(this::mapToDtoAndSetTags)
                 .collect(Collectors.toList());
     }
 
     @Override
     public GiftCertificateDto findById(long id) {
         return giftCertificateDao.findById(id)
-                .map(this::mapAndSetTags)
+                .map(this::mapToDtoAndSetTags)
                 .orElseThrow(() -> new ServiceException(GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST, String.valueOf(id)));
     }
 
     @Transactional
     @Override
     public GiftCertificateDto add(GiftCertificateDto giftCertificateDto) {
+        Long specifiedId = giftCertificateDto.getId();
+        if (specifiedId != null) {
+            throw new ServiceException(GIFT_CERTIFICATE_ID_SPECIFIED_WHILE_CREATING, String.valueOf(specifiedId));
+        }
+        giftCertificateDto.setCreateDate(LocalDateTime.now());
+        giftCertificateDto.setLastUpdateDate(LocalDateTime.now());
         validator.validate(giftCertificateDto);
         resolveTags(giftCertificateDto);
         GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
@@ -77,7 +81,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Transactional
     @Override
-    public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
+    public GiftCertificateDto updatePart(GiftCertificateDto giftCertificateDto) {
         GiftCertificateDto foundGiftCertificate = findById(giftCertificateDto.getId());
         setUpdatedFields(giftCertificateDto, foundGiftCertificate);
         validator.validate(foundGiftCertificate);
@@ -86,22 +90,35 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return foundGiftCertificate;
     }
 
+    @Override
+    public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
+        validator.validate(giftCertificateDto);
+        resolveTags(giftCertificateDto);
+        giftCertificateDao.update(modelMapper.map(giftCertificateDto, GiftCertificate.class));
+        return giftCertificateDto;
+    }
+
     private void resolveTags(GiftCertificateDto giftCertificateDto) {
-        List<TagDto> checkedTags = new ArrayList<>();
-        List<TagDto> createdTags = giftCertificateDto.getTags();
-        if (createdTags != null) {
-            checkedTags = createdTags.stream()
-                    .map(tagDto -> tagService.isTagExist(tagDto.getName()) ?
-                            tagService.findByName(tagDto.getName()) : tagService.add(tagDto))
+        List<TagDto> checkedTags = Collections.emptyList();
+        List<TagDto> tags = giftCertificateDto.getTags();
+        if (tags != null) {
+            checkedTags = tags.stream()
+                    .map(this::findOrCreateTagIfNotExist)
                     .collect(Collectors.toList());
         }
         giftCertificateDto.setTags(checkedTags);
     }
 
-    private GiftCertificateDto mapAndSetTags(GiftCertificate giftCertificate) {
+    private GiftCertificateDto mapToDtoAndSetTags(GiftCertificate giftCertificate) {
         GiftCertificateDto giftCertificateDto = modelMapper.map(giftCertificate, GiftCertificateDto.class);
         giftCertificateDto.setTags(tagService.findTagsByGiftCertificateId(giftCertificate.getId()));
         return giftCertificateDto;
+    }
+
+    private TagDto findOrCreateTagIfNotExist(TagDto tagDto) {
+        String tagDtoName = tagDto.getName();
+        return tagService.isTagExist(tagDtoName) ?
+                tagService.findByName(tagDtoName) : tagService.add(tagDto);
     }
 
     private void setUpdatedFields(GiftCertificateDto updatedGiftCertificate,
@@ -118,7 +135,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         if (updatedGiftCertificate.getPrice() != null) {
             foundGiftCertificate.setPrice(updatedGiftCertificate.getPrice());
         }
-        if (updatedGiftCertificate.getDuration() != CHECK_NUMBER_TO_UPDATE) {
+        if (updatedGiftCertificate.getDuration() != null) {
             foundGiftCertificate.setDuration(updatedGiftCertificate.getDuration());
         }
         foundGiftCertificate.setLastUpdateDate(LocalDateTime.now());

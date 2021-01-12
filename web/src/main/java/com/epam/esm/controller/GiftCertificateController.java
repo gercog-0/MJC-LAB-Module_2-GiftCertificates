@@ -48,10 +48,16 @@ public class GiftCertificateController {
         return giftCertificateService.add(giftCertificateDto);
     }
 
-    @PatchMapping(value = "/{id}")
+    @PutMapping(value = "/{id}")
     public GiftCertificateDto updateGiftCertificate(@PathVariable long id, @RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setId(id);
         return giftCertificateService.update(giftCertificateDto);
+    }
+
+    @PatchMapping(value = "/{id}")
+    public GiftCertificateDto updatePartOfGiftCertificate(@PathVariable long id, @RequestBody GiftCertificateDto giftCertificateDto) {
+        giftCertificateDto.setId(id);
+        return giftCertificateService.updatePart(giftCertificateDto);
     }
 
     @DeleteMapping("/{id}")

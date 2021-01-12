@@ -7,9 +7,9 @@ public interface BaseDao<T> {
 
     Optional<T> findById(Long id);
 
-    T add(T type);
+    T add(T entity);
 
-    boolean update(T type);
+    boolean update(T entity);
 
     boolean remove(Long id);
 

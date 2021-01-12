@@ -12,7 +12,6 @@ import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_DUR
 import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_DESCRIPTION_INCORRECT;
 import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_PRICE_INCORRECT;
 
-
 @Component
 public final class GiftCertificateValidatorImpl implements BaseValidator<GiftCertificateDto> {
 

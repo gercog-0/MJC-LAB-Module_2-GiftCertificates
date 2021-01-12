@@ -1,21 +1,23 @@
 package com.epam.esm.dao.impl.util;
 
 import com.epam.esm.dao.api.entity.GiftCertificateQueryParameters;
+import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 
-public final class GiftCertificateSqlQueryCreator {
+@Component
+public class GiftCertificateSqlQueryCreator {
 
-    private static final String TAG_NAME = " tag.name LIKE '%s'";
+    private final String TAG_NAME = " tag.name LIKE '%s'";
     private static final String GIFT_CERTIFICATE_NAME = " gift_certificate.name LIKE ''%{0}%''";
     private static final String GIFT_CERTIFICATE_DESCRIPTION = " gift_certificate.description LIKE ''%{0}%''";
     private static final String SQL_WHERE = " WHERE ";
     private static final String SQL_AND = " AND ";
     private static final String SQL_GROUP_BY = " GROUP BY gift_certificate.id";
+    private static final String SQL_ORDER_BY = " ORDER BY ";
+    private static final String SPACE = " ";
 
-    private GiftCertificateSqlQueryCreator(){}
-
-    public static String createByParameters(GiftCertificateQueryParameters giftCertificateQueryParameters) {
+    public String createByParameters(GiftCertificateQueryParameters giftCertificateQueryParameters) {
         StringBuilder stringBuilder = new StringBuilder();
         String tagName = giftCertificateQueryParameters.getTagName();
         if (tagName != null) {
@@ -36,15 +38,15 @@ public final class GiftCertificateSqlQueryCreator {
         GiftCertificateQueryParameters.TypeSort typeSort = giftCertificateQueryParameters.getTypeSort();
         GiftCertificateQueryParameters.OrderSort orderSort = giftCertificateQueryParameters.getOrderSort();
         if (typeSort != null) {
-            stringBuilder.append(typeSort.getExpression());
+            stringBuilder.append(SQL_ORDER_BY + typeSort.getExpression());
             if (orderSort != null) {
-                stringBuilder.append(orderSort.getExpression());
+                stringBuilder.append(SPACE + orderSort.getExpression());
             }
         }
         return stringBuilder.toString();
     }
 
-    private static void addOperator(StringBuilder stringBuilder) {
+    private void addOperator(StringBuilder stringBuilder) {
         if (stringBuilder.toString().isEmpty()) {
             stringBuilder.append(SQL_WHERE);
         } else {

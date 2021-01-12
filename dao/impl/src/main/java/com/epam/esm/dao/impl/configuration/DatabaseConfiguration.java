@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @PropertySource("classpath:property/database.properties")
-@ComponentScan("com.epam.esm")
+@ComponentScan("com.epam.esm.dao")
 @EnableTransactionManagement
 public class DatabaseConfiguration {
 

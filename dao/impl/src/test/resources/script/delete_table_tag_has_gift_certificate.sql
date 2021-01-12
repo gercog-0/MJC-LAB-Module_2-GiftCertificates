@@ -1,0 +1,1 @@
+DROP TABLE tag_has_gift_certificate;

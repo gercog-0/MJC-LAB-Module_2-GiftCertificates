@@ -9,5 +9,7 @@ public interface GiftCertificateService extends BaseService<GiftCertificateDto> 
 
     List<GiftCertificateDto> findAll(GiftCertificateQueryParametersDto giftCertificateQueryParametersDto);
 
+    GiftCertificateDto updatePart(GiftCertificateDto giftCertificateDto);
+
     GiftCertificateDto update(GiftCertificateDto giftCertificateDto);
 }

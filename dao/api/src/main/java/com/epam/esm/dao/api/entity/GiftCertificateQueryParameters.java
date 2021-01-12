@@ -3,8 +3,8 @@ package com.epam.esm.dao.api.entity;
 public class GiftCertificateQueryParameters {
 
     public enum OrderSort {
-        ASC(" ASC"),
-        DESC(" DESC");
+        ASC("ASC"),
+        DESC("DESC");
 
         private final String expression;
 
@@ -18,8 +18,8 @@ public class GiftCertificateQueryParameters {
     }
 
     public enum TypeSort {
-        NAME(" ORDER BY gift_certificate.name"),
-        CREATE_DATE(" ORDER BY gift_certificate.create_date");
+        NAME("gift_certificate.name"),
+        CREATE_DATE("gift_certificate.create_date");
 
         private final String expression;
 

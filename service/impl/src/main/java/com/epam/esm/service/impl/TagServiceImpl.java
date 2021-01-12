@@ -12,12 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.service.impl.exception.ErrorCode.TAG_WITH_SUCH_ID_NOT_EXIST;
-import static com.epam.esm.service.impl.exception.ErrorCode.TAG_WITH_SUCH_NAME_ALREADY_EXIST;
-import static com.epam.esm.service.impl.exception.ErrorCode.TAG_WITH_SUCH_NAME_NOT_EXIST;
+import static com.epam.esm.service.impl.exception.ErrorCode.*;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -49,11 +46,13 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDto add(TagDto tagDto) {
-        tagValidator.validate(tagDto);
-        String nameTagToSearch = tagDto.getName();
-        if (isTagExist(nameTagToSearch)) {
-            throw new ServiceException(TAG_WITH_SUCH_NAME_ALREADY_EXIST, nameTagToSearch);
+        Long specifiedId = tagDto.getId();
+        if (specifiedId != null) {
+            throw new ServiceException(TAG_ID_SPECIFIED_WHILE_CREATING, String.valueOf(specifiedId));
         }
+        tagValidator.validate(tagDto);
+        String tagDtoName = tagDto.getName();
+        checkTagNameToUnique(tagDtoName);
         Tag tag = modelMapper.map(tagDto, Tag.class);
         Tag addedTag = tagDao.add(tag);
         return modelMapper.map(addedTag, TagDto.class);
@@ -82,5 +81,11 @@ public class TagServiceImpl implements TagService {
     @Override
     public boolean isTagExist(String name) {
         return tagDao.findByName(name).isPresent();
+    }
+
+    private void checkTagNameToUnique(String tagName) {
+        if (isTagExist(tagName)) {
+            throw new ServiceException(TAG_WITH_SUCH_NAME_ALREADY_EXIST, tagName);
+        }
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Configuration
-@ComponentScan("com.epam.esm")
+@ComponentScan("com.epam.esm.service")
 @EnableTransactionManagement
 public class ServiceConfiguration {
     @Bean

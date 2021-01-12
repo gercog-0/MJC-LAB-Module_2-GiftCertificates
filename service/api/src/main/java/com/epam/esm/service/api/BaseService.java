@@ -5,7 +5,7 @@ public interface BaseService<T> {
 
     T findById(long id);
 
-    T add(T type);
+    T add(T entity);
 
     void remove(long id);
 }
