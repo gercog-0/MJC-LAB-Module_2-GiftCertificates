@@ -1,6 +1,7 @@
 package com.epam.esm.dao.impl.util;
 
 public final class SqlQuery {
+
     /*
     queries for gift-certificates table
     */
