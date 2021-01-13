@@ -4,7 +4,7 @@ import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.dao.api.entity.Tag;
 import com.epam.esm.service.api.TagService;
 import com.epam.esm.service.api.dto.TagDto;
-import com.epam.esm.service.impl.exception.ServiceException;
+import com.epam.esm.service.api.exception.ServiceException;
 import com.epam.esm.service.impl.validator.BaseValidator;
 import com.epam.esm.service.impl.validator.impl.TagValidatorImpl;
 import org.modelmapper.ModelMapper;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.service.impl.exception.ErrorCode.*;
+import static com.epam.esm.service.api.exception.ErrorCode.*;
 
 @Service
 public class TagServiceImpl implements TagService {

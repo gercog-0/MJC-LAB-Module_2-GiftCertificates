@@ -1,7 +1,7 @@
 package com.epam.esm.controller.exception;
 
-import com.epam.esm.service.impl.exception.ErrorCode;
-import com.epam.esm.service.impl.exception.ServiceException;
+import com.epam.esm.service.api.exception.ErrorCode;
+import com.epam.esm.service.api.exception.ServiceException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

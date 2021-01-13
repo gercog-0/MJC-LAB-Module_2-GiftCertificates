@@ -1,4 +1,4 @@
-package com.epam.esm.service.impl.exception;
+package com.epam.esm.service.api.exception;
 
 public final class ErrorCode {
 

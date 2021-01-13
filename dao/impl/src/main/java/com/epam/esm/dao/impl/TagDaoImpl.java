@@ -72,8 +72,8 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public void removeTagHasGiftCertificate(Long id) {
-        jdbcTemplate.update(REMOVE_TAG_HAS_GIFT_CERTIFICATE_BY_TAG, id);
+    public void removeTagHasGiftCertificate(Long tagId) {
+        jdbcTemplate.update(REMOVE_TAG_HAS_GIFT_CERTIFICATE_BY_TAG, tagId);
     }
 
     @Override

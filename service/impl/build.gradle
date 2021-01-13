@@ -5,7 +5,14 @@ plugins {
 dependencies {
     implementation project(":service:api")
     implementation project(":dao:api")
-    implementation project(":dao:impl")
     implementation "org.springframework:spring-jdbc:$springVersion"
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.mockito:mockito-core:3.3.3'
+}
+
+test {
+    useJUnitPlatform()
 }
