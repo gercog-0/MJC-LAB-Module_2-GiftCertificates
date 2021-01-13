@@ -12,4 +12,6 @@ public interface TagDao extends BaseDao<Tag> {
     List<Tag> findTagsByGiftCertificateId(Long giftCertificateId);
 
     Optional<Tag> findByName(String name);
+
+    void removeTagHasGiftCertificate(Long tagId);
 }

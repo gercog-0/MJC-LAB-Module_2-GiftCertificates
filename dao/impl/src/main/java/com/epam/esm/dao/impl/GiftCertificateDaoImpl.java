@@ -94,8 +94,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public void removeTagHasGiftCertificate(Long id) {
-        jdbcTemplate.update(REMOVE_TAG_HAS_GIFT_CERTIFICATE, id);
+    public void removeTagHasGiftCertificate(Long giftCertificateId) {
+        jdbcTemplate.update(REMOVE_TAG_HAS_GIFT_CERTIFICATE, giftCertificateId);
     }
 
 

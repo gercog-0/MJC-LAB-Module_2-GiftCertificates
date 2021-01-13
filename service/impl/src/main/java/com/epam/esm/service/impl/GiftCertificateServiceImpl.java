@@ -6,7 +6,7 @@ import com.epam.esm.dao.api.entity.GiftCertificateQueryParameters;
 import com.epam.esm.service.api.TagService;
 import com.epam.esm.service.api.dto.GiftCertificateQueryParametersDto;
 import com.epam.esm.service.api.dto.TagDto;
-import com.epam.esm.service.impl.exception.ServiceException;
+import com.epam.esm.service.api.exception.ServiceException;
 import com.epam.esm.service.api.GiftCertificateService;
 import com.epam.esm.service.api.dto.GiftCertificateDto;
 import com.epam.esm.service.impl.validator.BaseValidator;
@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST;
-import static com.epam.esm.service.impl.exception.ErrorCode.GIFT_CERTIFICATE_ID_SPECIFIED_WHILE_CREATING;
+import static com.epam.esm.service.api.exception.ErrorCode.GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST;
+import static com.epam.esm.service.api.exception.ErrorCode.GIFT_CERTIFICATE_ID_SPECIFIED_WHILE_CREATING;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {

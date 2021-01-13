@@ -1,5 +1,11 @@
 package com.epam.esm.dao.api.entity;
 
+/**
+ * Class {@code GiftCertificateQueryParameters} represents .
+ *
+ * @author Ivan Yanushkevich
+ * @version 1.0
+ */
 public class GiftCertificateQueryParameters {
 
     public enum OrderSort {

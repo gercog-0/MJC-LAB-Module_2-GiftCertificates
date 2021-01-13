@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface GiftCertificateDao extends BaseDao<GiftCertificate> {
     List<GiftCertificate> findAll(GiftCertificateQueryParameters giftCertificateQueryParameters);
+
+    void removeTagHasGiftCertificate(Long giftCertificateId);
 }

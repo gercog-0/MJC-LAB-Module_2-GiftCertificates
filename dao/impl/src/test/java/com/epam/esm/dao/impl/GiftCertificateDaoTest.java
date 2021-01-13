@@ -51,7 +51,18 @@ class GiftCertificateDaoTest {
                 giftCertificateSqlQueryCreator);
     }
 
-    @Order(1)
+    @AfterEach
+    void tierDown() {
+        new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.H2)
+                .setScriptEncoding("UTF-8")
+                .addScript("classpath:script/delete_table_gift_certificate.sql")
+                .addScript("classpath:script/delete_table_tag_has_gift_certificate.sql")
+                .addScript("classpath:script/delete_table_tag.sql")
+                .build();
+        giftCertificateDao = null;
+    }
+
     @Test
     void findAllShouldReturnCorrectListSizeOfGiftCertificates() {
         int expectedSize = 4;
@@ -59,7 +70,6 @@ class GiftCertificateDaoTest {
         assertEquals(expectedSize, actualSize);
     }
 
-    @Order(2)
     @Test
     void findAllShouldReturnIncorrectListSizeOfGiftCertificates() {
         int expectedSize = 0;
@@ -67,7 +77,6 @@ class GiftCertificateDaoTest {
         assertNotEquals(expectedSize, actualSize);
     }
 
-    @Order(3)
     @Test
     void findByIdCorrectIdShouldReturnNotEmptyOptional() {
         GiftCertificate expectedGiftCertificate = new GiftCertificate();
@@ -84,7 +93,6 @@ class GiftCertificateDaoTest {
         assertEquals(Optional.of(expectedGiftCertificate), actualGiftCertificate);
     }
 
-    @Order(4)
     @Test
     void findByIdIncorrectIdShouldReturnEmptyOptional() {
         Optional<GiftCertificate> expectedOptional = Optional.empty();
@@ -92,7 +100,6 @@ class GiftCertificateDaoTest {
         assertEquals(expectedOptional, actualOptional);
     }
 
-    @Order(5)
     @Test
     void addCorrectDataShouldReturnGiftCertificate() {
         GiftCertificate expectedGiftCertificate = new GiftCertificate();
@@ -109,7 +116,6 @@ class GiftCertificateDaoTest {
         assertNotNull(actualGiftCertificate);
     }
 
-    @Order(6)
     @Test
     void addIncorrectDataShouldThrowException() {
         GiftCertificate expectedGiftCertificate = new GiftCertificate();
@@ -125,7 +131,6 @@ class GiftCertificateDaoTest {
         assertThrows(DataIntegrityViolationException.class, () -> giftCertificateDao.add(expectedGiftCertificate));
     }
 
-    @Order(7)
     @Test
     void updateCorrectDataShouldReturnUpdatedGiftCertificate() {
         GiftCertificate giftCertificate = new GiftCertificate();
@@ -156,7 +161,6 @@ class GiftCertificateDaoTest {
         assertTrue(condition);
     }
 
-    @Order(8)
     @Test
     void updateIncorrectDataShouldThrowException() {
         GiftCertificate giftCertificate = new GiftCertificate();
@@ -174,27 +178,13 @@ class GiftCertificateDaoTest {
         assertThrows(DataIntegrityViolationException.class, () -> giftCertificateDao.update(giftCertificate));
     }
 
-    @Order(9)
     @Test
     void removeCorrectIdShouldNotThrowException() {
         assertDoesNotThrow(() -> giftCertificateDao.remove(1L));
     }
 
-    @Order(10)
     @Test
     void removeTagHasGiftCertificateCorrectIdShouldNotThrowException() {
         assertDoesNotThrow(() -> giftCertificateDao.removeTagHasGiftCertificate(1L));
-    }
-
-    @AfterEach
-    void tierDown() {
-        new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .setScriptEncoding("UTF-8")
-                .addScript("classpath:script/delete_table_gift_certificate.sql")
-                .addScript("classpath:script/delete_table_tag_has_gift_certificate.sql")
-                .addScript("classpath:script/delete_table_tag.sql")
-                .build();
-        giftCertificateDao = null;
     }
 }
