@@ -7,7 +7,6 @@ import com.epam.esm.dao.impl.mapper.GiftCertificateMapper;
 import com.epam.esm.dao.impl.util.GiftCertificateSqlQueryCreator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -66,14 +65,18 @@ class GiftCertificateDaoTest {
     @Test
     void findAllShouldReturnCorrectListSizeOfGiftCertificates() {
         int expectedSize = 4;
+
         int actualSize = giftCertificateDao.findAll(new GiftCertificateQueryParameters()).size();
+
         assertEquals(expectedSize, actualSize);
     }
 
     @Test
     void findAllShouldReturnIncorrectListSizeOfGiftCertificates() {
         int expectedSize = 0;
+
         int actualSize = giftCertificateDao.findAll(new GiftCertificateQueryParameters()).size();
+
         assertNotEquals(expectedSize, actualSize);
     }
 
@@ -89,14 +92,18 @@ class GiftCertificateDaoTest {
                 .of(2020, 9, 12, 15, 0, 0));
         expectedGiftCertificate.setLastUpdateDate(LocalDateTime
                 .of(2021, 1, 1, 17, 0, 0));
+
         Optional<GiftCertificate> actualGiftCertificate = giftCertificateDao.findById(1L);
+
         assertEquals(Optional.of(expectedGiftCertificate), actualGiftCertificate);
     }
 
     @Test
     void findByIdIncorrectIdShouldReturnEmptyOptional() {
         Optional<GiftCertificate> expectedOptional = Optional.empty();
+
         Optional<GiftCertificate> actualOptional = giftCertificateDao.findById(5L);
+
         assertEquals(expectedOptional, actualOptional);
     }
 
@@ -111,7 +118,9 @@ class GiftCertificateDaoTest {
                 .of(2020, 9, 12, 15, 0, 0));
         expectedGiftCertificate.setLastUpdateDate(LocalDateTime
                 .of(2021, 1, 1, 17, 0, 0));
+
         expectedGiftCertificate.setTags(new ArrayList<>());
+
         GiftCertificate actualGiftCertificate = giftCertificateDao.add(expectedGiftCertificate);
         assertNotNull(actualGiftCertificate);
     }
@@ -128,6 +137,7 @@ class GiftCertificateDaoTest {
         expectedGiftCertificate.setLastUpdateDate(LocalDateTime
                 .of(2021, 1, 1, 17, 0, 0));
         expectedGiftCertificate.setTags(new ArrayList<>());
+
         assertThrows(DataIntegrityViolationException.class, () -> giftCertificateDao.add(expectedGiftCertificate));
     }
 
@@ -158,6 +168,7 @@ class GiftCertificateDaoTest {
         expectedGiftCertificate.setTags(new ArrayList<>());
 
         boolean condition = giftCertificateDao.update(giftCertificate);
+
         assertTrue(condition);
     }
 

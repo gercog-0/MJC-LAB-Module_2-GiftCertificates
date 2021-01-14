@@ -5,7 +5,6 @@ import com.epam.esm.dao.api.entity.Tag;
 import com.epam.esm.dao.impl.mapper.TagMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -53,7 +52,9 @@ class TagDaoTest {
     @Test
     void findAllShouldReturnCorrectSizeListOfTags() {
         int expectedSize = 4;
+
         int actualSize = tagDao.findAll().size();
+
         assertEquals(expectedSize, actualSize);
     }
 
@@ -62,7 +63,9 @@ class TagDaoTest {
         Tag tag = new Tag();
         tag.setId(5L);
         tag.setName("tagName");
+
         Tag actualTag = tagDao.add(tag);
+
         assertNotNull(actualTag);
     }
 
@@ -71,6 +74,7 @@ class TagDaoTest {
         Tag tag = new Tag();
         tag.setId(5L);
         tag.setName("tagName incorrect because at least more than 45 symbols");
+
         assertThrows(DataIntegrityViolationException.class, () -> tagDao.add(tag));
     }
 
@@ -92,13 +96,16 @@ class TagDaoTest {
     @Test
     void findTagsByGiftCertificateIdCorrectDataShouldReturnListTags() {
         int expectedTagQuantity = 1;
+
         int actualTagQuantity = tagDao.findTagsByGiftCertificateId(1L).size();
+
         assertEquals(expectedTagQuantity, actualTagQuantity);
     }
 
     @Test
     void findTagsByGiftCertificateIdIncorrectDataShouldReturnEmptyList() {
         int actualTagQuantity = tagDao.findTagsByGiftCertificateId(5L).size();
+
         assertEquals(actualTagQuantity, 0);
     }
 
@@ -107,13 +114,16 @@ class TagDaoTest {
         Tag expectedTag = new Tag();
         expectedTag.setId(2L);
         expectedTag.setName("relax");
+
         Optional<Tag> actualTag = tagDao.findByName("relax");
+
         assertEquals(Optional.of(expectedTag), actualTag);
     }
 
     @Test
     void findByNameIncorrectNameShouldReturnEmptyOptional() {
         Optional<Tag> actualTagOptional = tagDao.findByName("no name");
+
         assertEquals(Optional.empty(), actualTagOptional);
     }
 }

@@ -3,31 +3,63 @@ package com.epam.esm.service.api.dto;
 
 import java.util.Objects;
 
+/**
+ * The type Tag dto.
+ */
 public class TagDto {
 
     private Long id;
     private String name;
 
+    /**
+     * Instantiates a new Tag dto.
+     */
     public TagDto() {
     }
 
+    /**
+     * Instantiates a new Tag dto.
+     *
+     * @param id   the id
+     * @param name the name
+     */
     public TagDto(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }

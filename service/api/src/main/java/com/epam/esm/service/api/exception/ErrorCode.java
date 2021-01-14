@@ -1,5 +1,8 @@
 package com.epam.esm.service.api.exception;
 
+/**
+ * The Error code class.
+ */
 public final class ErrorCode {
 
     public static final String TAG_NAME_INCORRECT = "00001";

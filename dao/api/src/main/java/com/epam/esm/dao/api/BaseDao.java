@@ -1,35 +1,36 @@
 package com.epam.esm.dao.api;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
- * The interface Base dao.
+ * Interface {@code BaseDao} describes CRUD operations for working with database tables.
  *
- * @param <T> the type parameter
+ * @param <T> the type parameter (entity)
+ * @author Ivan Yanushkevich
+ * @version 1.0
  */
 public interface BaseDao<T> {
 
     /**
      * Find by id optional.
      *
-     * @param id the id
-     * @return the optional
+     * @param id of entity to find
+     * @return the optional of entity
      */
     Optional<T> findById(Long id);
 
     /**
-     * Add t.
+     * Add entity.
      *
-     * @param entity the entity
-     * @return the t
+     * @param entity to add
+     * @return the entity
      */
     T add(T entity);
 
     /**
      * Update boolean.
      *
-     * @param entity the entity
+     * @param entity to update
      * @return the boolean
      */
     boolean update(T entity);
@@ -37,7 +38,7 @@ public interface BaseDao<T> {
     /**
      * Remove boolean.
      *
-     * @param id the id
+     * @param id of entity to delete
      * @return the boolean
      */
     boolean remove(Long id);
