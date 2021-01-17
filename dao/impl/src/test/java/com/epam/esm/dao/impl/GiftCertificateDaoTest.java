@@ -3,69 +3,37 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.api.entity.GiftCertificate;
 import com.epam.esm.dao.api.entity.GiftCertificateQueryParameters;
-import com.epam.esm.dao.impl.mapper.GiftCertificateMapper;
-import com.epam.esm.dao.impl.util.GiftCertificateSqlQueryCreator;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.epam.esm.dao.impl.configuration.TestDatabaseConfiguration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-
-import javax.sql.DataSource;
-
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = TestDatabaseConfiguration.class)
+@ActiveProfiles("dev")
 class GiftCertificateDaoTest {
 
-    private GiftCertificateDao giftCertificateDao;
+    private final GiftCertificateDao giftCertificateDao;
 
-    @BeforeEach
-    void setUp() {
-        DataSource dataSource = new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .setScriptEncoding("UTF-8")
-                .addScript("classpath:script/create_table_gift_certificate.sql")
-                .addScript("classpath:script/fill_table_gift_certificate.sql")
-                .addScript("classpath:script/create_table_tag_has_gift_certificate.sql")
-                .addScript("classpath:script/fill_table_tag_has_gift_certificate.sql")
-                .addScript("classpath:script/create_table_tag.sql")
-                .addScript("classpath:script/fill_table_tag.sql")
-                .build();
-        GiftCertificateMapper giftCertificateMapper = new GiftCertificateMapper();
-        GiftCertificateSqlQueryCreator giftCertificateSqlQueryCreator = new GiftCertificateSqlQueryCreator();
-        giftCertificateDao = new GiftCertificateDaoImpl(new JdbcTemplate(dataSource), giftCertificateMapper,
-                giftCertificateSqlQueryCreator);
-    }
-
-    @AfterEach
-    void tierDown() {
-        new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .setScriptEncoding("UTF-8")
-                .addScript("classpath:script/delete_table_gift_certificate.sql")
-                .addScript("classpath:script/delete_table_tag_has_gift_certificate.sql")
-                .addScript("classpath:script/delete_table_tag.sql")
-                .build();
-        giftCertificateDao = null;
+    @Autowired
+    public GiftCertificateDaoTest(GiftCertificateDao giftCertificateDao){
+        this.giftCertificateDao = giftCertificateDao;
     }
 
     @Test
     void findAllShouldReturnCorrectListSizeOfGiftCertificates() {
         int expectedSize = 4;
-
         int actualSize = giftCertificateDao.findAll(new GiftCertificateQueryParameters()).size();
 
         assertEquals(expectedSize, actualSize);
@@ -81,28 +49,10 @@ class GiftCertificateDaoTest {
     }
 
     @Test
-    void findByIdCorrectIdShouldReturnNotEmptyOptional() {
-        GiftCertificate expectedGiftCertificate = new GiftCertificate();
-        expectedGiftCertificate.setId(1L);
-        expectedGiftCertificate.setName("Spa");
-        expectedGiftCertificate.setDescription("Hot relax to you");
-        expectedGiftCertificate.setPrice(new BigDecimal("500.00"));
-        expectedGiftCertificate.setDuration(2);
-        expectedGiftCertificate.setCreateDate(LocalDateTime
-                .of(2020, 9, 12, 15, 0, 0));
-        expectedGiftCertificate.setLastUpdateDate(LocalDateTime
-                .of(2021, 1, 1, 17, 0, 0));
-
-        Optional<GiftCertificate> actualGiftCertificate = giftCertificateDao.findById(1L);
-
-        assertEquals(Optional.of(expectedGiftCertificate), actualGiftCertificate);
-    }
-
-    @Test
     void findByIdIncorrectIdShouldReturnEmptyOptional() {
         Optional<GiftCertificate> expectedOptional = Optional.empty();
 
-        Optional<GiftCertificate> actualOptional = giftCertificateDao.findById(5L);
+        Optional<GiftCertificate> actualOptional = giftCertificateDao.findById(-1L);
 
         assertEquals(expectedOptional, actualOptional);
     }
