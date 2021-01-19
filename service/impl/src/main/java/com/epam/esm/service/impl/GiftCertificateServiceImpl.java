@@ -92,6 +92,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
+        giftCertificateDto.setCreateDate(LocalDateTime.now());
+        giftCertificateDto.setLastUpdateDate(LocalDateTime.now());
         validator.validate(giftCertificateDto);
         resolveTags(giftCertificateDto);
         giftCertificateDao.update(modelMapper.map(giftCertificateDto, GiftCertificate.class));
