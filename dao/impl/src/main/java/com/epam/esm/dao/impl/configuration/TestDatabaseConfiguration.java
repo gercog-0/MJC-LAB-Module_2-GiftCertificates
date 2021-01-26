@@ -1,5 +1,6 @@
 package com.epam.esm.dao.impl.configuration;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +31,7 @@ public class TestDatabaseConfiguration {
     }
 
     @Bean
-    public JdbcTemplate createJdbcTemplate(DataSource dataSource) {
+    public JdbcTemplate createJdbcTemplate(@Qualifier("createDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 }

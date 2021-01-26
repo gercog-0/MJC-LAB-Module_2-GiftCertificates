@@ -10,11 +10,15 @@ import com.epam.esm.service.impl.validator.impl.TagValidatorImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.service.api.exception.ErrorCode.*;
+import static com.epam.esm.service.api.exception.ErrorCode.TAG_WITH_SUCH_NAME_NOT_EXIST;
+import static com.epam.esm.service.api.exception.ErrorCode.TAG_WITH_SUCH_ID_NOT_EXIST;
+import static com.epam.esm.service.api.exception.ErrorCode.TAG_ID_SPECIFIED_WHILE_CREATING;
+import static com.epam.esm.service.api.exception.ErrorCode.TAG_WITH_SUCH_NAME_ALREADY_EXIST;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -44,6 +48,7 @@ public class TagServiceImpl implements TagService {
                 .orElseThrow(() -> new ServiceException(TAG_WITH_SUCH_ID_NOT_EXIST, String.valueOf(id)));
     }
 
+    @Transactional
     @Override
     public TagDto add(TagDto tagDto) {
         Long specifiedId = tagDto.getId();
@@ -58,17 +63,11 @@ public class TagServiceImpl implements TagService {
         return modelMapper.map(addedTag, TagDto.class);
     }
 
+    @Transactional
     @Override
     public void remove(long id) {
         findById(id);
         tagDao.remove(id);
-    }
-
-    @Override
-    public List<TagDto> findTagsByGiftCertificateId(long giftCertificateId) {
-        return tagDao.findTagsByGiftCertificateId(giftCertificateId).stream()
-                .map(tag -> modelMapper.map(tag, TagDto.class))
-                .collect(Collectors.toList());
     }
 
     @Override

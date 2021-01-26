@@ -18,6 +18,12 @@ public final class ErrorCode {
     public static final String GIFT_CERTIFICATE_DURATION_INCORRECT = "00010";
     public static final String GIFT_CERTIFICATE_ID_SPECIFIED_WHILE_CREATING = "00011";
 
+    public static final String USER_NAME_INCORRECT = "00012";
+    public static final String USER_WITH_SUCH_ID_NOT_EXIST = "00013";
+
+    public static final String ORDER_ID_SPECIFIED_WHILE_CREATING = "00014";
+    public static final String ORDER_WITH_SUCH_ID_NOT_EXIST = "00015";
+
     public static final String INTERNAL_SERVER = "500";
     public static final String UNSUPPORTED_MEDIA_TYPE = "415";
 

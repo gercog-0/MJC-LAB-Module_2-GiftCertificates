@@ -33,13 +33,12 @@ public interface BaseDao<T> {
      * @param entity to update
      * @return the boolean
      */
-    boolean update(T entity);
+    T update(T entity);
 
     /**
-     * Remove boolean.
+     * Remove.
      *
-     * @param id of entity to delete
-     * @return the boolean
+     * @param id the id
      */
-    boolean remove(Long id);
+    void remove(Long id);
 }

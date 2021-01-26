@@ -18,14 +18,6 @@ public interface TagService extends BaseService<TagDto> {
     List<TagDto> findAll();
 
     /**
-     * Find tags by gift certificate id list.
-     *
-     * @param giftCertificateId the gift certificate id
-     * @return the list
-     */
-    List<TagDto> findTagsByGiftCertificateId(long giftCertificateId);
-
-    /**
      * Find by name tag dto.
      *
      * @param name the name

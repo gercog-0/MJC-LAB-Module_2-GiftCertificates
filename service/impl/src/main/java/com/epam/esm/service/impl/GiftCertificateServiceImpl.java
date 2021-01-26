@@ -3,12 +3,12 @@ package com.epam.esm.service.impl;
 import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.api.entity.GiftCertificate;
 import com.epam.esm.dao.api.entity.GiftCertificateQueryParameters;
+import com.epam.esm.service.api.GiftCertificateService;
 import com.epam.esm.service.api.TagService;
+import com.epam.esm.service.api.dto.GiftCertificateDto;
 import com.epam.esm.service.api.dto.GiftCertificateQueryParametersDto;
 import com.epam.esm.service.api.dto.TagDto;
 import com.epam.esm.service.api.exception.ServiceException;
-import com.epam.esm.service.api.GiftCertificateService;
-import com.epam.esm.service.api.dto.GiftCertificateDto;
 import com.epam.esm.service.impl.validator.BaseValidator;
 import com.epam.esm.service.impl.validator.impl.GiftCertificateValidatorImpl;
 import org.modelmapper.ModelMapper;
@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.service.api.exception.ErrorCode.GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST;
 import static com.epam.esm.service.api.exception.ErrorCode.GIFT_CERTIFICATE_ID_SPECIFIED_WHILE_CREATING;
+import static com.epam.esm.service.api.exception.ErrorCode.GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
@@ -46,14 +46,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         GiftCertificateQueryParameters giftCertificateQueryParameters =
                 modelMapper.map(giftCertificateQueryParametersDto, GiftCertificateQueryParameters.class);
         return giftCertificateDao.findAll(giftCertificateQueryParameters).stream()
-                .map(this::mapToDtoAndSetTags)
+                .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public GiftCertificateDto findById(long id) {
         return giftCertificateDao.findById(id)
-                .map(this::mapToDtoAndSetTags)
+                .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
                 .orElseThrow(() -> new ServiceException(GIFT_CERTIFICATE_WITH_SUCH_ID_NOT_EXIST, String.valueOf(id)));
     }
 
@@ -73,6 +73,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return modelMapper.map(addedGiftCertificate, GiftCertificateDto.class);
     }
 
+    @Transactional
     @Override
     public void remove(long id) {
         findById(id);
@@ -90,6 +91,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return foundGiftCertificate;
     }
 
+    @Transactional
     @Override
     public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setCreateDate(LocalDateTime.now());
@@ -109,12 +111,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                     .collect(Collectors.toList());
         }
         giftCertificateDto.setTags(checkedTags);
-    }
-
-    private GiftCertificateDto mapToDtoAndSetTags(GiftCertificate giftCertificate) {
-        GiftCertificateDto giftCertificateDto = modelMapper.map(giftCertificate, GiftCertificateDto.class);
-        giftCertificateDto.setTags(tagService.findTagsByGiftCertificateId(giftCertificate.getId()));
-        return giftCertificateDto;
     }
 
     private TagDto findOrCreateTagIfNotExist(TagDto tagDto) {

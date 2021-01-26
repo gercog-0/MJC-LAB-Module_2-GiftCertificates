@@ -22,14 +22,6 @@ public interface TagDao extends BaseDao<Tag> {
     List<Tag> findAll();
 
     /**
-     * Find tags by gift certificate id.
-     *
-     * @param giftCertificateId the gift certificate id
-     * @return the list
-     */
-    List<Tag> findTagsByGiftCertificateId(Long giftCertificateId);
-
-    /**
      * Find optional of by name.
      *
      * @param name the name
@@ -37,10 +29,5 @@ public interface TagDao extends BaseDao<Tag> {
      */
     Optional<Tag> findByName(String name);
 
-    /**
-     * Remove records from cross table by tag id.
-     *
-     * @param tagId the tag id
-     */
-    void removeTagHasGiftCertificate(Long tagId);
+    Optional<Tag> findMostPopular(Long userId);
 }

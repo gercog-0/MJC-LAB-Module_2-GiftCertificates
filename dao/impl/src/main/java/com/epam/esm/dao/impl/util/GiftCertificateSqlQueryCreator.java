@@ -8,7 +8,7 @@ import java.text.MessageFormat;
 @Component
 public class GiftCertificateSqlQueryCreator {
 
-    private final String TAG_NAME = " tag.name LIKE '%s'";
+    private static final String TAG_NAME = " tag.name LIKE '%s'";
     private static final String GIFT_CERTIFICATE_NAME = " gift_certificate.name LIKE ''%{0}%''";
     private static final String GIFT_CERTIFICATE_DESCRIPTION = " gift_certificate.description LIKE ''%{0}%''";
     private static final String SQL_WHERE = " WHERE ";
@@ -38,9 +38,9 @@ public class GiftCertificateSqlQueryCreator {
         GiftCertificateQueryParameters.TypeSort typeSort = giftCertificateQueryParameters.getTypeSort();
         GiftCertificateQueryParameters.OrderSort orderSort = giftCertificateQueryParameters.getOrderSort();
         if (typeSort != null) {
-            stringBuilder.append(SQL_ORDER_BY + typeSort.getExpression());
+            stringBuilder.append(SQL_ORDER_BY).append(typeSort.getExpression());
             if (orderSort != null) {
-                stringBuilder.append(SPACE + orderSort.getExpression());
+                stringBuilder.append(SPACE).append(orderSort.getExpression());
             }
         }
         return stringBuilder.toString();

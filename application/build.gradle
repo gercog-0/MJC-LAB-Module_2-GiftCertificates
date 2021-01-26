@@ -1,0 +1,13 @@
+plugins{
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+}
+
+dependencies {
+    implementation project(":dao:impl")
+    implementation project(":service:impl")
+    implementation project(":web")
+
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
+}

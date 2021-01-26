@@ -22,12 +22,4 @@ public interface GiftCertificateDao extends BaseDao<GiftCertificate> {
      * @return the list
      */
     List<GiftCertificate> findAll(GiftCertificateQueryParameters giftCertificateQueryParameters);
-
-    /**
-     * Remove tag has gift certificate.
-     *
-     * @param giftCertificateId the gift certificate id to
-     *                          delete records from cross-table
-     */
-    void removeTagHasGiftCertificate(Long giftCertificateId);
 }

@@ -4,6 +4,7 @@ plugins {
 
 ext {
     springVersion = '5.2.12.RELEASE'
+    springBootVersion = '2.4.2'
 }
 
 repositories {
@@ -12,11 +13,8 @@ repositories {
 
 dependencies {
     implementation project(":service:api")
-    implementation group: 'org.springframework', name: 'spring-webmvc', version: springVersion
-    implementation group: 'org.springframework', name: 'spring-context', version: springVersion
-    implementation group: 'org.springframework', name: 'spring-core', version: springVersion
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.3'
-    implementation 'javax.servlet:javax.servlet-api:3.1.0'
 }
 
