@@ -29,5 +29,5 @@ public interface TagDao extends BaseDao<Tag> {
      */
     Optional<Tag> findByName(String name);
 
-    Optional<Tag> findMostPopular(Long userId);
+    Optional<Tag> findMostPopular();
 }

@@ -16,20 +16,22 @@ public final class SqlQuery {
     */
     public static final String TAG_FIND_ALL = "SELECT t FROM Tag t";
     public static final String TAG_FIND_BY_NAME = "SELECT t FROM Tag t WHERE t.name = :name";
-    public static final String TAG_FIND_MOST_POPULAR_BY_USER = "SELECT t FROM GiftCertificate g JOIN g.tags t " +
-            "WHERE g.id IN (SELECT o.giftCertificateId FROM Order o WHERE o.userId = :userId) GROUP BY t.id " +
-            "ORDER BY COUNT(t.id) DESC";
+    public static final String TAG_FIND_MOST_POPULAR_BY_USER_WHICH_HAS_HIGHEST_AMOUNT_ORDERS =
+            "SELECT tag.id, tag.name FROM tag JOIN tag_has_gift_certificate ON tag.id = tag_has_gift_certificate.tag_id " +
+                    "JOIN gift_certificate ON gift_certificate.id = tag_has_gift_certificate.gift_certificate_id " +
+                    "WHERE gift_certificate.id IN (SELECT orders.gift_certificate_id FROM orders WHERE orders.user_id = " +
+                    "(SELECT user.id FROM user WHERE user.id = (SELECT orders.user_id FROM orders GROUP BY orders.user_id " +
+                    "ORDER BY SUM(orders.cost) DESC LIMIT 1))) GROUP BY tag.id ORDER BY COUNT(tag.id) DESC LIMIT 1";
+
+
 
     /*
     queries for user table
      */
     public static final String FIND_ALL_USERS = "SELECT u FROM User u";
-    public static final String FIND_USER_BY_HIGHEST_AMOUNT_ORDERS = "SELECT u FROM User u WHERE u.id IN " +
-            "(SELECT o.userId FROM Order o GROUP BY o.userId ORDER BY SUM(o.cost) DESC)";
 
     /*
    queries for orders table
     */
     public static final String FIND_ALL_ORDERS_BY_USER_ID = "SELECT o FROM Order o WHERE o.userId =:userId";
-    public static final String FIND_ORDER_BY_USER_ID = "SELECT o FROM Order o WHERE o.userId =:userId AND o.id =:id";
 }

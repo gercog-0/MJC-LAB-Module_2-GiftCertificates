@@ -43,11 +43,4 @@ public class UserServiceImpl implements UserService {
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .orElseThrow(() -> new ServiceException(USER_WITH_SUCH_ID_NOT_EXIST, String.valueOf(id)));
     }
-
-    @Override // TODO: 27.01.2021 exception
-    public UserDto findByHighestAmountOrders() {
-        return userDao.findByHighestAmountOrders()
-                .map(user -> modelMapper.map(user, UserDto.class))
-                .orElseThrow(() -> new ServiceException("todo"));
-    }
 }

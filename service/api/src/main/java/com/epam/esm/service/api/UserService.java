@@ -9,6 +9,4 @@ public interface UserService {
     List<UserDto> findAll();
 
     UserDto findById(Long id);
-
-    UserDto findByHighestAmountOrders();
 }

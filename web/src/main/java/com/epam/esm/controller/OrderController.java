@@ -24,12 +24,6 @@ public class OrderController {
         return orderService.findAllByUserId(userId);
     }
 
-    @GetMapping("/{orderId}/user/{userId}")
-    public OrderDto findOrderByUserId(@PathVariable long orderId,
-                                      @PathVariable long userId) {
-        return orderService.findByUserId(userId, orderId);
-    }
-
     @GetMapping("/{id}")
     public OrderDto findOrderById(@PathVariable long id) {
         return orderService.findById(id);

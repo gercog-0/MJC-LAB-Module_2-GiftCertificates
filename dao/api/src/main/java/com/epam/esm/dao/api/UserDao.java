@@ -8,6 +8,4 @@ import java.util.Optional;
 public interface UserDao extends BaseDao<User> {
 
     List<User> findAll();
-
-    Optional<User> findByHighestAmountOrders();
 }

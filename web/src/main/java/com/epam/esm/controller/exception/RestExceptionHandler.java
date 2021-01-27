@@ -63,6 +63,7 @@ public class RestExceptionHandler {
     private void initializeComplianceMap() {
         complianceMap.put(ErrorCode.TAG_NAME_INCORRECT, HttpStatus.BAD_REQUEST);
         complianceMap.put(ErrorCode.TAG_WITH_SUCH_NAME_ALREADY_EXIST, HttpStatus.BAD_REQUEST);
+        complianceMap.put(ErrorCode.TAG_POPULAR_NOT_FOUND, HttpStatus.NOT_FOUND);
         complianceMap.put(ErrorCode.GIFT_CERTIFICATE_NAME_INCORRECT, HttpStatus.BAD_REQUEST);
         complianceMap.put(ErrorCode.GIFT_CERTIFICATE_DESCRIPTION_INCORRECT, HttpStatus.BAD_REQUEST);
         complianceMap.put(ErrorCode.GIFT_CERTIFICATE_PRICE_INCORRECT, HttpStatus.BAD_REQUEST);

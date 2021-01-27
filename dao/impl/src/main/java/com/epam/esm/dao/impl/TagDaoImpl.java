@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static com.epam.esm.dao.impl.util.SqlQuery.TAG_FIND_ALL;
 import static com.epam.esm.dao.impl.util.SqlQuery.TAG_FIND_BY_NAME;
-import static com.epam.esm.dao.impl.util.SqlQuery.TAG_FIND_MOST_POPULAR_BY_USER;
+import static com.epam.esm.dao.impl.util.SqlQuery.TAG_FIND_MOST_POPULAR_BY_USER_WHICH_HAS_HIGHEST_AMOUNT_ORDERS;
 
 @Repository
 public class TagDaoImpl implements TagDao {
@@ -56,10 +56,8 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public Optional<Tag> findMostPopular(Long userId) {
-        return entityManager.createQuery(TAG_FIND_MOST_POPULAR_BY_USER, Tag.class)
-                .setParameter("userId", userId)
-                .setMaxResults(1)
+    public Optional<Tag> findMostPopular() {
+        return entityManager.createNativeQuery(TAG_FIND_MOST_POPULAR_BY_USER_WHICH_HAS_HIGHEST_AMOUNT_ORDERS, Tag.class)
                 .getResultList().stream()
                 .findFirst();
     }

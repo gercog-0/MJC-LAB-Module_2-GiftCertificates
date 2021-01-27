@@ -5,7 +5,6 @@ import com.epam.esm.dao.api.entity.Tag;
 import com.epam.esm.service.api.TagService;
 import com.epam.esm.service.api.UserService;
 import com.epam.esm.service.api.dto.TagDto;
-import com.epam.esm.service.api.dto.UserDto;
 import com.epam.esm.service.api.exception.ServiceException;
 import com.epam.esm.service.impl.validator.BaseValidator;
 import com.epam.esm.service.impl.validator.impl.TagValidatorImpl;
@@ -21,6 +20,7 @@ import static com.epam.esm.service.api.exception.ErrorCode.TAG_WITH_SUCH_NAME_NO
 import static com.epam.esm.service.api.exception.ErrorCode.TAG_WITH_SUCH_ID_NOT_EXIST;
 import static com.epam.esm.service.api.exception.ErrorCode.TAG_ID_SPECIFIED_WHILE_CREATING;
 import static com.epam.esm.service.api.exception.ErrorCode.TAG_WITH_SUCH_NAME_ALREADY_EXIST;
+import static com.epam.esm.service.api.exception.ErrorCode.TAG_POPULAR_NOT_FOUND;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -82,12 +82,10 @@ public class TagServiceImpl implements TagService {
                 .orElseThrow(() -> new ServiceException(TAG_WITH_SUCH_NAME_NOT_EXIST, name));
     }
 
-    @Override // TODO: 27.01.2021 exception?
     public TagDto findMostPopular() {
-        UserDto foundUser = userService.findByHighestAmountOrders();
-        return tagDao.findMostPopular(foundUser.getId())
+        return tagDao.findMostPopular()
                 .map(tag -> modelMapper.map(tag, TagDto.class))
-                .orElseThrow(() -> new ServiceException("todo"));
+                .orElseThrow(() -> new ServiceException(TAG_POPULAR_NOT_FOUND));
     }
 
     @Override
