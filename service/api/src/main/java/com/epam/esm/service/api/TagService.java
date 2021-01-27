@@ -25,6 +25,8 @@ public interface TagService extends BaseService<TagDto> {
      */
     TagDto findByName(String name);
 
+    TagDto findMostPopular();
+
     /**
      * Is tag exist boolean.
      *

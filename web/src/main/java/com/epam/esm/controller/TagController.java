@@ -29,6 +29,11 @@ public class TagController {
         return tagService.findById(id);
     }
 
+    @GetMapping("/popular")
+    public TagDto findMostPopularTag() {
+        return tagService.findMostPopular();
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TagDto addTag(@RequestBody TagDto tagDto) {

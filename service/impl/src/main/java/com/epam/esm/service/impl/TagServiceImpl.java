@@ -3,7 +3,9 @@ package com.epam.esm.service.impl;
 import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.dao.api.entity.Tag;
 import com.epam.esm.service.api.TagService;
+import com.epam.esm.service.api.UserService;
 import com.epam.esm.service.api.dto.TagDto;
+import com.epam.esm.service.api.dto.UserDto;
 import com.epam.esm.service.api.exception.ServiceException;
 import com.epam.esm.service.impl.validator.BaseValidator;
 import com.epam.esm.service.impl.validator.impl.TagValidatorImpl;
@@ -24,12 +26,15 @@ import static com.epam.esm.service.api.exception.ErrorCode.TAG_WITH_SUCH_NAME_AL
 public class TagServiceImpl implements TagService {
 
     private final TagDao tagDao;
+    private final UserService userService;
     private final BaseValidator<TagDto> tagValidator;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public TagServiceImpl(TagDao tagDao, TagValidatorImpl tagValidator, ModelMapper modelMapper) {
+    public TagServiceImpl(TagDao tagDao, UserService userService, TagValidatorImpl tagValidator,
+                          ModelMapper modelMapper) {
         this.tagDao = tagDao;
+        this.userService = userService;
         this.tagValidator = tagValidator;
         this.modelMapper = modelMapper;
     }
@@ -75,6 +80,14 @@ public class TagServiceImpl implements TagService {
         return tagDao.findByName(name).
                 map(tag -> modelMapper.map(tag, TagDto.class))
                 .orElseThrow(() -> new ServiceException(TAG_WITH_SUCH_NAME_NOT_EXIST, name));
+    }
+
+    @Override // TODO: 27.01.2021 exception?
+    public TagDto findMostPopular() {
+        UserDto foundUser = userService.findByHighestAmountOrders();
+        return tagDao.findMostPopular(foundUser.getId())
+                .map(tag -> modelMapper.map(tag, TagDto.class))
+                .orElseThrow(() -> new ServiceException("todo"));
     }
 
     @Override

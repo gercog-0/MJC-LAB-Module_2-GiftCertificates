@@ -7,19 +7,18 @@ import java.util.Objects;
 public class OrderDto {
 
     private Long id;
-    private UserDto user;
-    private GiftCertificateDto giftCertificate;
+    private Long userId;
+    private Long giftCertificateId;
     private BigDecimal cost;
     private LocalDateTime purchaseDate;
 
     public OrderDto() {
     }
 
-    public OrderDto(Long id, UserDto user, GiftCertificateDto giftCertificate,
-                    BigDecimal cost, LocalDateTime purchaseDate) {
+    public OrderDto(Long id, Long userId, Long giftCertificateId, BigDecimal cost, LocalDateTime purchaseDate) {
         this.id = id;
-        this.user = user;
-        this.giftCertificate = giftCertificate;
+        this.userId = userId;
+        this.giftCertificateId = giftCertificateId;
         this.cost = cost;
         this.purchaseDate = purchaseDate;
     }
@@ -32,20 +31,20 @@ public class OrderDto {
         this.id = id;
     }
 
-    public UserDto getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(UserDto user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public GiftCertificateDto getGiftCertificate() {
-        return giftCertificate;
+    public Long getGiftCertificateId() {
+        return giftCertificateId;
     }
 
-    public void setGiftCertificate(GiftCertificateDto giftCertificate) {
-        this.giftCertificate = giftCertificate;
+    public void setGiftCertificateId(Long giftCertificateId) {
+        this.giftCertificateId = giftCertificateId;
     }
 
     public BigDecimal getCost() {
@@ -70,26 +69,14 @@ public class OrderDto {
         if (o == null || getClass() != o.getClass()) return false;
         OrderDto orderDto = (OrderDto) o;
         return Objects.equals(id, orderDto.id) &&
-                Objects.equals(user, orderDto.user) &&
-                Objects.equals(giftCertificate, orderDto.giftCertificate) &&
+                Objects.equals(userId, orderDto.userId) &&
+                Objects.equals(giftCertificateId, orderDto.giftCertificateId) &&
                 Objects.equals(cost, orderDto.cost) &&
                 Objects.equals(purchaseDate, orderDto.purchaseDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, giftCertificate, cost, purchaseDate);
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("OrderDto{");
-        sb.append("id=").append(id);
-        sb.append(", user=").append(user);
-        sb.append(", giftCertificate=").append(giftCertificate);
-        sb.append(", cost=").append(cost);
-        sb.append(", purchaseDate=").append(purchaseDate);
-        sb.append('}');
-        return sb.toString();
+        return Objects.hash(id, userId, giftCertificateId, cost, purchaseDate);
     }
 }

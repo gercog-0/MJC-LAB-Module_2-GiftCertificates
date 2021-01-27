@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.epam.esm.dao.impl.util.SqlQuery.FIND_ALL_USERS;
+import static com.epam.esm.dao.impl.util.SqlQuery.FIND_USER_BY_HIGHEST_AMOUNT_ORDERS;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -20,6 +21,14 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> findAll() {
         return entityManager.createQuery(FIND_ALL_USERS, User.class).getResultList();
+    }
+
+    @Override
+    public Optional<User> findByHighestAmountOrders() {
+        return entityManager.createQuery(FIND_USER_BY_HIGHEST_AMOUNT_ORDERS, User.class)
+                .setMaxResults(1)
+                .getResultList().stream()
+                .findFirst();
     }
 
     @Override

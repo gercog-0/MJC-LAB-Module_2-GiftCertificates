@@ -11,9 +11,9 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JoinColumn(name = "userId_fk")
+    @JoinColumn(name = "user_id")
     private Long userId;
-    @JoinColumn(name = "gift_certificateId_fk")
+    @JoinColumn(name = "gift_certificate_id")
     private Long giftCertificateId;
     @Column(name = "cost")
     private BigDecimal cost;

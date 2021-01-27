@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.epam.esm.dao.impl.util.SqlQuery.FIND_ALL_ORDERS_BY_USER_ID;
+import static com.epam.esm.dao.impl.util.SqlQuery.FIND_ORDER_BY_USER_ID;
 
 
 @Repository
@@ -43,7 +44,16 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public List<Order> findAllByUserId(Long userId) {
         return entityManager.createQuery(FIND_ALL_ORDERS_BY_USER_ID, Order.class)
-                .setParameter("userId_fk", userId)
+                .setParameter("userId", userId)
                 .getResultList();
+    }
+
+    @Override
+    public Optional<Order> findByUserId(Long orderId, Long userId) {
+        return entityManager.createQuery(FIND_ORDER_BY_USER_ID, Order.class)
+                .setParameter("userId", userId)
+                .setParameter("id", orderId)
+                .getResultList().stream()
+                .findAny();
     }
 }

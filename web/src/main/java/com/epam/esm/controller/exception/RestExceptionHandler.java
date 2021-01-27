@@ -28,8 +28,13 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorResponse> handleServiceException(ServiceException exception) {
         ErrorResponse errorResponse = new ErrorResponse();
         String errorCodeFromException = exception.getErrorCode();
-        String responseErrorMessage = String.format(translator.translateToLocale(errorCodeFromException),
-                exception.getErrorReason());
+        String responseErrorMessage;
+        if (exception.getErrorReason() != null) {
+            responseErrorMessage = String.format(translator.translateToLocale(errorCodeFromException),
+                    exception.getErrorReason());
+        } else {
+            responseErrorMessage = translator.translateToLocale(errorCodeFromException);
+        }
         errorResponse.setErrorMessage(responseErrorMessage);
         errorResponse.setErrorCode(errorCodeFromException);
         return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
@@ -37,7 +42,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException
-                                                                                              exception) {
+                                                                                          exception) {
         String errorCodeFromException = String.valueOf(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value());
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage(translator.translateToLocale(errorCodeFromException));
