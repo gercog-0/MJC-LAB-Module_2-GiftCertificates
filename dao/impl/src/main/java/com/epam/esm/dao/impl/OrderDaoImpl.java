@@ -2,6 +2,8 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.api.OrderDao;
 import com.epam.esm.dao.api.entity.Order;
+import com.epam.esm.dao.api.entity.Pagination;
+import com.epam.esm.dao.impl.util.PaginationUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -41,9 +43,10 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> findAllByUserId(Long userId) {
+    public List<Order> findAllByUserId(Long userId, Pagination pagination) {
         return entityManager.createQuery(FIND_ALL_ORDERS_BY_USER_ID, Order.class)
                 .setParameter("userId", userId)
+                .setFirstResult(PaginationUtil.defineFirstResultToEntityManager(pagination))
                 .getResultList();
     }
 }

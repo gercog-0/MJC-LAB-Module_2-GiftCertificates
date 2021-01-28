@@ -2,6 +2,7 @@ package com.epam.esm.dao.api;
 
 import com.epam.esm.dao.api.entity.GiftCertificate;
 import com.epam.esm.dao.api.entity.GiftCertificateQueryParameters;
+import com.epam.esm.dao.api.entity.Pagination;
 
 import java.util.List;
 
@@ -21,5 +22,6 @@ public interface GiftCertificateDao extends BaseDao<GiftCertificate> {
      *                                       to find all records in database
      * @return the list
      */
-    List<GiftCertificate> findAll(GiftCertificateQueryParameters giftCertificateQueryParameters);
+    List<GiftCertificate> findAll(GiftCertificateQueryParameters giftCertificateQueryParameters,
+                                  Pagination pagination);
 }

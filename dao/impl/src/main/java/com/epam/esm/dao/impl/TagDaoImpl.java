@@ -2,7 +2,9 @@ package com.epam.esm.dao.impl;
 
 
 import com.epam.esm.dao.api.TagDao;
+import com.epam.esm.dao.api.entity.Pagination;
 import com.epam.esm.dao.api.entity.Tag;
+import com.epam.esm.dao.impl.util.PaginationUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -21,8 +23,10 @@ public class TagDaoImpl implements TagDao {
     private EntityManager entityManager;
 
     @Override
-    public List<Tag> findAll() {
-        return entityManager.createQuery(TAG_FIND_ALL, Tag.class).getResultList();
+    public List<Tag> findAll(Pagination pagination) {
+        return entityManager.createQuery(TAG_FIND_ALL, Tag.class)
+                .setFirstResult(PaginationUtil.defineFirstResultToEntityManager(pagination))
+                .getResultList();
     }
 
     @Override

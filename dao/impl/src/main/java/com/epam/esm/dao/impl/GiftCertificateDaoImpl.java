@@ -3,7 +3,9 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.api.entity.GiftCertificate;
 import com.epam.esm.dao.api.entity.GiftCertificateQueryParameters;
+import com.epam.esm.dao.api.entity.Pagination;
 import com.epam.esm.dao.impl.util.GiftCertificateSqlQueryCreator;
+import com.epam.esm.dao.impl.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,11 +30,14 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public List<GiftCertificate> findAll(GiftCertificateQueryParameters giftCertificateQueryParameters) {
+    public List<GiftCertificate> findAll(GiftCertificateQueryParameters giftCertificateQueryParameters,
+                                         Pagination pagination) {
         String partOfQueryByParameters = giftCertificateSqlQueryCreator
                 .createByParameters(giftCertificateQueryParameters);
         return entityManager.createNativeQuery(GIFT_CERTIFICATE_FIND_ALL_BY_PARAMETERS +
-                partOfQueryByParameters, GiftCertificate.class).getResultList();
+                partOfQueryByParameters, GiftCertificate.class)
+                .setFirstResult(PaginationUtil.defineFirstResultToEntityManager(pagination))
+                .getResultList();
     }
 
     @Override

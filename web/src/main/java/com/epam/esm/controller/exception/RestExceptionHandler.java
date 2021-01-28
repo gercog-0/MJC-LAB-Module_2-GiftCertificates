@@ -79,5 +79,7 @@ public class RestExceptionHandler {
         complianceMap.put(ErrorCode.ORDER_WITH_SUCH_ID_NOT_EXIST, HttpStatus.NOT_FOUND);
         complianceMap.put(ErrorCode.UNSUPPORTED_MEDIA_TYPE, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         complianceMap.put(ErrorCode.INTERNAL_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
+        complianceMap.put(ErrorCode.PAGINATION_INCORRECT_PAGE_NUMBER, HttpStatus.BAD_REQUEST);
+        complianceMap.put(ErrorCode.PAGINATION_INCORRECT_SIZE, HttpStatus.BAD_REQUEST);
     }
 }

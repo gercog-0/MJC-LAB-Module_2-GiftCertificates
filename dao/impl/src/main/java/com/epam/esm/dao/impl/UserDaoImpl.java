@@ -1,7 +1,9 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.api.UserDao;
+import com.epam.esm.dao.api.entity.Pagination;
 import com.epam.esm.dao.api.entity.User;
+import com.epam.esm.dao.impl.util.PaginationUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -18,8 +20,10 @@ public class UserDaoImpl implements UserDao {
     private EntityManager entityManager;
 
     @Override
-    public List<User> findAll() {
-        return entityManager.createQuery(FIND_ALL_USERS, User.class).getResultList();
+    public List<User> findAll(Pagination pagination) {
+        return entityManager.createQuery(FIND_ALL_USERS, User.class)
+                .setFirstResult(PaginationUtil.defineFirstResultToEntityManager(pagination))
+                .getResultList();
     }
 
     @Override

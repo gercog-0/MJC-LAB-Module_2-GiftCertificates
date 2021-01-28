@@ -2,6 +2,7 @@ package com.epam.esm.service.api;
 
 import com.epam.esm.service.api.dto.GiftCertificateDto;
 import com.epam.esm.service.api.dto.GiftCertificateQueryParametersDto;
+import com.epam.esm.service.api.dto.PaginationDto;
 
 import java.util.List;
 
@@ -16,7 +17,8 @@ public interface GiftCertificateService extends BaseService<GiftCertificateDto> 
      * @param giftCertificateQueryParametersDto the gift certificate query parameters dto
      * @return the list
      */
-    List<GiftCertificateDto> findAll(GiftCertificateQueryParametersDto giftCertificateQueryParametersDto);
+    List<GiftCertificateDto> findAll(GiftCertificateQueryParametersDto giftCertificateQueryParametersDto,
+                                     PaginationDto paginationDto);
 
     /**
      * Update part gift certificate dto.

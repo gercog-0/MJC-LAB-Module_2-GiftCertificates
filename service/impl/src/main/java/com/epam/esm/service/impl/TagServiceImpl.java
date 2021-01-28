@@ -1,12 +1,15 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.api.TagDao;
+import com.epam.esm.dao.api.entity.Pagination;
 import com.epam.esm.dao.api.entity.Tag;
 import com.epam.esm.service.api.TagService;
 import com.epam.esm.service.api.UserService;
+import com.epam.esm.service.api.dto.PaginationDto;
 import com.epam.esm.service.api.dto.TagDto;
 import com.epam.esm.service.api.exception.ServiceException;
 import com.epam.esm.service.impl.validator.BaseValidator;
+import com.epam.esm.service.impl.validator.impl.PaginationDtoValidator;
 import com.epam.esm.service.impl.validator.impl.TagValidatorImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,20 +31,24 @@ public class TagServiceImpl implements TagService {
     private final TagDao tagDao;
     private final UserService userService;
     private final BaseValidator<TagDto> tagValidator;
+    private final BaseValidator<PaginationDto> paginationValidator;
     private final ModelMapper modelMapper;
 
     @Autowired
     public TagServiceImpl(TagDao tagDao, UserService userService, TagValidatorImpl tagValidator,
-                          ModelMapper modelMapper) {
+                          PaginationDtoValidator paginationValidator, ModelMapper modelMapper) {
         this.tagDao = tagDao;
         this.userService = userService;
         this.tagValidator = tagValidator;
+        this.paginationValidator = paginationValidator;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<TagDto> findAll() {
-        return tagDao.findAll().stream()
+    public List<TagDto> findAll(PaginationDto paginationDto) {
+        paginationValidator.validate(paginationDto);
+        Pagination pagination = modelMapper.map(paginationDto, Pagination.class);
+        return tagDao.findAll(pagination).stream()
                 .map(tag -> modelMapper.map(tag, TagDto.class))
                 .collect(Collectors.toList());
     }

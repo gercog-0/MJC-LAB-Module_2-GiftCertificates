@@ -1,5 +1,6 @@
 package com.epam.esm.service.api;
 
+import com.epam.esm.service.api.dto.PaginationDto;
 import com.epam.esm.service.api.dto.TagDto;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface TagService extends BaseService<TagDto> {
      *
      * @return the list
      */
-    List<TagDto> findAll();
+    List<TagDto> findAll(PaginationDto paginationDto);
 
     /**
      * Find by name tag dto.

@@ -1,6 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.service.api.TagService;
+import com.epam.esm.service.api.dto.PaginationDto;
 import com.epam.esm.service.api.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +21,10 @@ public class TagController {
     }
 
     @GetMapping
-    public List<TagDto> findAllTags() {
-        return tagService.findAll();
+    public List<TagDto> findAllTags(@RequestParam(required = false) Integer page,
+                                    @RequestParam(required = false) Integer size) {
+        PaginationDto paginationDto = new PaginationDto(page, size);
+        return tagService.findAll(paginationDto);
     }
 
     @GetMapping("/{id}")

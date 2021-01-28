@@ -2,6 +2,7 @@ package com.epam.esm.controller;
 
 import com.epam.esm.service.api.OrderService;
 import com.epam.esm.service.api.dto.OrderDto;
+import com.epam.esm.service.api.dto.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,11 @@ public class OrderController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<OrderDto> findAllOrdersByUserId(@PathVariable long userId) {
-        return orderService.findAllByUserId(userId);
+    public List<OrderDto> findAllOrdersByUserId(@PathVariable long userId,
+                                                @RequestParam(required = false) Integer page,
+                                                @RequestParam(required = false) Integer size) {
+        PaginationDto paginationDto = new PaginationDto(page, size);
+        return orderService.findAllByUserId(userId, paginationDto);
     }
 
     @GetMapping("/{id}")
@@ -35,7 +39,7 @@ public class OrderController {
         return orderService.add(orderDto);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOrderById(@PathVariable long id) {
         orderService.remove(id);

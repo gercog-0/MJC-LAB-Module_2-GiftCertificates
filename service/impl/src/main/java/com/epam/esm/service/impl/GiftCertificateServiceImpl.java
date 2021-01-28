@@ -3,14 +3,17 @@ package com.epam.esm.service.impl;
 import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.api.entity.GiftCertificate;
 import com.epam.esm.dao.api.entity.GiftCertificateQueryParameters;
+import com.epam.esm.dao.api.entity.Pagination;
 import com.epam.esm.service.api.GiftCertificateService;
 import com.epam.esm.service.api.TagService;
 import com.epam.esm.service.api.dto.GiftCertificateDto;
 import com.epam.esm.service.api.dto.GiftCertificateQueryParametersDto;
+import com.epam.esm.service.api.dto.PaginationDto;
 import com.epam.esm.service.api.dto.TagDto;
 import com.epam.esm.service.api.exception.ServiceException;
 import com.epam.esm.service.impl.validator.BaseValidator;
 import com.epam.esm.service.impl.validator.impl.GiftCertificateValidatorImpl;
+import com.epam.esm.service.impl.validator.impl.PaginationDtoValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,22 +33,28 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final GiftCertificateDao giftCertificateDao;
     private final TagService tagService;
     private final BaseValidator<GiftCertificateDto> validator;
+    private final BaseValidator<PaginationDto> paginationValidator;
     private final ModelMapper modelMapper;
 
     @Autowired
     public GiftCertificateServiceImpl(GiftCertificateDao giftCertificateDao, TagService tagService,
-                                      GiftCertificateValidatorImpl validator, ModelMapper modelMapper) {
+                                      GiftCertificateValidatorImpl validator, PaginationDtoValidator paginationValidator,
+                                      ModelMapper modelMapper) {
         this.giftCertificateDao = giftCertificateDao;
         this.tagService = tagService;
         this.validator = validator;
+        this.paginationValidator = paginationValidator;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<GiftCertificateDto> findAll(GiftCertificateQueryParametersDto giftCertificateQueryParametersDto) {
+    public List<GiftCertificateDto> findAll(GiftCertificateQueryParametersDto giftCertificateQueryParametersDto,
+                                            PaginationDto paginationDto) {
+        paginationValidator.validate(paginationDto);
+        Pagination pagination = modelMapper.map(paginationDto, Pagination.class);
         GiftCertificateQueryParameters giftCertificateQueryParameters =
                 modelMapper.map(giftCertificateQueryParametersDto, GiftCertificateQueryParameters.class);
-        return giftCertificateDao.findAll(giftCertificateQueryParameters).stream()
+        return giftCertificateDao.findAll(giftCertificateQueryParameters, pagination).stream()
                 .map(giftCertificate -> modelMapper.map(giftCertificate, GiftCertificateDto.class))
                 .collect(Collectors.toList());
     }
