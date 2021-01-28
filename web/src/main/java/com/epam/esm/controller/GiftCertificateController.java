@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(value = "api/v1/gift-certificates")
-public class GiftCertificateController {
+public class GiftCertificateController implements LinkRelationship<GiftCertificateDto> {
 
     private final GiftCertificateService giftCertificateService;
 
@@ -38,30 +41,42 @@ public class GiftCertificateController {
         giftCertificateQueryParametersDto.setDescription(description);
         giftCertificateQueryParametersDto.setTypeSort(typeSort);
         giftCertificateQueryParametersDto.setOrderSort(orderSort);
-        return giftCertificateService.findAll(giftCertificateQueryParametersDto, paginationDto);
+        List<GiftCertificateDto> giftCertificateDtoList = giftCertificateService
+                .findAll(giftCertificateQueryParametersDto, paginationDto);
+        giftCertificateDtoList.forEach(this::addDependenciesLinks);
+        return giftCertificateDtoList;
     }
 
     @GetMapping("/{id}")
     public GiftCertificateDto findGiftCertificateById(@PathVariable long id) {
-        return giftCertificateService.findById(id);
+        GiftCertificateDto giftCertificateDto = giftCertificateService.findById(id);
+        addDependenciesLinks(giftCertificateDto);
+        return giftCertificateDto;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificateDto addGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
-        return giftCertificateService.add(giftCertificateDto);
+        GiftCertificateDto giftCertificateDtoResult = giftCertificateService.add(giftCertificateDto);
+        return giftCertificateDtoResult;
     }
 
     @PutMapping(value = "/{id}")
-    public GiftCertificateDto updateGiftCertificate(@PathVariable long id, @RequestBody GiftCertificateDto giftCertificateDto) {
+    public GiftCertificateDto updateGiftCertificate(@PathVariable long id,
+                                                    @RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setId(id);
-        return giftCertificateService.update(giftCertificateDto);
+        GiftCertificateDto giftCertificateDtoResult = giftCertificateService.updatePart(giftCertificateDto);
+        addDependenciesLinks(giftCertificateDto);
+        return giftCertificateDtoResult;
     }
 
     @PatchMapping(value = "/{id}")
-    public GiftCertificateDto updatePartOfGiftCertificate(@PathVariable long id, @RequestBody GiftCertificateDto giftCertificateDto) {
+    public GiftCertificateDto updatePartOfGiftCertificate(@PathVariable long id,
+                                                          @RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setId(id);
-        return giftCertificateService.updatePart(giftCertificateDto);
+        GiftCertificateDto giftCertificateDtoResult = giftCertificateService.updatePart(giftCertificateDto);
+        addDependenciesLinks(giftCertificateDto);
+        return giftCertificateDtoResult;
     }
 
     @DeleteMapping("/{id}")
@@ -70,4 +85,15 @@ public class GiftCertificateController {
         giftCertificateService.remove(id);
     }
 
+    @Override
+    public void addDependenciesLinks(GiftCertificateDto giftCertificateDto) {
+        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+                .findGiftCertificateById(giftCertificateDto.getId())).withSelfRel());
+        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+                .updateGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel("update"));
+        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+                .updatePartOfGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel("update-part"));
+        giftCertificateDto.getTags().forEach(tagDto -> tagDto.add(linkTo(methodOn(TagController.class)
+                .findTagById(tagDto.getId())).withSelfRel()));
+    }
 }

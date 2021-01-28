@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(value = "api/v1/tags")
-public class TagController {
+public class TagController implements LinkRelationship<TagDto> {
 
     private final TagService tagService;
 
@@ -24,17 +27,23 @@ public class TagController {
     public List<TagDto> findAllTags(@RequestParam(required = false) Integer page,
                                     @RequestParam(required = false) Integer size) {
         PaginationDto paginationDto = new PaginationDto(page, size);
-        return tagService.findAll(paginationDto);
+        List<TagDto> tagsDto = tagService.findAll(paginationDto);
+        tagsDto.forEach(this::addDependenciesLinks);
+        return tagsDto;
     }
 
     @GetMapping("/{id}")
     public TagDto findTagById(@PathVariable long id) {
+        TagDto tagDto = tagService.findById(id);
+        addDependenciesLinks(tagDto);
         return tagService.findById(id);
     }
 
     @GetMapping("/popular")
     public TagDto findMostPopularTag() {
-        return tagService.findMostPopular();
+        TagDto tagDto = tagService.findMostPopular();
+        addDependenciesLinks(tagDto);
+        return tagDto;
     }
 
     @PostMapping
@@ -47,5 +56,10 @@ public class TagController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTagById(@PathVariable long id) {
         tagService.remove(id);
+    }
+
+    @Override
+    public void addDependenciesLinks(TagDto tagDto) {
+        tagDto.add(linkTo(methodOn(TagController.class).findTagById(tagDto.getId())).withSelfRel());
     }
 }

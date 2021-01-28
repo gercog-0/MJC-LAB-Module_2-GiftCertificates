@@ -3,4 +3,6 @@ plugins {
 }
 dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.3.3'
+    implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.2.3'
+
 }

@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(value = "api/v1/users")
-public class UserController {
+public class UserController implements LinkRelationship<UserDto> {
 
     private final UserService userService;
 
@@ -23,11 +26,20 @@ public class UserController {
     public List<UserDto> findAllUsers(@RequestParam(required = false) Integer page,
                                       @RequestParam(required = false) Integer size) {
         PaginationDto paginationDto = new PaginationDto(page, size);
-        return userService.findAll(paginationDto);
+        List<UserDto> usersDto = userService.findAll(paginationDto);
+        usersDto.forEach(this::addDependenciesLinks);
+        return usersDto;
     }
 
     @GetMapping("/{id}")
     public UserDto findUserById(@PathVariable long id) {
-        return userService.findById(id);
+        UserDto userDto = userService.findById(id);
+        addDependenciesLinks(userDto);
+        return userDto;
+    }
+
+    @Override
+    public void addDependenciesLinks(UserDto userDto) {
+        userDto.add(linkTo(methodOn(UserController.class).findUserById(userDto.getId())).withSelfRel());
     }
 }
