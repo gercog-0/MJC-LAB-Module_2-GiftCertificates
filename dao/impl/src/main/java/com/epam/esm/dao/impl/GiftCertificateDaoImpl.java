@@ -11,10 +11,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.dao.impl.util.SqlQuery.GIFT_CERTIFICATE_FIND_ALL_BY_PARAMETERS;
 
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
@@ -32,11 +33,12 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     @Override
     public List<GiftCertificate> findAll(GiftCertificateQueryParameters giftCertificateQueryParameters,
                                          Pagination pagination) {
-        String partOfQueryByParameters = giftCertificateSqlQueryCreator
-                .createByParameters(giftCertificateQueryParameters);
-        return entityManager.createNativeQuery(GIFT_CERTIFICATE_FIND_ALL_BY_PARAMETERS +
-                partOfQueryByParameters, GiftCertificate.class)
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<GiftCertificate> criteriaQuery = giftCertificateSqlQueryCreator
+                .createQueryByParameters(giftCertificateQueryParameters, criteriaBuilder);
+        return entityManager.createQuery(criteriaQuery)
                 .setFirstResult(PaginationUtil.defineFirstResultToEntityManager(pagination))
+                .setMaxResults(pagination.getSize())
                 .getResultList();
     }
 

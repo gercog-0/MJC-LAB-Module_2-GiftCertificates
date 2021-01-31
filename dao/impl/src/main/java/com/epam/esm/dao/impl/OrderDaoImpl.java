@@ -47,6 +47,7 @@ public class OrderDaoImpl implements OrderDao {
         return entityManager.createQuery(FIND_ALL_ORDERS_BY_USER_ID, Order.class)
                 .setParameter("userId", userId)
                 .setFirstResult(PaginationUtil.defineFirstResultToEntityManager(pagination))
+                .setMaxResults(pagination.getSize())
                 .getResultList();
     }
 }

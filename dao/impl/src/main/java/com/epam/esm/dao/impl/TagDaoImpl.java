@@ -26,6 +26,7 @@ public class TagDaoImpl implements TagDao {
     public List<Tag> findAll(Pagination pagination) {
         return entityManager.createQuery(TAG_FIND_ALL, Tag.class)
                 .setFirstResult(PaginationUtil.defineFirstResultToEntityManager(pagination))
+                .setMaxResults(pagination.getSize())
                 .getResultList();
     }
 

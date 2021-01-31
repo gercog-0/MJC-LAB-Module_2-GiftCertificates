@@ -6,6 +6,7 @@ dependencies {
     implementation project(":dao:api")
     implementation "org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
+    implementation group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.27.Final'
     implementation 'mysql:mysql-connector-java:8.0.20'
     implementation 'com.zaxxer:HikariCP:2.3.2'
 

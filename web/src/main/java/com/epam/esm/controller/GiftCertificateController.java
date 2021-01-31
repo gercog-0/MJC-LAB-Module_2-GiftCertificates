@@ -25,7 +25,7 @@ public class GiftCertificateController implements LinkRelationship<GiftCertifica
     }
 
     @GetMapping
-    public List<GiftCertificateDto> findAllGiftCertificates(@RequestParam(required = false) String tagName,
+    public List<GiftCertificateDto> findAllGiftCertificates(@RequestParam(required = false) List<String> tags,
                                                             @RequestParam(required = false) String name,
                                                             @RequestParam(required = false) String description,
                                                             @RequestParam(required = false)
@@ -36,7 +36,7 @@ public class GiftCertificateController implements LinkRelationship<GiftCertifica
                                                             @RequestParam(required = false) Integer size) {
         PaginationDto paginationDto = new PaginationDto(page, size);
         GiftCertificateQueryParametersDto giftCertificateQueryParametersDto = new GiftCertificateQueryParametersDto();
-        giftCertificateQueryParametersDto.setTagName(tagName);
+        giftCertificateQueryParametersDto.setTags(tags);
         giftCertificateQueryParametersDto.setName(name);
         giftCertificateQueryParametersDto.setDescription(description);
         giftCertificateQueryParametersDto.setTypeSort(typeSort);
@@ -58,6 +58,7 @@ public class GiftCertificateController implements LinkRelationship<GiftCertifica
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificateDto addGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
         GiftCertificateDto giftCertificateDtoResult = giftCertificateService.add(giftCertificateDto);
+        addDependenciesLinks(giftCertificateDto);
         return giftCertificateDtoResult;
     }
 

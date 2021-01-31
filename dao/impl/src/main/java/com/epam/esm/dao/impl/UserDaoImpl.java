@@ -23,6 +23,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> findAll(Pagination pagination) {
         return entityManager.createQuery(FIND_ALL_USERS, User.class)
                 .setFirstResult(PaginationUtil.defineFirstResultToEntityManager(pagination))
+                .setMaxResults(pagination.getSize())
                 .getResultList();
     }
 

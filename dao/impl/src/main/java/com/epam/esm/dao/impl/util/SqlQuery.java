@@ -3,15 +3,6 @@ package com.epam.esm.dao.impl.util;
 public final class SqlQuery {
 
     /*
-    queries for gift-certificates table
-    */
-    public static final String GIFT_CERTIFICATE_FIND_ALL_BY_PARAMETERS = "SELECT gift_certificate.id, " +
-            "gift_certificate.name, gift_certificate.description, gift_certificate.price, gift_certificate.duration, " +
-            "gift_certificate.create_date, gift_certificate.last_update_date FROM gift_certificate LEFT JOIN " +
-            "tag_has_gift_certificate ON gift_certificate.id = tag_has_gift_certificate.gift_certificate_id LEFT JOIN " +
-            "tag ON tag_has_gift_certificate.tag_id = tag.id";
-
-    /*
     queries for tag table
     */
     public static final String TAG_FIND_ALL = "SELECT t FROM Tag t";
