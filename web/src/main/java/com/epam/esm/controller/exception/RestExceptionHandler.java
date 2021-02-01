@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,18 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
     }
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(
+            MethodArgumentTypeMismatchException exp) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        String errorCodeFromException = ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;
+        String errorResponseMessage = String.format(translator.translateToLocale(errorCodeFromException),
+                exp.getName(), exp.getRequiredType());
+        errorResponse.setErrorCode(errorCodeFromException);
+        errorResponse.setErrorMessage(errorResponseMessage);
+        return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
+    }
+
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException
                                                                                           exception) {
@@ -50,15 +63,15 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
     }
 
-//    @ExceptionHandler(RuntimeException.class)
-//    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException exception) {
-//        String exceptionMessage = exception.getMessage();
-//        String errorCodeFromException = String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value());
-//        ErrorResponse errorResponse = new ErrorResponse();
-//        errorResponse.setErrorMessage(String.format(translator.translateToLocale(errorCodeFromException), exceptionMessage));
-//        errorResponse.setErrorCode(errorCodeFromException);
-//        return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
-//    }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException exception) {
+        String exceptionMessage = exception.getMessage();
+        String errorCodeFromException = String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage(String.format(translator.translateToLocale(errorCodeFromException), exceptionMessage));
+        errorResponse.setErrorCode(errorCodeFromException);
+        return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
+    }
 
     private void initializeComplianceMap() {
         complianceMap.put(ErrorCode.TAG_NAME_INCORRECT, HttpStatus.BAD_REQUEST);
@@ -79,6 +92,7 @@ public class RestExceptionHandler {
         complianceMap.put(ErrorCode.ORDER_WITH_SUCH_ID_NOT_EXIST, HttpStatus.NOT_FOUND);
         complianceMap.put(ErrorCode.UNSUPPORTED_MEDIA_TYPE, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         complianceMap.put(ErrorCode.INTERNAL_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
+        complianceMap.put(ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH, HttpStatus.BAD_REQUEST);
         complianceMap.put(ErrorCode.PAGINATION_INCORRECT_PAGE_NUMBER, HttpStatus.BAD_REQUEST);
         complianceMap.put(ErrorCode.PAGINATION_INCORRECT_SIZE, HttpStatus.BAD_REQUEST);
     }

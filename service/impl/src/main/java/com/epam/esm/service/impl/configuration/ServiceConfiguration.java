@@ -4,11 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
-@Profile("prod")
 @Configuration
 public class ServiceConfiguration {
 

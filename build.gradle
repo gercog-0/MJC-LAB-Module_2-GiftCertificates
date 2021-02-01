@@ -17,10 +17,6 @@ allprojects {
     repositories {
         mavenCentral()
     }
-
-    dependencies {
-        implementation "org.springframework:spring-context:$springVersion"
-    }
 }
 
 dependencies {

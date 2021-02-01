@@ -4,6 +4,7 @@ package com.epam.esm.dao.api.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * The type Order.
@@ -134,5 +135,22 @@ public class Order {
      */
     public void setPurchaseDate(LocalDateTime purchaseDate) {
         this.purchaseDate = purchaseDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(id, order.id) &&
+                Objects.equals(userId, order.userId) &&
+                Objects.equals(giftCertificateId, order.giftCertificateId) &&
+                Objects.equals(cost, order.cost) &&
+                Objects.equals(purchaseDate, order.purchaseDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, giftCertificateId, cost, purchaseDate);
     }
 }

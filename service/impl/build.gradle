@@ -8,8 +8,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion"
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.2.3'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.0'
+    implementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'org.mockito:mockito-core:3.3.3'
 }
