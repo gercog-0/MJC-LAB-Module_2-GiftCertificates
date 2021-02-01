@@ -6,6 +6,7 @@ import com.epam.esm.service.api.dto.GiftCertificateQueryParametersDto;
 import com.epam.esm.service.api.dto.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "api/v1/gift-certificates")
-public class GiftCertificateController implements LinkRelationship<GiftCertificateDto> {
+public class GiftCertificateController{
 
     private final GiftCertificateService giftCertificateService;
 
@@ -25,24 +26,11 @@ public class GiftCertificateController implements LinkRelationship<GiftCertifica
     }
 
     @GetMapping
-    public List<GiftCertificateDto> findAllGiftCertificates(@RequestParam(required = false) List<String> tags,
-                                                            @RequestParam(required = false) String name,
-                                                            @RequestParam(required = false) String description,
-                                                            @RequestParam(required = false)
-                                                                    GiftCertificateQueryParametersDto.TypeSort typeSort,
-                                                            @RequestParam(required = false)
-                                                                    GiftCertificateQueryParametersDto.OrderSort orderSort,
+    public List<GiftCertificateDto> findAllGiftCertificates(GiftCertificateQueryParametersDto giftCertificateQueryParametersDto,
                                                             @RequestParam(required = false) Integer page,
                                                             @RequestParam(required = false) Integer size) {
         PaginationDto paginationDto = new PaginationDto(page, size);
-        GiftCertificateQueryParametersDto giftCertificateQueryParametersDto = new GiftCertificateQueryParametersDto();
-        giftCertificateQueryParametersDto.setTags(tags);
-        giftCertificateQueryParametersDto.setName(name);
-        giftCertificateQueryParametersDto.setDescription(description);
-        giftCertificateQueryParametersDto.setTypeSort(typeSort);
-        giftCertificateQueryParametersDto.setOrderSort(orderSort);
-        List<GiftCertificateDto> giftCertificateDtoList = giftCertificateService
-                .findAll(giftCertificateQueryParametersDto, paginationDto);
+        List<GiftCertificateDto> giftCertificateDtoList = giftCertificateService.findAll(giftCertificateQueryParametersDto, paginationDto);
         giftCertificateDtoList.forEach(this::addDependenciesLinks);
         return giftCertificateDtoList;
     }
@@ -81,19 +69,21 @@ public class GiftCertificateController implements LinkRelationship<GiftCertifica
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteGiftCertificate(@PathVariable long id) {
+    public ResponseEntity<Void> deleteGiftCertificate(@PathVariable long id) {
         giftCertificateService.remove(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Override
-    public void addDependenciesLinks(GiftCertificateDto giftCertificateDto) {
+
+    private void addDependenciesLinks(GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
                 .findGiftCertificateById(giftCertificateDto.getId())).withSelfRel());
         giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
                 .updateGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel("update"));
         giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
                 .updatePartOfGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel("update-part"));
+        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+                .deleteGiftCertificate(giftCertificateDto.getId())).withRel("delete"));
         giftCertificateDto.getTags().forEach(tagDto -> tagDto.add(linkTo(methodOn(TagController.class)
                 .findTagById(tagDto.getId())).withSelfRel()));
     }

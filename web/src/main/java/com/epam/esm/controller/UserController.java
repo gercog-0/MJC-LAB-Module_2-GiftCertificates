@@ -13,7 +13,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "api/v1/users")
-public class UserController implements LinkRelationship<UserDto> {
+public class UserController {
 
     private final UserService userService;
 
@@ -38,8 +38,7 @@ public class UserController implements LinkRelationship<UserDto> {
         return userDto;
     }
 
-    @Override
-    public void addDependenciesLinks(UserDto userDto) {
+    private void addDependenciesLinks(UserDto userDto) {
         userDto.add(linkTo(methodOn(UserController.class).findUserById(userDto.getId())).withSelfRel());
     }
 }

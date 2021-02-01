@@ -5,6 +5,7 @@ import com.epam.esm.service.api.dto.OrderDto;
 import com.epam.esm.service.api.dto.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "api/v1/orders")
-public class OrderController implements LinkRelationship<OrderDto> {
+public class OrderController {
 
     private final OrderService orderService;
 
@@ -50,13 +51,14 @@ public class OrderController implements LinkRelationship<OrderDto> {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteOrderById(@PathVariable long id) {
+    public ResponseEntity<Void> deleteOrderById(@PathVariable long id) {
         orderService.remove(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Override
-    public void addDependenciesLinks(OrderDto orderDto) {
+    private void addDependenciesLinks(OrderDto orderDto) {
         orderDto.add(linkTo(methodOn(OrderController.class).findOrderById(orderDto.getId())).withSelfRel());
+        orderDto.add(linkTo(methodOn(OrderController.class).deleteOrderById(orderDto.getId())).withRel("delete"));
         orderDto.add(linkTo(methodOn(GiftCertificateController.class)
                 .findGiftCertificateById(orderDto.getGiftCertificateId())).withRel("gift-certificate"));
         orderDto.add(linkTo(methodOn(UserController.class).findUserById(orderDto.getUserId())).withRel("user"));

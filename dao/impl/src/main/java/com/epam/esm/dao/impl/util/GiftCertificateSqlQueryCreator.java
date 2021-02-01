@@ -27,24 +27,21 @@ public class GiftCertificateSqlQueryCreator {
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> giftCertificateRoot = criteriaQuery.from(GiftCertificate.class);
         List<Predicate> conditions = new ArrayList<>();
-        conditions.addAll(addSearchName(giftCertificateQueryParameters, criteriaBuilder, giftCertificateRoot));
-        conditions.addAll(addSearchDescription(giftCertificateQueryParameters, criteriaBuilder, giftCertificateRoot));
-        conditions.addAll(addSearchTagNames(giftCertificateQueryParameters, criteriaBuilder, giftCertificateRoot));
+        addSearchName(giftCertificateQueryParameters.getName(), criteriaBuilder, giftCertificateRoot, conditions);
+        addSearchDescription(giftCertificateQueryParameters.getDescription(), criteriaBuilder, giftCertificateRoot, conditions);
+        addSearchTagNames(giftCertificateQueryParameters.getTags(), criteriaBuilder, giftCertificateRoot, conditions);
         criteriaQuery.select(giftCertificateRoot).where(conditions.toArray(new Predicate[]{}));
         addSearchSortType(giftCertificateQueryParameters, criteriaBuilder, criteriaQuery, giftCertificateRoot);
         return criteriaQuery;
     }
 
-    private List<Predicate> addSearchTagNames(GiftCertificateQueryParameters giftCertificateQueryParameters,
-                                              CriteriaBuilder criteriaBuilder, Root<GiftCertificate> giftCertificateRoot) {
-        List<Predicate> conditions = new ArrayList<>();
-        List<String> listTags = giftCertificateQueryParameters.getTags();
+    private void addSearchTagNames(List<String> listTags, CriteriaBuilder criteriaBuilder,
+                                   Root<GiftCertificate> giftCertificateRoot, List<Predicate> conditions) {
         if (listTags != null) {
-            conditions = listTags.stream()
+            conditions.addAll(listTags.stream()
                     .map(tag -> criteriaBuilder.equal(giftCertificateRoot.join(GIFT_CERTIFICATE_TAGS).get(NAME), tag))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()));
         }
-        return conditions;
     }
 
     private void addSearchSortType(GiftCertificateQueryParameters giftCertificateQueryParameters,
@@ -61,23 +58,17 @@ public class GiftCertificateSqlQueryCreator {
         }
     }
 
-    private List<Predicate> addSearchDescription(GiftCertificateQueryParameters giftCertificateQueryParameters,
-                                                 CriteriaBuilder criteriaBuilder, Root<GiftCertificate> giftCertificateRoot) {
-        List<Predicate> conditions = new ArrayList<>();
-        if (giftCertificateQueryParameters.getDescription() != null) {
-            conditions.add(criteriaBuilder.like(giftCertificateRoot.get(GIFT_CERTIFICATE_DESCRIPTION),
-                    PERCENT + giftCertificateQueryParameters.getDescription() + PERCENT));
+    private void addSearchDescription(String description, CriteriaBuilder criteriaBuilder,
+                                      Root<GiftCertificate> giftCertificateRoot, List<Predicate> conditions) {
+        if (description != null) {
+            conditions.add(criteriaBuilder.like(giftCertificateRoot.get(GIFT_CERTIFICATE_DESCRIPTION), PERCENT + description + PERCENT));
         }
-        return conditions;
     }
 
-    private List<Predicate> addSearchName(GiftCertificateQueryParameters giftCertificateQueryParameters,
-                                          CriteriaBuilder criteriaBuilder, Root<GiftCertificate> giftCertificateRoot) {
-        List<Predicate> conditions = new ArrayList<>();
-        if (giftCertificateQueryParameters.getName() != null) {
-            conditions.add(criteriaBuilder.like(giftCertificateRoot.get(NAME),
-                    PERCENT + giftCertificateQueryParameters.getName() + PERCENT));
+    private void addSearchName(String name, CriteriaBuilder criteriaBuilder, Root<GiftCertificate> giftCertificateRoot,
+                               List<Predicate> conditions) {
+        if (name != null) {
+            conditions.add(criteriaBuilder.like(giftCertificateRoot.get(NAME), PERCENT + name + PERCENT));
         }
-        return conditions;
     }
 }

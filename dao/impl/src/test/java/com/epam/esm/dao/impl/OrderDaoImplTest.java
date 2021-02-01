@@ -3,7 +3,7 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.api.OrderDao;
 import com.epam.esm.dao.api.entity.Order;
 import com.epam.esm.dao.api.entity.Pagination;
-import com.epam.esm.dao.configuration.TestConfiguration;
+import com.epam.esm.dao.configuration.DaoTestConfiguration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestConfiguration.class)
+@SpringBootTest(classes = DaoTestConfiguration.class)
 class OrderDaoImplTest {
 
     private final OrderDao orderDao;
