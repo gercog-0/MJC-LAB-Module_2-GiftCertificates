@@ -1,5 +1,7 @@
 package com.epam.esm.dao.api.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -10,6 +12,7 @@ import java.util.Objects;
  * @version 1.0
  */
 @Entity
+@Audited
 @Table(name = "tag")
 public class Tag {
 

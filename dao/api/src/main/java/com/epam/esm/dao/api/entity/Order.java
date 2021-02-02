@@ -1,6 +1,8 @@
 package com.epam.esm.dao.api.entity;
 
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.util.Objects;
  * The type Order.
  */
 @Entity
+@Audited
 @Table(name = "orders")
 public class Order {
     @Id

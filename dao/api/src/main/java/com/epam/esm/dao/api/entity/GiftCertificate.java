@@ -1,5 +1,7 @@
 package com.epam.esm.dao.api.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import java.util.Objects;
  */
 
 @Entity
+@Audited
 @Table(name = "gift_certificate")
 public class GiftCertificate {
 

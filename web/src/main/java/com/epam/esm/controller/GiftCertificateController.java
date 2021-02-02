@@ -26,10 +26,22 @@ public class GiftCertificateController{
     }
 
     @GetMapping
-    public List<GiftCertificateDto> findAllGiftCertificates(GiftCertificateQueryParametersDto giftCertificateQueryParametersDto,
+    public List<GiftCertificateDto> findAllGiftCertificates(@RequestParam(required = false) List<String> tags,
+                                                            @RequestParam(required = false) String name,
+                                                            @RequestParam(required = false) String description,
+                                                            @RequestParam(required = false)
+                                                                        GiftCertificateQueryParametersDto.TypeSort typeSort,
+                                                            @RequestParam(required = false)
+                                                                        GiftCertificateQueryParametersDto.OrderSort orderSort,
                                                             @RequestParam(required = false) Integer page,
                                                             @RequestParam(required = false) Integer size) {
         PaginationDto paginationDto = new PaginationDto(page, size);
+        GiftCertificateQueryParametersDto giftCertificateQueryParametersDto = new GiftCertificateQueryParametersDto();
+        giftCertificateQueryParametersDto.setTags(tags);
+        giftCertificateQueryParametersDto.setName(name);
+        giftCertificateQueryParametersDto.setDescription(description);
+        giftCertificateQueryParametersDto.setTypeSort(typeSort);
+        giftCertificateQueryParametersDto.setOrderSort(orderSort);
         List<GiftCertificateDto> giftCertificateDtoList = giftCertificateService.findAll(giftCertificateQueryParametersDto, paginationDto);
         giftCertificateDtoList.forEach(this::addDependenciesLinks);
         return giftCertificateDtoList;
@@ -82,8 +94,6 @@ public class GiftCertificateController{
                 .updateGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel("update"));
         giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
                 .updatePartOfGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel("update-part"));
-        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
-                .deleteGiftCertificate(giftCertificateDto.getId())).withRel("delete"));
         giftCertificateDto.getTags().forEach(tagDto -> tagDto.add(linkTo(methodOn(TagController.class)
                 .findTagById(tagDto.getId())).withSelfRel()));
     }

@@ -2,9 +2,11 @@ package com.epam.esm.controller.exception;
 
 import com.epam.esm.service.api.exception.ErrorCode;
 import com.epam.esm.service.api.exception.ServiceException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -63,15 +65,25 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException exception) {
-        String exceptionMessage = exception.getMessage();
-        String errorCodeFromException = String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException exp){
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setErrorMessage(String.format(translator.translateToLocale(errorCodeFromException), exceptionMessage));
+        String errorCodeFromException = ErrorCode.INVALID_TYPE_PARAMETERS;
+        String errorResponseMessage = translator.translateToLocale(errorCodeFromException);
         errorResponse.setErrorCode(errorCodeFromException);
-        return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
+        errorResponse.setErrorMessage(errorResponseMessage);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+//    @ExceptionHandler(RuntimeException.class)
+//    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException exception) {
+//        String exceptionMessage = exception.getMessage();
+//        String errorCodeFromException = String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value());
+//        ErrorResponse errorResponse = new ErrorResponse();
+//        errorResponse.setErrorMessage(String.format(translator.translateToLocale(errorCodeFromException), exceptionMessage));
+//        errorResponse.setErrorCode(errorCodeFromException);
+//        return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
+//    }
 
     private void initializeComplianceMap() {
         complianceMap.put(ErrorCode.TAG_NAME_INCORRECT, HttpStatus.BAD_REQUEST);
@@ -95,5 +107,6 @@ public class RestExceptionHandler {
         complianceMap.put(ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH, HttpStatus.BAD_REQUEST);
         complianceMap.put(ErrorCode.PAGINATION_INCORRECT_PAGE_NUMBER, HttpStatus.BAD_REQUEST);
         complianceMap.put(ErrorCode.PAGINATION_INCORRECT_SIZE, HttpStatus.BAD_REQUEST);
+        complianceMap.put(ErrorCode.ORDER_CREATING_ERROR, HttpStatus.BAD_REQUEST);
     }
 }
