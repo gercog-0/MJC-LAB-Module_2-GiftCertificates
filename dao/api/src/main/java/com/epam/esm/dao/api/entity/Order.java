@@ -1,7 +1,7 @@
 package com.epam.esm.dao.api.entity;
 
 
-import org.hibernate.envers.Audited;
+import com.epam.esm.dao.api.audit.OrderAuditListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -11,8 +11,8 @@ import java.util.Objects;
 /**
  * The type Order.
  */
+@EntityListeners(OrderAuditListener.class)
 @Entity
-@Audited
 @Table(name = "orders")
 public class Order {
     @Id

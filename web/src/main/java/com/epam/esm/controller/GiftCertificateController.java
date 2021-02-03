@@ -16,7 +16,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "api/v1/gift-certificates")
-public class GiftCertificateController{
+public class GiftCertificateController {
 
     private final GiftCertificateService giftCertificateService;
 
@@ -30,9 +30,9 @@ public class GiftCertificateController{
                                                             @RequestParam(required = false) String name,
                                                             @RequestParam(required = false) String description,
                                                             @RequestParam(required = false)
-                                                                        GiftCertificateQueryParametersDto.TypeSort typeSort,
+                                                                    GiftCertificateQueryParametersDto.TypeSort typeSort,
                                                             @RequestParam(required = false)
-                                                                        GiftCertificateQueryParametersDto.OrderSort orderSort,
+                                                                    GiftCertificateQueryParametersDto.OrderSort orderSort,
                                                             @RequestParam(required = false) Integer page,
                                                             @RequestParam(required = false) Integer size) {
         PaginationDto paginationDto = new PaginationDto(page, size);
@@ -58,7 +58,7 @@ public class GiftCertificateController{
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificateDto addGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
         GiftCertificateDto giftCertificateDtoResult = giftCertificateService.add(giftCertificateDto);
-        addDependenciesLinks(giftCertificateDto);
+        addDependenciesLinks(giftCertificateDtoResult);
         return giftCertificateDtoResult;
     }
 
@@ -67,7 +67,7 @@ public class GiftCertificateController{
                                                     @RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setId(id);
         GiftCertificateDto giftCertificateDtoResult = giftCertificateService.updatePart(giftCertificateDto);
-        addDependenciesLinks(giftCertificateDto);
+        addDependenciesLinks(giftCertificateDtoResult);
         return giftCertificateDtoResult;
     }
 
@@ -76,7 +76,7 @@ public class GiftCertificateController{
                                                           @RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setId(id);
         GiftCertificateDto giftCertificateDtoResult = giftCertificateService.updatePart(giftCertificateDto);
-        addDependenciesLinks(giftCertificateDto);
+        addDependenciesLinks(giftCertificateDtoResult);
         return giftCertificateDtoResult;
     }
 
@@ -86,7 +86,6 @@ public class GiftCertificateController{
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
     private void addDependenciesLinks(GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
                 .findGiftCertificateById(giftCertificateDto.getId())).withSelfRel());
@@ -94,6 +93,8 @@ public class GiftCertificateController{
                 .updateGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel("update"));
         giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
                 .updatePartOfGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel("update-part"));
+        giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+                .deleteGiftCertificate(giftCertificateDto.getId())).withRel("delete"));
         giftCertificateDto.getTags().forEach(tagDto -> tagDto.add(linkTo(methodOn(TagController.class)
                 .findTagById(tagDto.getId())).withSelfRel()));
     }

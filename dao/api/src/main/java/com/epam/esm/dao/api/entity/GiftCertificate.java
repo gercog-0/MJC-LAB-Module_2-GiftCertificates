@@ -1,6 +1,6 @@
 package com.epam.esm.dao.api.entity;
 
-import org.hibernate.envers.Audited;
+import com.epam.esm.dao.api.audit.GiftCertificateAuditListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,9 +14,8 @@ import java.util.Objects;
  * @author Ivan Yanushkevich
  * @version 1.0
  */
-
+@EntityListeners(GiftCertificateAuditListener.class)
 @Entity
-@Audited
 @Table(name = "gift_certificate")
 public class GiftCertificate {
 

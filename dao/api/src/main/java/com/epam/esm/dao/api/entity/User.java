@@ -1,12 +1,10 @@
 package com.epam.esm.dao.api.entity;
 
-import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Audited
 @Table(name = "user")
 public class User {
     @Id

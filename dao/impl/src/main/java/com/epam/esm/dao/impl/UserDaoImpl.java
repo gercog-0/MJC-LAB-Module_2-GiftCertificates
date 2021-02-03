@@ -35,7 +35,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
         throw new UnsupportedOperationException("Method add for User is unsupported.");
-
     }
 
     @Override

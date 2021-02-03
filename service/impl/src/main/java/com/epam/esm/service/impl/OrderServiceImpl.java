@@ -74,7 +74,6 @@ public class OrderServiceImpl implements OrderService {
         validator.validate(orderDto);
         GiftCertificateDto giftCertificateDto = giftCertificateService.findById(orderDto.getGiftCertificateId());
         BigDecimal orderCost = giftCertificateDto.getPrice();
-        orderDto.setPurchaseDate(LocalDateTime.now());
         orderDto.setCost(orderCost);
         Order order = modelMapper.map(orderDto, Order.class);
         Order addedOrder = orderDao.add(order);

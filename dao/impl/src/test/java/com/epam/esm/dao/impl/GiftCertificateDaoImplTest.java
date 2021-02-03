@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DaoTestConfiguration.class)
@@ -84,25 +85,15 @@ class GiftCertificateDaoImplTest {
     @Transactional
     @Test
     void methodAddShouldReturnCorrectGiftCertificate(){
-        GiftCertificate expectedGiftCertificate = new GiftCertificate();
-        expectedGiftCertificate.setId(5L);
-        expectedGiftCertificate.setName("New");
-        expectedGiftCertificate.setDescription("NEW");
-        expectedGiftCertificate.setPrice(new BigDecimal("5000"));
-        expectedGiftCertificate.setDuration(3);
-        expectedGiftCertificate.setCreateDate(LocalDateTime.of(2020, 9, 12, 15, 0, 0));
-        expectedGiftCertificate.setLastUpdateDate(LocalDateTime.of(2021, 1, 1, 17, 0, 0));
         GiftCertificate addedGiftCertificate = new GiftCertificate();
         addedGiftCertificate.setName("New");
         addedGiftCertificate.setDescription("NEW");
         addedGiftCertificate.setPrice(new BigDecimal("5000"));
         addedGiftCertificate.setDuration(3);
-        addedGiftCertificate.setCreateDate(LocalDateTime.of(2020, 9, 12, 15, 0, 0));
-        addedGiftCertificate.setLastUpdateDate(LocalDateTime.of(2021, 1, 1, 17, 0, 0));
 
         GiftCertificate actualGiftCertificate = giftCertificateDao.add(addedGiftCertificate);
 
-        assertEquals(actualGiftCertificate, expectedGiftCertificate);
+        assertNotNull(actualGiftCertificate);
     }
 
     @Test
