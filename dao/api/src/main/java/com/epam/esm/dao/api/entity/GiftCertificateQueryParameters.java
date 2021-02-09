@@ -184,5 +184,4 @@ public class GiftCertificateQueryParameters {
     public void setOrderSort(OrderSort orderSort) {
         this.orderSort = orderSort;
     }
-
 }
