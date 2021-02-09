@@ -1,5 +1,6 @@
 package com.epam.esm.dao.api;
 
+import com.epam.esm.dao.api.entity.Pagination;
 import com.epam.esm.dao.api.entity.Tag;
 
 import java.util.List;
@@ -19,15 +20,7 @@ public interface TagDao extends BaseDao<Tag> {
      *
      * @return the list
      */
-    List<Tag> findAll();
-
-    /**
-     * Find tags by gift certificate id.
-     *
-     * @param giftCertificateId the gift certificate id
-     * @return the list
-     */
-    List<Tag> findTagsByGiftCertificateId(Long giftCertificateId);
+    List<Tag> findAll(Pagination pagination);
 
     /**
      * Find optional of by name.
@@ -37,10 +30,5 @@ public interface TagDao extends BaseDao<Tag> {
      */
     Optional<Tag> findByName(String name);
 
-    /**
-     * Remove records from cross table by tag id.
-     *
-     * @param tagId the tag id
-     */
-    void removeTagHasGiftCertificate(Long tagId);
+    Optional<Tag> findMostPopular();
 }

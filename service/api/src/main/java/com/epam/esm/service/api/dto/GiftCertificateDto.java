@@ -1,6 +1,8 @@
 package com.epam.esm.service.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.hateoas.RepresentationModel;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.Objects;
 /**
  * The type Gift certificate dto.
  */
-public class GiftCertificateDto {
+public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 
     private Long id;
     private String name;

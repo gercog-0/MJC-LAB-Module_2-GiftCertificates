@@ -2,88 +2,68 @@ package com.epam.esm.dao.impl;
 
 
 import com.epam.esm.dao.api.TagDao;
+import com.epam.esm.dao.api.entity.Pagination;
 import com.epam.esm.dao.api.entity.Tag;
-import com.epam.esm.dao.impl.mapper.TagMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+import com.epam.esm.dao.impl.util.PaginationUtil;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.dao.impl.util.SqlQuery.*;
+import static com.epam.esm.dao.impl.util.SqlQuery.TAG_FIND_ALL;
+import static com.epam.esm.dao.impl.util.SqlQuery.TAG_FIND_BY_NAME;
+import static com.epam.esm.dao.impl.util.SqlQuery.TAG_FIND_MOST_POPULAR_BY_USER_WHICH_HAS_HIGHEST_AMOUNT_ORDERS;
 
 @Repository
 public class TagDaoImpl implements TagDao {
 
-    private static final int ZERO = 0;
-
-    private final JdbcTemplate jdbcTemplate;
-    private final TagMapper tagMapper;
-
-    @Autowired
-    public TagDaoImpl(JdbcTemplate jdbcTemplate, TagMapper tagMapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.tagMapper = tagMapper;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
-    public List<Tag> findAll() {
-        return jdbcTemplate.query(TAG_FIND_ALL, tagMapper);
+    public List<Tag> findAll(Pagination pagination) {
+        return entityManager.createQuery(TAG_FIND_ALL, Tag.class)
+                .setFirstResult(PaginationUtil.defineFirstResultToEntityManager(pagination))
+                .setMaxResults(pagination.getSize())
+                .getResultList();
     }
 
     @Override
     public Optional<Tag> findById(Long id) {
-        return jdbcTemplate.query(TAG_FIND_BY_ID, new Object[]{id}, tagMapper)
-                .stream().findAny();
+        return Optional.ofNullable(entityManager.find(Tag.class, id));
     }
 
     @Override
     public Tag add(Tag tag) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement(TAG_ADD,
-                    Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, tag.getName());
-            return preparedStatement;
-        }, keyHolder);
-        Number key = keyHolder.getKey();
-        if (key != null) {
-            tag.setId(key.longValue());
-        }
+        entityManager.persist(tag);
         return tag;
     }
 
     @Override
-    public boolean update(Tag tag) {
+    public Tag update(Tag tag) {
         throw new UnsupportedOperationException("Method update for Tag is unsupported.");
     }
 
-    @Transactional
     @Override
-    public boolean remove(Long id) {
-        removeTagHasGiftCertificate(id);
-        return jdbcTemplate.update(TAG_REMOVE, id) > ZERO;
-    }
-
-    @Override
-    public void removeTagHasGiftCertificate(Long tagId) {
-        jdbcTemplate.update(REMOVE_TAG_HAS_GIFT_CERTIFICATE_BY_TAG, tagId);
-    }
-
-    @Override
-    public List<Tag> findTagsByGiftCertificateId(Long giftCertificateId) {
-        return jdbcTemplate.query(FIND_TAGS_BY_GIFT_CERTIFICATE_ID, new Object[]{giftCertificateId}, tagMapper);
+    public void remove(Long id) {
+        Tag foundTag = entityManager.find(Tag.class, id);
+        entityManager.remove(foundTag);
     }
 
     @Override
     public Optional<Tag> findByName(String name) {
-        return jdbcTemplate.query(TAG_FIND_BY_NAME, new Object[]{name}, tagMapper)
-                .stream().findAny();
+        return entityManager.createQuery(TAG_FIND_BY_NAME, Tag.class)
+                .setParameter("name", name)
+                .getResultList().stream()
+                .findAny();
+    }
+
+    @Override
+    public Optional<Tag> findMostPopular() {
+        return entityManager.createNativeQuery(TAG_FIND_MOST_POPULAR_BY_USER_WHICH_HAS_HIGHEST_AMOUNT_ORDERS, Tag.class)
+                .getResultList().stream()
+                .findFirst();
     }
 }

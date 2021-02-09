@@ -1,5 +1,6 @@
 package com.epam.esm.service.api;
 
+import com.epam.esm.service.api.dto.PaginationDto;
 import com.epam.esm.service.api.dto.TagDto;
 
 import java.util.List;
@@ -15,15 +16,7 @@ public interface TagService extends BaseService<TagDto> {
      *
      * @return the list
      */
-    List<TagDto> findAll();
-
-    /**
-     * Find tags by gift certificate id list.
-     *
-     * @param giftCertificateId the gift certificate id
-     * @return the list
-     */
-    List<TagDto> findTagsByGiftCertificateId(long giftCertificateId);
+    List<TagDto> findAll(PaginationDto paginationDto);
 
     /**
      * Find by name tag dto.
@@ -32,6 +25,8 @@ public interface TagService extends BaseService<TagDto> {
      * @return the tag dto
      */
     TagDto findByName(String name);
+
+    TagDto findMostPopular();
 
     /**
      * Is tag exist boolean.

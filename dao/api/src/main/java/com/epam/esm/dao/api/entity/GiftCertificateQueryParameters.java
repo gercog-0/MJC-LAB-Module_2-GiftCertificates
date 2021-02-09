@@ -1,11 +1,9 @@
 package com.epam.esm.dao.api.entity;
 
+import java.util.List;
+
 /**
- * Class {@code GiftCertificateQueryParameters} represents a class
- * that contains parameters for generating a dynamic query .
- *
- * @author Ivan Yanushkevich
- * @version 1.0
+ * The type Gift certificate query parameters.
  */
 public class GiftCertificateQueryParameters {
 
@@ -45,11 +43,11 @@ public class GiftCertificateQueryParameters {
         /**
          * Name type sort.
          */
-        NAME("gift_certificate.name"),
+        NAME("name"),
         /**
          * Create date type sort.
          */
-        CREATE_DATE("gift_certificate.create_date");
+        CREATE_DATE("create_date");
 
         private final String expression;
 
@@ -67,7 +65,7 @@ public class GiftCertificateQueryParameters {
         }
     }
 
-    private String tagName;
+    private List<String> tags;
     private String name;
     private String description;
     private TypeSort typeSort;
@@ -82,14 +80,15 @@ public class GiftCertificateQueryParameters {
     /**
      * Instantiates a new Gift certificate query parameters.
      *
-     * @param tagName     the tag name
+     * @param tags        the tags
      * @param name        the name
      * @param description the description
      * @param typeSort    the type sort
      * @param orderSort   the order sort
      */
-    public GiftCertificateQueryParameters(String tagName, String name, String description, TypeSort typeSort, OrderSort orderSort) {
-        this.tagName = tagName;
+    public GiftCertificateQueryParameters(List<String> tags, String name, String description,
+                                          TypeSort typeSort, OrderSort orderSort) {
+        this.tags = tags;
         this.name = name;
         this.description = description;
         this.typeSort = typeSort;
@@ -97,21 +96,21 @@ public class GiftCertificateQueryParameters {
     }
 
     /**
-     * Gets tag name.
+     * Gets tags.
      *
-     * @return the tag name
+     * @return the tags
      */
-    public String getTagName() {
-        return tagName;
+    public List<String> getTags() {
+        return tags;
     }
 
     /**
-     * Sets tag name.
+     * Sets tags.
      *
-     * @param tagName the tag name
+     * @param tags the tags
      */
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     /**

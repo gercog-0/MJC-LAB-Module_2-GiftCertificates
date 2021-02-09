@@ -4,3 +4,5 @@ include 'dao:impl'
 include 'service:api'
 include 'service:impl'
 include 'web'
+include 'application'
+

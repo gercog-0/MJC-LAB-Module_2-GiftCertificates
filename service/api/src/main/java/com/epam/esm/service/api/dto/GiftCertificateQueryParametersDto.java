@@ -1,5 +1,7 @@
 package com.epam.esm.service.api.dto;
 
+import java.util.List;
+
 /**
  * The type Gift certificate query parameters dto.
  */
@@ -33,7 +35,7 @@ public class GiftCertificateQueryParametersDto {
         CREATE_DATE
     }
 
-    private String tagName;
+    private List<String> tags;
     private String name;
     private String description;
     private TypeSort typeSort;
@@ -48,14 +50,14 @@ public class GiftCertificateQueryParametersDto {
     /**
      * Instantiates a new Gift certificate query parameters dto.
      *
-     * @param tagName     the tag name
+     * @param tags        the tags
      * @param name        the name
      * @param description the description
      * @param typeSort    the type sort
      * @param orderSort   the order sort
      */
-    public GiftCertificateQueryParametersDto(String tagName, String name, String description, TypeSort typeSort, OrderSort orderSort) {
-        this.tagName = tagName;
+    public GiftCertificateQueryParametersDto(List<String> tags, String name, String description, TypeSort typeSort, OrderSort orderSort) {
+        this.tags = tags;
         this.name = name;
         this.description = description;
         this.typeSort = typeSort;
@@ -63,21 +65,21 @@ public class GiftCertificateQueryParametersDto {
     }
 
     /**
-     * Gets tag name.
+     * Gets tags.
      *
-     * @return the tag name
+     * @return the tags
      */
-    public String getTagName() {
-        return tagName;
+    public List<String> getTags() {
+        return tags;
     }
 
     /**
-     * Sets tag name.
+     * Sets tags.
      *
-     * @param tagName the tag name
+     * @param tags the tags
      */
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     /**

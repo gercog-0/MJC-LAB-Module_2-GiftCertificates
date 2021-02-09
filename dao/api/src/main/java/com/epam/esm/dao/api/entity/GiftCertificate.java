@@ -1,5 +1,8 @@
 package com.epam.esm.dao.api.entity;
 
+import com.epam.esm.dao.api.audit.GiftCertificateAuditListener;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,15 +14,32 @@ import java.util.Objects;
  * @author Ivan Yanushkevich
  * @version 1.0
  */
+@EntityListeners(GiftCertificateAuditListener.class)
+@Entity
+@Table(name = "gift_certificate")
 public class GiftCertificate {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
     private String description;
+    @Column(name = "price")
     private BigDecimal price;
+    @Column(name = "duration")
     private Integer duration;
+    @Column(name = "create_date")
     private LocalDateTime createDate;
+    @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
+    @ManyToMany
+    @JoinTable(
+            name = "tag_has_gift_certificate",
+            joinColumns = @JoinColumn(name = "gift_certificate_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
     private List<Tag> tags;
 
     /**

@@ -30,6 +30,16 @@ public class ServiceException extends RuntimeException {
     }
 
     /**
+     * Instantiates a new Service exception.
+     *
+     * @param errorCode the error code
+     */
+    public ServiceException(String errorCode){
+        super();
+        this.errorCode = errorCode;
+    }
+
+    /**
      * Gets error code.
      *
      * @return the error code
