@@ -75,15 +75,15 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(RuntimeException.class)
-//    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException exception) {
-//        String exceptionMessage = exception.getMessage();
-//        String errorCodeFromException = String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value());
-//        ErrorResponse errorResponse = new ErrorResponse();
-//        errorResponse.setErrorMessage(String.format(translator.translateToLocale(errorCodeFromException), exceptionMessage));
-//        errorResponse.setErrorCode(errorCodeFromException);
-//        return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
-//    }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException exception) {
+        String exceptionMessage = exception.getMessage();
+        String errorCodeFromException = String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage(String.format(translator.translateToLocale(errorCodeFromException), exceptionMessage));
+        errorResponse.setErrorCode(errorCodeFromException);
+        return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
+    }
 
     private void initializeComplianceMap() {
         complianceMap.put(ErrorCode.TAG_NAME_INCORRECT, HttpStatus.BAD_REQUEST);

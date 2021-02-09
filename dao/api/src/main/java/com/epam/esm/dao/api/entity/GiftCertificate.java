@@ -22,18 +22,25 @@ public class GiftCertificate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "price")
     private BigDecimal price;
+
     @Column(name = "duration")
     private Integer duration;
+
     @Column(name = "create_date")
     private LocalDateTime createDate;
+
     @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
+
     @ManyToMany
     @JoinTable(
             name = "tag_has_gift_certificate",
