@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * The interface User service.
  */
-public interface UserService {
+public interface UserService extends BaseService<UserDto>{
 
     /**
      * Find all list.
@@ -17,12 +17,4 @@ public interface UserService {
      * @return the list
      */
     List<UserDto> findAll(PaginationDto paginationDto);
-
-    /**
-     * Find by id user dto.
-     *
-     * @param id the id
-     * @return the user dto
-     */
-    UserDto findById(Long id);
 }

@@ -20,9 +20,15 @@ public final class SqlQuery {
     queries for user table
      */
     public static final String FIND_ALL_USERS = "SELECT u FROM User u";
+    public static final String FIND_USER_BY_LOGIN = "SELECT u FROM User u WHERE u.login = :login";
 
     /*
    queries for orders table
     */
     public static final String FIND_ALL_ORDERS_BY_USER_ID = "SELECT o FROM Order o WHERE o.userId =:userId";
+
+     /*
+   queries for role table
+    */
+     public static final String FIND_ROLE_BY_NAME = "SELECT r FROM Role r WHERE r.name = :name";
 }

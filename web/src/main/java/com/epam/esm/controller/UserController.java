@@ -4,6 +4,7 @@ import com.epam.esm.service.api.UserService;
 import com.epam.esm.service.api.dto.PaginationDto;
 import com.epam.esm.service.api.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,11 @@ public class UserController {
         UserDto userDto = userService.findById(id);
         addDependenciesLinks(userDto);
         return userDto;
+    }
+
+    @PostMapping("/signUp")
+    public UserDto signUp(@RequestBody UserDto userDto){
+        return null;
     }
 
     private void addDependenciesLinks(UserDto userDto) {

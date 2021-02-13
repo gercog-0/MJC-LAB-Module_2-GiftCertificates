@@ -2,7 +2,6 @@ package com.epam.esm.controller.exception;
 
 import com.epam.esm.service.api.exception.ErrorCode;
 import com.epam.esm.service.api.exception.ServiceException;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +65,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException exp){
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException exp) {
         ErrorResponse errorResponse = new ErrorResponse();
         String errorCodeFromException = ErrorCode.INVALID_TYPE_PARAMETERS;
         String errorResponseMessage = translator.translateToLocale(errorCodeFromException);
@@ -108,5 +107,9 @@ public class RestExceptionHandler {
         complianceMap.put(ErrorCode.PAGINATION_INCORRECT_PAGE_NUMBER, HttpStatus.BAD_REQUEST);
         complianceMap.put(ErrorCode.PAGINATION_INCORRECT_SIZE, HttpStatus.BAD_REQUEST);
         complianceMap.put(ErrorCode.ORDER_CREATING_ERROR, HttpStatus.BAD_REQUEST);
+        complianceMap.put(ErrorCode.USER_LOGIN_INCORRECT, HttpStatus.BAD_REQUEST);
+        complianceMap.put(ErrorCode.USER_PASSWORD_INCORRECT, HttpStatus.BAD_REQUEST);
+        complianceMap.put(ErrorCode.USER_WITH_SUCH_LOGIN_ALREADY_EXIST, HttpStatus.BAD_REQUEST);
+        complianceMap.put(ErrorCode.ROLE_WITH_SUCH_NAME_NOT_EXIST, HttpStatus.BAD_REQUEST);
     }
 }

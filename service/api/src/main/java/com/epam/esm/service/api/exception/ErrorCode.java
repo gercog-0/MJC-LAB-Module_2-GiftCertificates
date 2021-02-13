@@ -20,11 +20,16 @@ public final class ErrorCode {
     public static final String GIFT_CERTIFICATE_ID_SPECIFIED_WHILE_CREATING = "00011";
 
     public static final String USER_NAME_INCORRECT = "00012";
+    public static final String USER_LOGIN_INCORRECT = "00020";
+    public static final String USER_PASSWORD_INCORRECT = "00021";
+    public static final String USER_WITH_SUCH_LOGIN_ALREADY_EXIST = "00022";
     public static final String USER_WITH_SUCH_ID_NOT_EXIST = "00013";
 
     public static final String ORDER_ID_SPECIFIED_WHILE_CREATING = "00014";
     public static final String ORDER_WITH_SUCH_ID_NOT_EXIST = "00015";
     public static final String ORDER_CREATING_ERROR = "00019";
+
+    public static final String ROLE_WITH_SUCH_NAME_NOT_EXIST = "00023";
 
     public static final String PAGINATION_INCORRECT_PAGE_NUMBER = "00017";
     public static final String PAGINATION_INCORRECT_SIZE = "00018";

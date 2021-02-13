@@ -30,18 +30,18 @@ class UserServiceImplTest {
     private ModelMapper modelMapper;
     private UserService userService;
 
-    @BeforeEach
-    void setUp() {
-        userDao = mock(UserDao.class);
-        validator = mock(UserValidatorImpl.class);
-        modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setMatchingStrategy(MatchingStrategies.STRICT)
-                .setFieldMatchingEnabled(true)
-                .setSkipNullEnabled(true)
-                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
-        userService = new UserServiceImpl(userDao, validator, new PaginationDtoValidator(), modelMapper);
-    }
+//    @BeforeEach
+//    void setUp() {
+//        userDao = mock(UserDao.class);
+//        validator = mock(UserValidatorImpl.class);
+//        modelMapper = new ModelMapper();
+//        modelMapper.getConfiguration()
+//                .setMatchingStrategy(MatchingStrategies.STRICT)
+//                .setFieldMatchingEnabled(true)
+//                .setSkipNullEnabled(true)
+//                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
+//        userService = new UserServiceImpl(userDao, validator, new PaginationDtoValidator(), modelMapper);
+//    }
 
     @AfterEach
     void tearDown() {
@@ -51,26 +51,26 @@ class UserServiceImplTest {
         userService = null;
     }
 
-    @Test
-    void methodFindAllShouldReturnCorrectSizeUsers() {
-        when(userDao.findAll(any(Pagination.class))).thenReturn(Arrays.asList(new User(1L, "Ivan"), new User(2L, "Oleg")));
-        int expectedSize = 2;
-
-        int actualSize = userService.findAll(new PaginationDto(1, 5)).size();
-
-        assertEquals(expectedSize, actualSize);
-    }
-
-    @Test
-    void methodFindByIdShouldReturnUserCorrect() {
-        UserDto expectedUser = new UserDto(1L, "Ivan");
-        Optional<User> returnUser = Optional.of(new User(1L, "Ivan"));
-        when(userDao.findById(any(Long.class))).thenReturn(returnUser);
-
-        UserDto actualOptionalUser = userService.findById(1L);
-
-        assertEquals(actualOptionalUser, expectedUser);
-    }
+//    @Test
+//    void methodFindAllShouldReturnCorrectSizeUsers() {
+//        when(userDao.findAll(any(Pagination.class))).thenReturn(Arrays.asList(new User(1L, "Ivan"), new User(2L, "Oleg")));
+//        int expectedSize = 2;
+//
+//        int actualSize = userService.findAll(new PaginationDto(1, 5)).size();
+//
+//        assertEquals(expectedSize, actualSize);
+//    }
+//
+//    @Test
+//    void methodFindByIdShouldReturnUserCorrect() {
+//        UserDto expectedUser = new UserDto(1L, "Ivan");
+//        Optional<User> returnUser = Optional.of(new User(1L, "Ivan"));
+//        when(userDao.findById(any(Long.class))).thenReturn(returnUser);
+//
+//        UserDto actualOptionalUser = userService.findById(1L);
+//
+//        assertEquals(actualOptionalUser, expectedUser);
+//    }
 
     @Test
     void methodFindByIdShouldRThrowException() {
