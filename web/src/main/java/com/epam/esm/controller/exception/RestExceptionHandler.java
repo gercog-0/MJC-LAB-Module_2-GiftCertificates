@@ -111,5 +111,7 @@ public class RestExceptionHandler {
         complianceMap.put(ErrorCode.USER_PASSWORD_INCORRECT, HttpStatus.BAD_REQUEST);
         complianceMap.put(ErrorCode.USER_WITH_SUCH_LOGIN_ALREADY_EXIST, HttpStatus.BAD_REQUEST);
         complianceMap.put(ErrorCode.ROLE_WITH_SUCH_NAME_NOT_EXIST, HttpStatus.BAD_REQUEST);
+        complianceMap.put(ErrorCode.USER_WITH_SUCH_LOGIN_NOT_EXIST, HttpStatus.NOT_FOUND);
+        complianceMap.put(ErrorCode.INCORRECT_LOGIN_OR_PASSWORD, HttpStatus.NOT_FOUND);
     }
 }

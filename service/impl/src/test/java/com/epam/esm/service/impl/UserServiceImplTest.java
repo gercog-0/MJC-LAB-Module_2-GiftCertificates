@@ -71,11 +71,11 @@ class UserServiceImplTest {
 //
 //        assertEquals(actualOptionalUser, expectedUser);
 //    }
-
-    @Test
-    void methodFindByIdShouldRThrowException() {
-        when(userDao.findById(any(Long.class))).thenReturn(Optional.empty());
-
-        assertThrows(ServiceException.class, () -> userService.findById(1L));
-    }
+//
+//    @Test
+//    void methodFindByIdShouldThrowException() {
+//        when(userDao.findById(any(Long.class))).thenReturn(Optional.empty());
+//
+//        assertThrows(ServiceException.class, () -> userService.findById(1L));
+//    }
 }

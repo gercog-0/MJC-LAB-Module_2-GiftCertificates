@@ -23,7 +23,9 @@ public final class ErrorCode {
     public static final String USER_LOGIN_INCORRECT = "00020";
     public static final String USER_PASSWORD_INCORRECT = "00021";
     public static final String USER_WITH_SUCH_LOGIN_ALREADY_EXIST = "00022";
+    public static final String USER_WITH_SUCH_LOGIN_NOT_EXIST = "00024";
     public static final String USER_WITH_SUCH_ID_NOT_EXIST = "00013";
+    public static final String INCORRECT_LOGIN_OR_PASSWORD = "00025";
 
     public static final String ORDER_ID_SPECIFIED_WHILE_CREATING = "00014";
     public static final String ORDER_WITH_SUCH_ID_NOT_EXIST = "00015";

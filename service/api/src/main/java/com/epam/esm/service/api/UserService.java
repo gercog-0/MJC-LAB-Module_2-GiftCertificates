@@ -17,4 +17,6 @@ public interface UserService extends BaseService<UserDto>{
      * @return the list
      */
     List<UserDto> findAll(PaginationDto paginationDto);
+
+    UserDto findByLogin(String login);
 }

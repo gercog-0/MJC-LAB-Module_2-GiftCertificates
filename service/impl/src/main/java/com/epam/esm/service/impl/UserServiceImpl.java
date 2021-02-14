@@ -14,16 +14,19 @@ import com.epam.esm.service.impl.validator.impl.PaginationDtoValidator;
 import com.epam.esm.service.impl.validator.impl.UserValidatorImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.epam.esm.service.api.exception.ErrorCode.USER_WITH_SUCH_ID_NOT_EXIST;
 import static com.epam.esm.service.api.exception.ErrorCode.USER_WITH_SUCH_LOGIN_ALREADY_EXIST;
+import static com.epam.esm.service.api.exception.ErrorCode.USER_WITH_SUCH_LOGIN_NOT_EXIST;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,18 +37,19 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final BaseValidator<UserDto> userValidator;
     private final BaseValidator<PaginationDto> paginationValidator;
+    private final BCryptPasswordEncoder encoder;
     private final ModelMapper modelMapper;
 
     @Autowired
     public UserServiceImpl(UserDao userDao, RoleService roleService, UserValidatorImpl userValidator,
-                           PaginationDtoValidator paginationValidator, ModelMapper modelMapper) {
+                           PaginationDtoValidator paginationValidator, BCryptPasswordEncoder encoder, ModelMapper modelMapper) {
         this.userDao = userDao;
         this.roleService = roleService;
         this.userValidator = userValidator;
         this.paginationValidator = paginationValidator;
+        this.encoder = encoder;
         this.modelMapper = modelMapper;
     }
-
 
     @Override
     public List<UserDto> findAll(PaginationDto paginationDto) {
@@ -54,6 +58,15 @@ public class UserServiceImpl implements UserService {
         return userDao.findAll(pagination).stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDto findByLogin(String login) {
+        Optional<User> foundUser = userDao.findByLogin(login);
+        if (!foundUser.isPresent()) {
+            throw new ServiceException(USER_WITH_SUCH_LOGIN_NOT_EXIST, login);
+        }
+        return modelMapper.map(foundUser.get(), UserDto.class);
     }
 
     @Override
@@ -70,6 +83,7 @@ public class UserServiceImpl implements UserService {
         checkLoginToUnique(userDto.getLogin());
         RoleDto defaultUserRole = roleService.findByName(DEFAULT_USER_ROLE);
         userDto.setRoles(new ArrayList<>(Collections.singletonList(defaultUserRole)));
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
         User user = modelMapper.map(userDto, User.class);
         User addedUser = userDao.add(user);
         return modelMapper.map(addedUser, UserDto.class);

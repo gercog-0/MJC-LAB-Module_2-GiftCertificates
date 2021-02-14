@@ -39,9 +39,11 @@ public class UserController {
         return userDto;
     }
 
-    @PostMapping("/signUp")
-    public UserDto signUp(@RequestBody UserDto userDto){
-        return null;
+    @PostMapping(path = "/registration")
+    public UserDto register(@RequestBody UserDto userDto){
+        UserDto registeredUser = userService.add(userDto);
+        addDependenciesLinks(registeredUser);
+        return registeredUser;
     }
 
     private void addDependenciesLinks(UserDto userDto) {
