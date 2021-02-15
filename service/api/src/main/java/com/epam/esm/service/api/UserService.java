@@ -1,5 +1,6 @@
 package com.epam.esm.service.api;
 
+import com.epam.esm.service.api.dto.AuthenticationDto;
 import com.epam.esm.service.api.dto.PaginationDto;
 import com.epam.esm.service.api.dto.UserDto;
 
@@ -19,4 +20,6 @@ public interface UserService extends BaseService<UserDto>{
     List<UserDto> findAll(PaginationDto paginationDto);
 
     UserDto findByLogin(String login);
+
+    UserDto authorize(AuthenticationDto authenticationDto);
 }

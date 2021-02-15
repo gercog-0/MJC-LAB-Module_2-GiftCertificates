@@ -1,4 +1,4 @@
-package com.epam.esm.service.impl.security.provider;
+package com.epam.esm.controller.security.provider;
 
 import com.epam.esm.dao.api.entity.Role;
 import com.epam.esm.service.api.dto.RoleDto;

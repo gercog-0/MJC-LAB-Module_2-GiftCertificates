@@ -4,7 +4,6 @@ import com.epam.esm.service.api.UserService;
 import com.epam.esm.service.api.dto.PaginationDto;
 import com.epam.esm.service.api.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

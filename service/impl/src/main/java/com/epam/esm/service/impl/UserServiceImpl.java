@@ -5,6 +5,7 @@ import com.epam.esm.dao.api.entity.Pagination;
 import com.epam.esm.dao.api.entity.User;
 import com.epam.esm.service.api.RoleService;
 import com.epam.esm.service.api.UserService;
+import com.epam.esm.service.api.dto.AuthenticationDto;
 import com.epam.esm.service.api.dto.PaginationDto;
 import com.epam.esm.service.api.dto.RoleDto;
 import com.epam.esm.service.api.dto.UserDto;
@@ -18,12 +19,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.epam.esm.service.api.exception.ErrorCode.INCORRECT_LOGIN_OR_PASSWORD;
 import static com.epam.esm.service.api.exception.ErrorCode.USER_WITH_SUCH_ID_NOT_EXIST;
 import static com.epam.esm.service.api.exception.ErrorCode.USER_WITH_SUCH_LOGIN_ALREADY_EXIST;
 import static com.epam.esm.service.api.exception.ErrorCode.USER_WITH_SUCH_LOGIN_NOT_EXIST;
@@ -69,6 +70,17 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(foundUser.get(), UserDto.class);
     }
 
+    @Transactional
+    @Override
+    public UserDto authorize(AuthenticationDto authenticationDto) {
+        String userLogin = authenticationDto.getLogin();
+        Optional<User> foundUser = userDao.findByLogin(userLogin);
+        if (!foundUser.isPresent() || !encoder.matches(foundUser.get().getPassword(), authenticationDto.getPassword())) {
+            throw new ServiceException(INCORRECT_LOGIN_OR_PASSWORD);
+        }
+        return modelMapper.map(foundUser, UserDto.class);
+    }
+
     @Override
     public UserDto findById(long id) {
         return userDao.findById(id)
@@ -82,7 +94,7 @@ public class UserServiceImpl implements UserService {
         userValidator.validate(userDto);
         checkLoginToUnique(userDto.getLogin());
         RoleDto defaultUserRole = roleService.findByName(DEFAULT_USER_ROLE);
-        userDto.setRoles(new ArrayList<>(Collections.singletonList(defaultUserRole)));
+        userDto.setRoles(Collections.singletonList(defaultUserRole));
         userDto.setPassword(encoder.encode(userDto.getPassword()));
         User user = modelMapper.map(userDto, User.class);
         User addedUser = userDao.add(user);

@@ -1,7 +1,7 @@
-package com.epam.esm.service.impl.configuration;
+package com.epam.esm.controller.configuration;
 
-import com.epam.esm.service.impl.security.filter.ExceptionHandlerFilter;
-import com.epam.esm.service.impl.security.filter.JwtTokenFilter;
+import com.epam.esm.controller.security.filter.ExceptionHandlerFilter;
+import com.epam.esm.controller.security.filter.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

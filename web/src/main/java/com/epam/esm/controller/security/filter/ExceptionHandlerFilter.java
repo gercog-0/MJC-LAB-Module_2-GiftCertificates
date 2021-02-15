@@ -1,4 +1,4 @@
-package com.epam.esm.service.impl.security.filter;
+package com.epam.esm.controller.security.filter;
 
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
-package com.epam.esm.service.impl.security;
+package com.epam.esm.controller.security.service;
 
 import com.epam.esm.dao.api.entity.User;
 import com.epam.esm.service.api.UserService;
 import com.epam.esm.service.api.dto.UserDto;
-import com.epam.esm.service.impl.security.factory.JwtUserFactory;
+import com.epam.esm.controller.security.factory.JwtUserFactory;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

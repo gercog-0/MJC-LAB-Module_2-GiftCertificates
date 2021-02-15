@@ -1,14 +1,14 @@
-package com.epam.esm.service.api.dto;
+package com.epam.esm.controller.security.entity;
 
-public class AuthenticationResponseDto {
+public class AuthenticationResponse {
 
     private String login;
     private String token;
 
-    public AuthenticationResponseDto() {
+    public AuthenticationResponse() {
     }
 
-    public AuthenticationResponseDto(String login, String token) {
+    public AuthenticationResponse(String login, String token) {
         this.login = login;
         this.token = token;
     }

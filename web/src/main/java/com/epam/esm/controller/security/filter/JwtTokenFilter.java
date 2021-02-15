@@ -1,6 +1,6 @@
-package com.epam.esm.service.impl.security.filter;
+package com.epam.esm.controller.security.filter;
 
-import com.epam.esm.service.impl.security.provider.JwtTokenProvider;
+import com.epam.esm.controller.security.provider.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @Component
 public class JwtTokenFilter extends GenericFilterBean {
 
-    private JwtTokenProvider provider;
+    private final JwtTokenProvider provider;
 
     @Autowired
     public JwtTokenFilter(JwtTokenProvider provider) {
