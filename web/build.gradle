@@ -15,7 +15,6 @@ dependencies {
     implementation project(":dao:api")
     implementation project(":service:api")
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
     implementation "org.springframework.boot:spring-boot-starter-security:$springBootVersion"
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.2.3'

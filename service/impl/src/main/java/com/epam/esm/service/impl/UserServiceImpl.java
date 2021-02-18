@@ -6,6 +6,7 @@ import com.epam.esm.dao.api.entity.User;
 import com.epam.esm.service.api.RoleService;
 import com.epam.esm.service.api.UserService;
 import com.epam.esm.service.api.dto.AuthenticationDto;
+import com.epam.esm.service.api.dto.FullUserDto;
 import com.epam.esm.service.api.dto.PaginationDto;
 import com.epam.esm.service.api.dto.RoleDto;
 import com.epam.esm.service.api.dto.UserDto;
@@ -32,11 +33,11 @@ import static com.epam.esm.service.api.exception.ErrorCode.USER_WITH_SUCH_LOGIN_
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final String DEFAULT_USER_ROLE = "USER_ROLE";
+    private static final String DEFAULT_USER_ROLE = "ROLE_USER";
 
     private final UserDao userDao;
     private final RoleService roleService;
-    private final BaseValidator<UserDto> userValidator;
+    private final BaseValidator<FullUserDto> userValidator;
     private final BaseValidator<PaginationDto> paginationValidator;
     private final BCryptPasswordEncoder encoder;
     private final ModelMapper modelMapper;
@@ -62,12 +63,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findByLogin(String login) {
+    public FullUserDto findByLogin(String login) {
         Optional<User> foundUser = userDao.findByLogin(login);
         if (!foundUser.isPresent()) {
             throw new ServiceException(USER_WITH_SUCH_LOGIN_NOT_EXIST, login);
         }
-        return modelMapper.map(foundUser.get(), UserDto.class);
+        return modelMapper.map(foundUser.get(), FullUserDto.class);
     }
 
     @Transactional
@@ -75,10 +76,10 @@ public class UserServiceImpl implements UserService {
     public UserDto authorize(AuthenticationDto authenticationDto) {
         String userLogin = authenticationDto.getLogin();
         Optional<User> foundUser = userDao.findByLogin(userLogin);
-        if (!foundUser.isPresent() || !encoder.matches(foundUser.get().getPassword(), authenticationDto.getPassword())) {
+        if (!foundUser.isPresent() || !encoder.matches(authenticationDto.getPassword(), foundUser.get().getPassword())) {
             throw new ServiceException(INCORRECT_LOGIN_OR_PASSWORD);
         }
-        return modelMapper.map(foundUser, UserDto.class);
+        return modelMapper.map(foundUser.get(), UserDto.class);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserDto add(UserDto userDto) {
+    public UserDto register(FullUserDto userDto) {
         userValidator.validate(userDto);
         checkLoginToUnique(userDto.getLogin());
         RoleDto defaultUserRole = roleService.findByName(DEFAULT_USER_ROLE);

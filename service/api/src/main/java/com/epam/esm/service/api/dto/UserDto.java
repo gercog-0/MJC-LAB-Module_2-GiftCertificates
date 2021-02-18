@@ -2,7 +2,6 @@ package com.epam.esm.service.api.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import java.util.List;
 import java.util.Objects;
 
 public class UserDto extends RepresentationModel<UserDto> {
@@ -10,18 +9,15 @@ public class UserDto extends RepresentationModel<UserDto> {
     private Long id;
     private String name;
     private String login;
-    private String password;
-    private List<RoleDto> roles;
 
     public UserDto() {
     }
 
-    public UserDto(Long id, String name, String login, String password, List<RoleDto> roles) {
+    public UserDto(Long id, String name, String login) {
         this.id = id;
         this.name = name;
         this.login = login;
-        this.password = password;
-        this.roles = roles;
+
     }
 
     public Long getId() {
@@ -46,22 +42,6 @@ public class UserDto extends RepresentationModel<UserDto> {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<RoleDto> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<RoleDto> roles) {
-        this.roles = roles;
     }
 
     @Override

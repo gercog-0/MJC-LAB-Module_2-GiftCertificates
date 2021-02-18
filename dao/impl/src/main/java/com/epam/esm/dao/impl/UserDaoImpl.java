@@ -33,7 +33,7 @@ public class UserDaoImpl implements UserDao {
         return entityManager.createQuery(FIND_USER_BY_LOGIN, User.class)
                 .setParameter("login", login)
                 .getResultList().stream()
-                .findFirst();
+                .findAny();
     }
 
     @Override

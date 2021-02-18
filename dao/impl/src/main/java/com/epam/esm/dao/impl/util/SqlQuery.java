@@ -20,7 +20,7 @@ public final class SqlQuery {
     queries for user table
      */
     public static final String FIND_ALL_USERS = "SELECT u FROM User u";
-    public static final String FIND_USER_BY_LOGIN = "SELECT u FROM User u WHERE u.login = :login";
+    public static final String FIND_USER_BY_LOGIN = "SELECT u FROM User u WHERE u.login =:login";
 
     /*
    queries for orders table

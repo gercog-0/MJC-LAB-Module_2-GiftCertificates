@@ -1,5 +1,6 @@
 package com.epam.esm.service.impl.validator.impl;
 
+import com.epam.esm.service.api.dto.FullUserDto;
 import com.epam.esm.service.api.dto.UserDto;
 import com.epam.esm.service.api.exception.ServiceException;
 import com.epam.esm.service.impl.validator.BaseValidator;
@@ -10,14 +11,14 @@ import static com.epam.esm.service.api.exception.ErrorCode.USER_NAME_INCORRECT;
 import static com.epam.esm.service.api.exception.ErrorCode.USER_PASSWORD_INCORRECT;
 
 @Component
-public class UserValidatorImpl implements BaseValidator<UserDto> {
+public class UserValidatorImpl implements BaseValidator<FullUserDto> {
 
-    private static final String NAME_REGEX = "^[a-zA-Z ]{5,45}$";
+    private static final String NAME_REGEX = "^[a-zA-Z ]{2,45}$";
     private static final String LOGIN_REGEX = "^[a-zA-Z0-9_]{3,25}$";
     private static final String PASSWORD_REGEX = "^.{3,25}$";
 
     @Override
-    public void validate(UserDto user) {
+    public void validate(FullUserDto user) {
         validateName(user.getName());
         validateLogin(user.getLogin());
         validatePassword(user.getPassword());

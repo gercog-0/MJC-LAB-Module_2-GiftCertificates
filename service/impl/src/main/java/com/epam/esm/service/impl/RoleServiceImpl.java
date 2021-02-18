@@ -9,8 +9,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 import static com.epam.esm.service.api.exception.ErrorCode.ROLE_WITH_SUCH_NAME_NOT_EXIST;
 
 @Service
@@ -27,10 +25,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDto findByName(String name) {
-        Optional<Role> foundRole = roleDao.findByName(name);
-        if (!foundRole.isPresent()) {
-            throw new ServiceException(ROLE_WITH_SUCH_NAME_NOT_EXIST);
-        }
-        return modelMapper.map(foundRole.get(), RoleDto.class);
+        Role foundRole = roleDao.findByName(name).orElseThrow(() ->
+                new ServiceException(ROLE_WITH_SUCH_NAME_NOT_EXIST, name));
+        return modelMapper.map(foundRole, RoleDto.class);
     }
 }

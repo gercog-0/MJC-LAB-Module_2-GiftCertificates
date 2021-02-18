@@ -6,7 +6,6 @@ dependencies {
     implementation project(":service:api")
     implementation project(":dao:api")
     implementation "org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion"
-    implementation "org.springframework.boot:spring-boot-starter-data-rest:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-starter-security:$springBootVersion"
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.2.3'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'

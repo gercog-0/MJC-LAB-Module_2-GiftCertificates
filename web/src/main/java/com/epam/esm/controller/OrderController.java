@@ -6,6 +6,8 @@ import com.epam.esm.service.api.dto.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +36,7 @@ public class OrderController {
         return ordersDto;
     }
 
+    @PostAuthorize("hasRole('ADMIN') or returnObject.userId == principal.id")
     @GetMapping("/{id}")
     public OrderDto findOrderById(@PathVariable long id) {
         OrderDto orderDto = orderService.findById(id);
@@ -41,9 +44,11 @@ public class OrderController {
         return orderDto;
     }
 
-    @PostMapping
+    @PreAuthorize("hasRole('ADMIN') or #userId == principal.id")
+    @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto addOrder(@RequestBody OrderDto orderDto) {
+    public OrderDto addOrder(@PathVariable Long userId, @RequestBody OrderDto orderDto) {
+        orderDto.setUserId(userId);
         OrderDto orderDtoResult = orderService.add(orderDto);
         addDependenciesLinks(orderDtoResult);
         return orderDtoResult;

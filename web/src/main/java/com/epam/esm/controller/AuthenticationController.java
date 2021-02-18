@@ -28,7 +28,7 @@ public class AuthenticationController {
     public AuthenticationResponse login(@RequestBody AuthenticationDto authenticationDto) {
         UserDto userDto = userService.authorize(authenticationDto);
         String userLogin = userDto.getLogin();
-        String currentToken = tokenProvider.create(userLogin, userDto.getRoles());
+        String currentToken = tokenProvider.create(userLogin);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setLogin(userLogin);
         authenticationResponse.setToken(currentToken);

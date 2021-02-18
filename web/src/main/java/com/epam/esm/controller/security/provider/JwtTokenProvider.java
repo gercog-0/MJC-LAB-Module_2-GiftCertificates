@@ -1,7 +1,5 @@
 package com.epam.esm.controller.security.provider;
 
-import com.epam.esm.dao.api.entity.Role;
-import com.epam.esm.service.api.dto.RoleDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -18,9 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
@@ -41,9 +37,8 @@ public class JwtTokenProvider {
         this.userDetailsService = userDetailsService;
     }
 
-    public String create(String login, List<RoleDto> roles) {
+    public String create(String login) {
         Claims claims = Jwts.claims().setSubject(login);
-        claims.put("roles", getRoleNames(roles));
         Date dateNow = new Date();
         Date dateExpired = new Date(dateNow.getTime() + validityInMilliseconds);
         return Jwts.builder()
@@ -74,11 +69,5 @@ public class JwtTokenProvider {
 
     private String getUsername(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
-    }
-
-    private List<String> getRoleNames(List<RoleDto> roles) {
-        return roles.stream()
-                .map(RoleDto::getName)
-                .collect(Collectors.toList());
     }
 }
