@@ -4,7 +4,6 @@ import com.epam.esm.controller.exception.SecurityAuthenticationEntryPoint;
 import com.epam.esm.controller.security.filter.ExceptionHandlerFilter;
 import com.epam.esm.controller.security.filter.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,6 +36,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling().authenticationEntryPoint(securityAuthenticationEntryPoint)
+                .and()
+                .oauth2Login()
                 .and()
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandlerFilter, SecurityContextPersistenceFilter.class);
