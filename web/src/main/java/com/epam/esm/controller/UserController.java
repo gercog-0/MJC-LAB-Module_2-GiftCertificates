@@ -24,6 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public List<UserDto> findAllUsers(@RequestParam(required = false) Integer page,
                                       @RequestParam(required = false) Integer size) {
@@ -41,8 +42,9 @@ public class UserController {
         return userDto;
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping(path = "/registration")
-    public UserDto register(@RequestBody FullUserDto fullUserDto){
+    public UserDto register(@RequestBody FullUserDto fullUserDto) {
         UserDto registeredUser = userService.register(fullUserDto);
         addDependenciesLinks(registeredUser);
         return registeredUser;

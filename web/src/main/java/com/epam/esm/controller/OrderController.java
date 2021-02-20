@@ -26,6 +26,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN') or #userId == principal.id")
     @GetMapping("/user/{userId}")
     public List<OrderDto> findAllOrdersByUserId(@PathVariable long userId,
                                                 @RequestParam(required = false) Integer page,
@@ -44,16 +45,16 @@ public class OrderController {
         return orderDto;
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #userId == principal.id")
-    @PostMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ADMIN') or #orderDto.userId == principal.id")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto addOrder(@PathVariable Long userId, @RequestBody OrderDto orderDto) {
-        orderDto.setUserId(userId);
+    public OrderDto addOrder(@RequestBody OrderDto orderDto) {
         OrderDto orderDtoResult = orderService.add(orderDto);
         addDependenciesLinks(orderDtoResult);
         return orderDtoResult;
     }
 
+    @PostAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteOrderById(@PathVariable long id) {

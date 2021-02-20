@@ -6,6 +6,7 @@ import com.epam.esm.service.api.dto.AuthenticationDto;
 import com.epam.esm.controller.security.entity.AuthenticationResponse;
 import com.epam.esm.service.api.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ public class AuthenticationController {
         this.tokenProvider = tokenProvider;
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/authorize")
     public AuthenticationResponse login(@RequestBody AuthenticationDto authenticationDto) {
         UserDto userDto = userService.authorize(authenticationDto);

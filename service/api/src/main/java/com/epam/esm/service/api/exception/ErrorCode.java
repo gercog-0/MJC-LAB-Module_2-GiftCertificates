@@ -37,9 +37,10 @@ public final class ErrorCode {
     public static final String PAGINATION_INCORRECT_SIZE = "00018";
 
     public static final String INTERNAL_SERVER = "500";
-    public static final String METHOD_ARGUMENT_TYPE_MISMATCH = "401";
+    public static final String METHOD_ARGUMENT_TYPE_MISMATCH = "406";
     public static final String INVALID_TYPE_PARAMETERS = "402";
     public static final String FORBIDDEN_ACCESS = "403";
+    public static final String UNAUTHORIZED = "401";
     public static final String UNSUPPORTED_MEDIA_TYPE = "415";
 
     private ErrorCode() {
