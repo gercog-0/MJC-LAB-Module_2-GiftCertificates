@@ -6,6 +6,8 @@ import com.epam.esm.service.api.dto.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN') or #userId == principal.id")
     @GetMapping("/user/{userId}")
     public List<OrderDto> findAllOrdersByUserId(@PathVariable long userId,
                                                 @RequestParam(required = false) Integer page,
@@ -34,6 +37,7 @@ public class OrderController {
         return ordersDto;
     }
 
+    @PostAuthorize("hasRole('ADMIN') or returnObject.userId == principal.id")
     @GetMapping("/{id}")
     public OrderDto findOrderById(@PathVariable long id) {
         OrderDto orderDto = orderService.findById(id);
@@ -41,6 +45,7 @@ public class OrderController {
         return orderDto;
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #orderDto.userId == principal.id")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto addOrder(@RequestBody OrderDto orderDto) {
@@ -49,6 +54,7 @@ public class OrderController {
         return orderDtoResult;
     }
 
+    @PostAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteOrderById(@PathVariable long id) {

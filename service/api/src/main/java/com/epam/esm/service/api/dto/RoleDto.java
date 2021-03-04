@@ -1,23 +1,18 @@
 package com.epam.esm.service.api.dto;
 
-import org.springframework.hateoas.RepresentationModel;
-
 import java.util.Objects;
 
-public class UserDto extends RepresentationModel<UserDto> {
+public class RoleDto {
 
     private Long id;
     private String name;
-    private String login;
 
-    public UserDto() {
+    public RoleDto() {
     }
 
-    public UserDto(Long id, String name, String login) {
+    public RoleDto(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.login = login;
-
     }
 
     public Long getId() {
@@ -36,25 +31,17 @@ public class UserDto extends RepresentationModel<UserDto> {
         this.name = name;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        UserDto userDto = (UserDto) o;
-        return Objects.equals(login, userDto.login);
+        RoleDto roleDto = (RoleDto) o;
+        return Objects.equals(id, roleDto.id) &&
+                Objects.equals(name, roleDto.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), login);
+        return Objects.hash(id, name);
     }
 }

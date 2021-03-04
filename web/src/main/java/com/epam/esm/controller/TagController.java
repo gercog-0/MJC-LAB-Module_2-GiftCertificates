@@ -6,6 +6,7 @@ import com.epam.esm.service.api.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class TagController {
         this.tagService = tagService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping
     public List<TagDto> findAllTags(@RequestParam(required = false) Integer page,
                                     @RequestParam(required = false) Integer size) {
@@ -33,6 +35,7 @@ public class TagController {
         return tagsDto;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/{id}")
     public TagDto findTagById(@PathVariable long id) {
         TagDto tagDto = tagService.findById(id);
@@ -40,6 +43,7 @@ public class TagController {
         return tagDto;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/popular")
     public TagDto findMostPopularTag() {
         TagDto tagDto = tagService.findMostPopular();
@@ -47,6 +51,7 @@ public class TagController {
         return tagDto;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TagDto addTag(@RequestBody TagDto tagDto) {
@@ -55,6 +60,7 @@ public class TagController {
         return tagDtoResult;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteTagById(@PathVariable long id) {

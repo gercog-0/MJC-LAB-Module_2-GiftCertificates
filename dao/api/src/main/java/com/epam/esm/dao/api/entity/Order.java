@@ -18,12 +18,16 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JoinColumn(name = "user_id")
+
+    @Column(name = "user_id")
     private Long userId;
-    @JoinColumn(name = "gift_certificate_id")
+
+    @Column(name = "gift_certificate_id")
     private Long giftCertificateId;
+
     @Column(name = "cost")
     private BigDecimal cost;
+
     @Column(name = "purchase_date")
     private LocalDateTime purchaseDate;
 

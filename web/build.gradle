@@ -12,8 +12,11 @@ repositories {
 }
 
 dependencies {
+    implementation project(":dao:api")
     implementation project(":service:api")
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
+    implementation "org.springframework.boot:spring-boot-starter-security:$springBootVersion"
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.2.3'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.3'

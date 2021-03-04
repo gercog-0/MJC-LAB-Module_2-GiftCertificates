@@ -7,6 +7,7 @@ import com.epam.esm.service.api.dto.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class GiftCertificateController {
         this.giftCertificateService = giftCertificateService;
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping
     public List<GiftCertificateDto> findAllGiftCertificates(@RequestParam(required = false) List<String> tags,
                                                             @RequestParam(required = false) String name,
@@ -47,6 +49,7 @@ public class GiftCertificateController {
         return giftCertificateDtoList;
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     public GiftCertificateDto findGiftCertificateById(@PathVariable long id) {
         GiftCertificateDto giftCertificateDto = giftCertificateService.findById(id);
@@ -54,6 +57,7 @@ public class GiftCertificateController {
         return giftCertificateDto;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificateDto addGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
@@ -62,6 +66,7 @@ public class GiftCertificateController {
         return giftCertificateDtoResult;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/{id}")
     public GiftCertificateDto updateGiftCertificate(@PathVariable long id,
                                                     @RequestBody GiftCertificateDto giftCertificateDto) {
@@ -71,6 +76,7 @@ public class GiftCertificateController {
         return giftCertificateDtoResult;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(value = "/{id}")
     public GiftCertificateDto updatePartOfGiftCertificate(@PathVariable long id,
                                                           @RequestBody GiftCertificateDto giftCertificateDto) {
@@ -80,6 +86,7 @@ public class GiftCertificateController {
         return giftCertificateDtoResult;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGiftCertificate(@PathVariable long id) {
         giftCertificateService.remove(id);

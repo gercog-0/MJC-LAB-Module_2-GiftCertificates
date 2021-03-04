@@ -35,14 +35,13 @@ import static org.mockito.Mockito.when;
     void setUp() {
         tagDao = mock(TagDao.class);
         validator = mock(TagValidatorImpl.class);
-        UserService userService = mock(UserServiceImpl.class);
         modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.STRICT)
                 .setFieldMatchingEnabled(true)
                 .setSkipNullEnabled(true)
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
-        tagService = new TagServiceImpl(tagDao, userService, validator, new PaginationDtoValidator(), modelMapper);
+        tagService = new TagServiceImpl(tagDao, validator, new PaginationDtoValidator(), modelMapper);
     }
 
     @AfterEach

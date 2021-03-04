@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.epam.esm.dao.impl.util.SqlQuery.FIND_ALL_USERS;
+import static com.epam.esm.dao.impl.util.SqlQuery.FIND_USER_BY_LOGIN;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -28,23 +29,32 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public Optional<User> findByLogin(String login) {
+        return entityManager.createQuery(FIND_USER_BY_LOGIN, User.class)
+                .setParameter("login", login)
+                .getResultList().stream()
+                .findAny();
+    }
+
+    @Override
     public Optional<User> findById(Long id) {
         return Optional.ofNullable(entityManager.find(User.class, id));
     }
 
     @Override
     public User add(User user) {
-        throw new UnsupportedOperationException("Method add for User is unsupported.");
+        entityManager.persist(user);
+        return user;
     }
 
     @Override
     public User update(User user) {
         throw new UnsupportedOperationException("Method update for User is unsupported.");
-
     }
 
     @Override
     public void remove(Long id) {
-        throw new UnsupportedOperationException("Method remove for User is unsupported.");
+        User foundUser = entityManager.find(User.class, id);
+        entityManager.remove(foundUser);
     }
 }
