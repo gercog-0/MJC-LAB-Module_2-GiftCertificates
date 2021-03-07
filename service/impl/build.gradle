@@ -1,7 +1,3 @@
-plugins {
-    id 'java'
-}
-
 dependencies {
     implementation project(":service:api")
     implementation project(":dao:api")
@@ -16,4 +12,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
 }
