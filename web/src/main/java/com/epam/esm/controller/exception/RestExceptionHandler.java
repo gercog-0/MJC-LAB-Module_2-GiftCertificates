@@ -4,6 +4,7 @@ import com.epam.esm.service.api.exception.ErrorCode;
 import com.epam.esm.service.api.exception.ServiceException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -85,6 +86,13 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException exp) {
+        String errorCodeFromException = String.valueOf(HttpStatus.FORBIDDEN.value());
+        ErrorResponse errorResponse = createErrorResponse(errorCodeFromException);
+        return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exp) {
         String errorCodeFromException = String.valueOf(HttpStatus.FORBIDDEN.value());
         ErrorResponse errorResponse = createErrorResponse(errorCodeFromException);
         return new ResponseEntity<>(errorResponse, complianceMap.get(errorCodeFromException));
