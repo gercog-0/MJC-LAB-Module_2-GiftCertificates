@@ -11,20 +11,20 @@ pipeline {
     stages {
         stage("Checkout") {
             steps {
-                git branch: 'master', changelog: true, poll: true,
+                git branch: 'module-4', changelog: true, poll: true,
                         url: 'https://github.com/gercog-0/MJC-School-GiftCertificate.git'
             }
         }
 
         stage("Build, Test") {
             steps {
-                    script {
-                        try {
-                            bat 'gradle clean build codeCoverageReport'
-                        } finally {
+                script {
+                    try {
+                        bat 'gradle clean build codeCoverageReport'
+                    } finally {
                         junit '**/build/test-results/**/*.xml'
-                        }
                     }
+                }
             }
         }
 
@@ -33,9 +33,9 @@ pipeline {
                 scannerHome = tool 'sonarqube'
             }
             steps {
-                    withSonarQubeEnv('sonarqube') {
-                        bat "${scannerHome}\\bin\\sonar-scanner"
-                    }
+                withSonarQubeEnv('sonarqube') {
+                    bat "${scannerHome}\\bin\\sonar-scanner"
+                }
             }
         }
 
