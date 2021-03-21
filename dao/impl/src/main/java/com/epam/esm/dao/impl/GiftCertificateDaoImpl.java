@@ -8,6 +8,7 @@ import com.epam.esm.dao.impl.util.GiftCertificateSqlQueryCreator;
 import com.epam.esm.dao.impl.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

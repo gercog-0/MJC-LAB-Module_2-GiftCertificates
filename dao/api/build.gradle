@@ -5,3 +5,8 @@ dependencies {
 bootJar {
     enabled = false
 }
+
+jar {
+    archiveFileName = "dao-api.jar"
+    enabled = true
+}

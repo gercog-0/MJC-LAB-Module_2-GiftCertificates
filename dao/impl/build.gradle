@@ -16,3 +16,8 @@ test {
 bootJar {
     enabled = false
 }
+
+jar {
+    archiveFileName = "dao-impl.jar"
+    enabled = true
+}

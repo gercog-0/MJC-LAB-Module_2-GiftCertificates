@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.3.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
+    id "org.sonarqube" version "3.0"
 }
 
 group 'com.epam.esm'
@@ -12,6 +13,9 @@ allprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java-library'
     apply plugin: 'java'
+    apply plugin: "jacoco"
+    apply plugin: "org.sonarqube"
+    apply plugin: 'war'
 
     ext {
         springVersion = '5.2.12.RELEASE'
@@ -20,6 +24,47 @@ allprojects {
 
     repositories {
         mavenCentral()
+    }
+
+    test {
+        task copyReport(type: Copy) {
+            from "build/test-results"
+            into "${rootDir}/build/test-results"
+        }
+
+        useJUnitPlatform()
+        finalizedBy copyReport
+        finalizedBy jacocoTestReport
+    }
+}
+
+task codeCoverageReport(type: JacocoReport) {
+
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
+
+    reports {
+        xml.enabled true
+        html.enabled false
+        csv.enabled false
+    }
+}
+
+codeCoverageReport.dependsOn {
+    subprojects*.test
+}
+
+sonarqube {
+    properties {
+        property "sonar.host.url", "http://localhost:9000"
+        property 'sonar.projectName', 'Gift_Certificates'
+        property 'sonar.projectKey', 'Gift_Certificates'
+        property 'sonar.login', '81cd84a038cee8b10d58787551397f1982414380'
+        property 'sonar.core.codeCoveragePlugin', 'jacoco'
+        property 'sonar.coverage.jacoco.xmlReportPaths', "${rootDir}/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
     }
 }
 

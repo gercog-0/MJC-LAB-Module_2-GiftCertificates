@@ -6,3 +6,8 @@ dependencies {
 bootJar {
     enabled = false
 }
+
+jar {
+    archiveFileName = "service-api.jar"
+    enabled = true
+}

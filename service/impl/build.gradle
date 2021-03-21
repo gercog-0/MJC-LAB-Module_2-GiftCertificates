@@ -17,3 +17,8 @@ test {
 bootJar {
     enabled = false
 }
+
+jar {
+    archiveFileName = "service-impl.jar"
+    enabled = true
+}
