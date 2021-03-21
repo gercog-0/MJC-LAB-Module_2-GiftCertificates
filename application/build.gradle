@@ -1,3 +1,6 @@
+plugins {
+    id 'war'
+}
 dependencies {
     implementation project(':dao:impl')
     implementation project(':service:impl')
